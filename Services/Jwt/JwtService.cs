@@ -1,0 +1,68 @@
+
+
+using System.IdentityModel.Tokens.Jwt;
+using System.Security.Claims;
+using System.Text;
+using automotiveApi.Models;
+using Microsoft.IdentityModel.Tokens;
+
+namespace automotiveApi.Services.Jwt
+{
+    public class JwtService : IJwt
+    {
+        private readonly IHttpContextAccessor _httpContextAccessor;
+        private readonly IConfiguration _configuration;
+
+
+        public JwtService(IHttpContextAccessor httpContextAccessor, IConfiguration configuration)
+        {
+            _httpContextAccessor = httpContextAccessor;
+            _configuration = configuration;
+        }
+
+        public int getUserId()
+        {
+            var userId = _httpContextAccessor?.HttpContext?.User.FindFirst("id")?.Value;
+            return int.Parse(userId ?? "0");
+        }
+
+        public string getRole()
+        {
+            var role = _httpContextAccessor?.HttpContext?.User.FindFirst(ClaimTypes.Role)?.Value ?? "No Role";
+            return role;
+        }
+
+        public string generateToken(User user)
+        {
+            List<Claim> claims = new List<Claim> {
+                        new Claim(JwtRegisteredClaimNames.Sub, _configuration["Jwt:Subject"]),
+                        new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
+                        new Claim(JwtRegisteredClaimNames.Iat, DateTime.UtcNow.ToString()),
+                        new Claim("id", user.id.ToString()),
+                        new Claim("email", user.email),
+                        new Claim("fullname", user.first_name + " " + user.last_name),
+                        new Claim(ClaimTypes.Role, user.Role.name)                        
+
+
+                        // new Claim(ClaimTypes.Role, user.Role.name)
+                        
+                    };
+
+
+            var expirationTime = _configuration.GetValue<int>("Jwt:DurationInMinutes");
+            var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration["Jwt:Key"]) ?? throw new InvalidOperationException());
+            var signIn = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
+            var token = new JwtSecurityToken(
+                _configuration["Jwt:Issuer"],
+                _configuration["Jwt:Audience"],
+                claims,
+                expires: DateTime.UtcNow.AddMinutes(expirationTime),
+                signingCredentials: signIn);
+
+
+            var jwtToken = new JwtSecurityTokenHandler().WriteToken(token);
+            return jwtToken;
+        }
+
+    }
+}

@@ -14,7 +14,6 @@ namespace automotiveApi.Models.Dto
 
         [Required]
         [EmailAddress]
-
         public string email { get; set; }
 
         [Required]
@@ -23,15 +22,15 @@ namespace automotiveApi.Models.Dto
 
         [Required]
         [StringLength(100)]
+        [Compare("password")]
         public string confirm_password { get; set; }
 
-
+        [Required]
         public bool? is_active { get; set; }
 
         [Required]
         public int id_role { get; set; }
 
-        [Required]
         public int? id_agence { get; set; }
     }
 }
