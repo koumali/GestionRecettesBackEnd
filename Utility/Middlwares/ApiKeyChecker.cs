@@ -14,15 +14,15 @@ public class ApiKeyChecker
         string HeaderKeyName = _configuration["ApiKey:HeaderName"] ?? "";
         string key = _configuration["ApiKey:KeyValue"] ?? "";
 
-        Console.WriteLine("HeaderKeyName: " + HeaderKeyName);
+
 
         //GET VALUE FROM HEADER
         StringValues headerValues;
         context.Request.Headers.TryGetValue(HeaderKeyName, out headerValues);
         string headerValue = headerValues.FirstOrDefault() ?? "";
 
-        Console.WriteLine("headerValue: " + headerValue);
-        
+
+
         if (headerValue != key)
         {
             context.Response.StatusCode = 401;

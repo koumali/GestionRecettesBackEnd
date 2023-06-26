@@ -80,9 +80,23 @@ builder.Services.AddAuthorization(options =>
 {
     options.AddPolicy("RequireAdminRole", p => p.RequireRole("Admin"));
     options.AddPolicy("RequireUserRole", p => p.RequireRole("Client"));
+    options.AddPolicy("RequireUserRole", p => p.RequireRole("Gearnt"));
+    options.AddPolicy("RequireUserRole", p => p.RequireRole("Agent"));
+
 });
 
 
+builder.Services.AddCors(options =>
+   {
+
+       options.AddDefaultPolicy(
+           policy =>
+           {
+               policy.AllowAnyOrigin()
+                   .AllowAnyHeader()
+                   .AllowAnyMethod();
+           });
+   });
 
 
 
@@ -90,6 +104,7 @@ builder.Services.TryAddSingleton<IHttpContextAccessor, HttpContextAccessor>();
 builder.Services.AddScoped<IJwt, JwtService>();
 builder.Services.AddScoped<IUser, UserService>();
 builder.Services.AddScoped<IAuth, AuthService>();
+builder.Services.AddScoped<IRole, RoleService>();
 
 
 
@@ -105,7 +120,6 @@ if (app.Environment.IsDevelopment())
 }
 
 
-
 app.UseHttpsRedirection();
 
 app.UseWhen(context => context.Request.Path.StartsWithSegments("/api"), appBuilder =>
@@ -113,10 +127,16 @@ app.UseWhen(context => context.Request.Path.StartsWithSegments("/api"), appBuild
     appBuilder.UseMiddleware<ApiKeyChecker>();
 });
 
+
+
+
+
+
 app.UseAuthentication();
 
 app.UseAuthorization();
 
 app.MapControllers();
+app.UseCors();
 
 app.Run();
