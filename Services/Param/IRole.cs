@@ -4,10 +4,12 @@ namespace automotiveApi.Services.Param
 {
     public interface IRole
     {
-        Task<IEnumerable<Role>> getRoles();
-        Task<Role?> findById(int id);
-        Task<Role?> findByName(string name);
-        Task<Role?> add(Role role);
+        IEnumerable<Role> getRoles();
+        Role? findById(int id);
+        Role? add(Role role);
+        void delete(int id);
+        Role? update(Role role);
+
 
 
     }

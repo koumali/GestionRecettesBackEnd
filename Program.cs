@@ -8,6 +8,7 @@ using automotiveApi.Services.Jwt;
 using automotiveApi.Services.Param;
 using automotiveApi.Services.Auth;
 using Microsoft.OpenApi.Models;
+using automotiveApi.Services.Gestion;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -88,7 +89,6 @@ builder.Services.AddAuthorization(options =>
 
 builder.Services.AddCors(options =>
    {
-
        options.AddDefaultPolicy(
            policy =>
            {
@@ -105,6 +105,9 @@ builder.Services.AddScoped<IJwt, JwtService>();
 builder.Services.AddScoped<IUser, UserService>();
 builder.Services.AddScoped<IAuth, AuthService>();
 builder.Services.AddScoped<IRole, RoleService>();
+builder.Services.AddScoped<IAgence, AgenceService>();
+builder.Services.AddScoped<IMarque, MarqueService>();
+builder.Services.AddScoped<IModele, ModeleService>();
 
 
 
@@ -122,13 +125,12 @@ if (app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 
+app.UseCors();
+
 app.UseWhen(context => context.Request.Path.StartsWithSegments("/api"), appBuilder =>
 {
     appBuilder.UseMiddleware<ApiKeyChecker>();
 });
-
-
-
 
 
 
@@ -137,6 +139,6 @@ app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllers();
-app.UseCors();
+
 
 app.Run();

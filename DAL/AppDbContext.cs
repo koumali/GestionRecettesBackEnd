@@ -20,7 +20,7 @@ namespace automotiveApi.DAL
 
         public virtual DbSet<Role> Roles { get; set; }
         public virtual DbSet<User> Users { get; set; }
-        public virtual DbSet<Agence> Agence { get; set; }
+        public virtual DbSet<Agence> Agences { get; set; }
         public virtual DbSet<Client> Clients { get; set; }
         public virtual DbSet<Marque> Marques { get; set; }
         public virtual DbSet<Modele> Modeles { get; set; }
