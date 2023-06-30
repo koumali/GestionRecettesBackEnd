@@ -108,6 +108,10 @@ builder.Services.AddScoped<IRole, RoleService>();
 builder.Services.AddScoped<IAgence, AgenceService>();
 builder.Services.AddScoped<IMarque, MarqueService>();
 builder.Services.AddScoped<IModele, ModeleService>();
+builder.Services.AddScoped<IClient, ClientService>();
+builder.Services.AddScoped<IVehicule, VehiculeService>();
+builder.Services.AddScoped<IOffre, OffreService>();
+builder.Services.AddScoped<IReservation, ReservationService>();
 
 
 
