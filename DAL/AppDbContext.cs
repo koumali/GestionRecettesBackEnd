@@ -20,12 +20,13 @@ namespace automotiveApi.DAL
 
         public virtual DbSet<Role> Roles { get; set; }
         public virtual DbSet<User> Users { get; set; }
-        public virtual DbSet<Agence> Agence { get; set; }
+        public virtual DbSet<Agence> Agences { get; set; }
         public virtual DbSet<Client> Clients { get; set; }
         public virtual DbSet<Marque> Marques { get; set; }
         public virtual DbSet<Modele> Modeles { get; set; }
+        public virtual DbSet<Offre> Offres { get; set; }
         public virtual DbSet<Vehicule> Vehicules { get; set; }
-        public virtual DbSet<Reservation> Reservation { get; set; }
+        public virtual DbSet<Reservation> Reservations { get; set; }
         public virtual DbSet<Contrat> Contrats { get; set; }
         public virtual DbSet<log_journal> log_journal { get; set; }
 

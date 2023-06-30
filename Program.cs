@@ -8,6 +8,7 @@ using automotiveApi.Services.Jwt;
 using automotiveApi.Services.Param;
 using automotiveApi.Services.Auth;
 using Microsoft.OpenApi.Models;
+using automotiveApi.Services.Gestion;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -86,11 +87,33 @@ builder.Services.AddAuthorization(options =>
 });
 
 
+
+builder.Services.AddCors(options =>
+   {
+       options.AddDefaultPolicy(
+           policy =>
+           {
+               policy.AllowAnyOrigin()
+                   .AllowAnyHeader()
+                   .AllowAnyMethod();
+           });
+   });
+
+
+
+
 builder.Services.TryAddSingleton<IHttpContextAccessor, HttpContextAccessor>();
 builder.Services.AddScoped<IJwt, JwtService>();
 builder.Services.AddScoped<IUser, UserService>();
 builder.Services.AddScoped<IAuth, AuthService>();
 builder.Services.AddScoped<IRole, RoleService>();
+builder.Services.AddScoped<IAgence, AgenceService>();
+builder.Services.AddScoped<IMarque, MarqueService>();
+builder.Services.AddScoped<IModele, ModeleService>();
+builder.Services.AddScoped<IClient, ClientService>();
+builder.Services.AddScoped<IVehicule, VehiculeService>();
+builder.Services.AddScoped<IOffre, OffreService>();
+builder.Services.AddScoped<IReservation, ReservationService>();
 
 
 builder.Services.AddDbContext<AppDbContext>(options => options.UseMySQL(builder.Configuration.GetConnectionString("DefaultConnectionMySql")));
@@ -107,10 +130,8 @@ if (app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 
-app.UseCors(x => x
-    .AllowAnyOrigin()
-    .AllowAnyMethod()
-    .AllowAnyHeader());
+app.UseCors();
+
 
 app.UseWhen(context => context.Request.Path.StartsWithSegments("/api"), appBuilder =>
 {

@@ -1,6 +1,5 @@
 using automotiveApi.DAL;
 using automotiveApi.Models;
-using Microsoft.EntityFrameworkCore;
 
 namespace automotiveApi.Services.Param
 {
@@ -13,25 +12,63 @@ namespace automotiveApi.Services.Param
             _context = context;
         }
 
-        public Task<Role?> add(Role role)
+        public Role? add(Role role)
         {
-            throw new NotImplementedException();
+            try
+            {
+                _context.Roles.Add(role);
+                _context.SaveChanges();
+                return role;
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+            
+        }
+        
+
+        public Role? findById(int id)
+        {
+            var role = _context.Roles.Where(u => u.id == id).FirstOrDefault();
+            return role;
+        
+    
         }
 
-        public Task<Role?> findById(int id)
+        public Role? findByName(string name)
         {
-            throw new NotImplementedException();
+            var role = _context.Roles.Where(u => u.name == name).FirstOrDefault();
+            return role;
         }
 
-        public Task<Role?> findByName(string name)
+        public IEnumerable<Role> getRoles()
         {
-            throw new NotImplementedException();
+            return _context.Roles.ToList();
+        }
+        public void delete(int id)
+        {
+            var role = _context.Roles.Find(id);
+            if (role != null)
+            {
+                _context.Roles.Remove(role);
+                _context.SaveChanges();
+            }
+        }
+        public Role update(Role updatedRole)
+        {
+            try
+            {
+                _context.Roles.Update(updatedRole);
+                _context.SaveChanges();
+                return updatedRole;
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
         }
 
-        public async Task<IEnumerable<Role>> getRoles()
-        {
-            return await _context.Roles.ToListAsync();
-        }
     }
 
 }
