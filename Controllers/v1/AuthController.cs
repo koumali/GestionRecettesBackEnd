@@ -1,3 +1,4 @@
+using AutoMapper;
 using automotiveApi.DAL;
 using automotiveApi.Models;
 using automotiveApi.Models.Dto;
@@ -14,27 +15,20 @@ namespace automotiveApi.Controllers.v1
     public class AuthController : ControllerBase
     {
         private readonly IAuth _authService;
+        protected readonly IMapper _mapper;
 
 
-        public AuthController(AppDbContext context, IAuth authService)
+        public AuthController(AppDbContext context, IAuth authService, IMapper mapper)
         {
             _authService = authService;
+            _mapper = mapper;
         }
 
 
         [HttpPost("register")]
         public ActionResult<User> Register(UserDto request)
         {
-            var user = new User
-            {
-                email = request.email,
-                password = request.password,
-                first_name = request.first_name,
-                last_name = request.last_name,
-                is_active = request.is_active,
-                id_role = request.id_role,
-                id_agence = request.id_agence
-            };
+            var user = _mapper.Map<User>(request);
 
             try
             {
