@@ -9,7 +9,7 @@ using MySql.EntityFrameworkCore.Metadata;
 namespace automotive_api.Migrations
 {
     /// <inheritdoc />
-    public partial class first : Migration
+    public partial class updated : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -18,7 +18,7 @@ namespace automotive_api.Migrations
                 .Annotation("MySQL:Charset", "utf8mb4");
 
             migrationBuilder.CreateTable(
-                name: "Agence",
+                name: "Agences",
                 columns: table => new
                 {
                     id = table.Column<int>(type: "int", nullable: false)
@@ -37,7 +37,7 @@ namespace automotive_api.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Agence", x => x.id);
+                    table.PrimaryKey("PK_Agences", x => x.id);
                 })
                 .Annotation("MySQL:Charset", "utf8mb4");
 
@@ -167,7 +167,7 @@ namespace automotive_api.Migrations
                     table.ForeignKey(
                         name: "FK_Vehicules_id_agence",
                         column: x => x.id_agence,
-                        principalTable: "Agence",
+                        principalTable: "Agences",
                         principalColumn: "id");
                     table.ForeignKey(
                         name: "FK_Vehicules_id_marque",
@@ -205,7 +205,7 @@ namespace automotive_api.Migrations
                     table.ForeignKey(
                         name: "FK_Users_id_agence",
                         column: x => x.id_agence,
-                        principalTable: "Agence",
+                        principalTable: "Agences",
                         principalColumn: "id");
                     table.ForeignKey(
                         name: "FK_Users_id_role",
@@ -216,7 +216,7 @@ namespace automotive_api.Migrations
                 .Annotation("MySQL:Charset", "utf8mb4");
 
             migrationBuilder.CreateTable(
-                name: "Offre",
+                name: "Offres",
                 columns: table => new
                 {
                     id = table.Column<int>(type: "int", nullable: false)
@@ -232,11 +232,11 @@ namespace automotive_api.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Offre", x => x.id);
+                    table.PrimaryKey("PK_Offres", x => x.id);
                     table.ForeignKey(
                         name: "FK_Offre_id_agence",
                         column: x => x.id_agence,
-                        principalTable: "Agence",
+                        principalTable: "Agences",
                         principalColumn: "id");
                     table.ForeignKey(
                         name: "FK_Offre_id_vehicule",
@@ -247,7 +247,7 @@ namespace automotive_api.Migrations
                 .Annotation("MySQL:Charset", "utf8mb4");
 
             migrationBuilder.CreateTable(
-                name: "Reservation",
+                name: "Reservations",
                 columns: table => new
                 {
                     id = table.Column<int>(type: "int", nullable: false)
@@ -262,11 +262,11 @@ namespace automotive_api.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Reservation", x => x.id);
+                    table.PrimaryKey("PK_Reservations", x => x.id);
                     table.ForeignKey(
                         name: "FK_Reservation_id_agence",
                         column: x => x.id_agence,
-                        principalTable: "Agence",
+                        principalTable: "Agences",
                         principalColumn: "id");
                     table.ForeignKey(
                         name: "FK_Reservation_id_vehicule",
@@ -299,7 +299,7 @@ namespace automotive_api.Migrations
                     table.ForeignKey(
                         name: "FK_Contrats_id_reservation",
                         column: x => x.id_reservation,
-                        principalTable: "Reservation",
+                        principalTable: "Reservations",
                         principalColumn: "id");
                 })
                 .Annotation("MySQL:Charset", "utf8mb4");
@@ -326,23 +326,23 @@ namespace automotive_api.Migrations
                 column: "id_reservation");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Offre_id_agence",
-                table: "Offre",
+                name: "IX_Offres_id_agence",
+                table: "Offres",
                 column: "id_agence");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Offre_id_vehicule",
-                table: "Offre",
+                name: "IX_Offres_id_vehicule",
+                table: "Offres",
                 column: "id_vehicule");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Reservation_id_agence",
-                table: "Reservation",
+                name: "IX_Reservations_id_agence",
+                table: "Reservations",
                 column: "id_agence");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Reservation_id_vehicule",
-                table: "Reservation",
+                name: "IX_Reservations_id_vehicule",
+                table: "Reservations",
                 column: "id_vehicule");
 
             migrationBuilder.CreateIndex(
@@ -381,7 +381,7 @@ namespace automotive_api.Migrations
                 name: "log_journal");
 
             migrationBuilder.DropTable(
-                name: "Offre");
+                name: "Offres");
 
             migrationBuilder.DropTable(
                 name: "Users");
@@ -390,7 +390,7 @@ namespace automotive_api.Migrations
                 name: "Clients");
 
             migrationBuilder.DropTable(
-                name: "Reservation");
+                name: "Reservations");
 
             migrationBuilder.DropTable(
                 name: "Roles");
@@ -399,7 +399,7 @@ namespace automotive_api.Migrations
                 name: "Vehicules");
 
             migrationBuilder.DropTable(
-                name: "Agence");
+                name: "Agences");
 
             migrationBuilder.DropTable(
                 name: "Marques");
