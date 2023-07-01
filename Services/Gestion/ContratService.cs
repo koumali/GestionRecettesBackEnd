@@ -1,25 +1,24 @@
 using automotiveApi.DAL;
 using automotiveApi.Models;
-using Microsoft.EntityFrameworkCore;
 
 namespace automotiveApi.Services.Gestion
 {
-    public class ModeleService : IModele
+    public class ContratService : IContrat
     {
         private readonly AppDbContext _context;
 
-        public ModeleService(AppDbContext context)
+        public ContratService(AppDbContext context)
         {
             _context = context;
         }
 
-        public Modele? add(Modele modele)
+        public Contrat? add(Contrat Contrat)
         {
             try
             {
-                _context.Modeles.Add(modele);
+                _context.Contrats.Add(Contrat);
                 _context.SaveChanges();
-                return modele;
+                return Contrat;
             }
             catch (Exception ex)
             {
@@ -29,35 +28,35 @@ namespace automotiveApi.Services.Gestion
         }
         
 
-        public Modele? findById(int id)
+        public Contrat? findById(int id)
         {
-            var Modele = _context.Modeles.Where(u => u.id == id).FirstOrDefault();
-            return Modele;
+            var Contrat = _context.Contrats.Where(u => u.id == id).FirstOrDefault();
+            return Contrat;
         
     
         }
 
 
-        public IEnumerable<Modele> getModeles()
+        public IEnumerable<Contrat> getContrats()
         {
-            return _context.Modeles.Include(o => o.Marque).ToList();
+            return _context.Contrats.ToList();
         }
         public void delete(int id)
         {
-            var modele = _context.Modeles.Find(id);
-            if (modele != null)
+            var Contrat = _context.Contrats.Find(id);
+            if (Contrat != null)
             {
-                _context.Modeles.Remove(modele);
+                _context.Contrats.Remove(Contrat);
                 _context.SaveChanges();
             }
         }
-        public Modele update(Modele updatedModele)
+        public Contrat update(Contrat updatedContrat)
         {
             try
             {
-                _context.Modeles.Update(updatedModele);
+                _context.Contrats.Update(updatedContrat);
                 _context.SaveChanges();
-                return updatedModele;
+                return updatedContrat;
             }
             catch (Exception ex)
             {

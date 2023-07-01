@@ -1,7 +1,7 @@
 using automotiveApi.Models;
 using automotiveApi.Models.Dto;
 
-namespace automotiveApi.Services.Auth
+namespace AutomotiveApi.Services.Auth
 {
     public interface IAuth
     {

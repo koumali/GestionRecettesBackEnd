@@ -1,6 +1,5 @@
 using automotiveApi.DAL;
 using automotiveApi.Models;
-using automotiveApi.Services.Auth;
 using Microsoft.EntityFrameworkCore;
 
 namespace automotiveApi.Services.Param
@@ -77,14 +76,14 @@ namespace automotiveApi.Services.Param
                 userExists.id_role = user.id_role;
                 userExists.id_agence = user.id_agence;
 
-
                 _context.SaveChanges();
-            
+
                 return userExists;
             }
             catch (Exception ex)
             {
                 throw new Exception(ex.Message);
+
             }            
         }
 

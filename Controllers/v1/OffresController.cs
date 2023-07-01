@@ -15,14 +15,11 @@ namespace automotiveApi.Controllers.v1
 
     public class OffresController : ControllerBase
     {
-
-        private readonly IJwt _jwtService;
         private readonly IOffre _Offreservice;
 
 
-        public OffresController(IUser userService, IJwt jwtService, IOffre Offreservice)
+        public OffresController(IUser userService,  IOffre Offreservice)
         {
-            _jwtService = jwtService;
             _Offreservice = Offreservice;
         }
 
@@ -44,7 +41,6 @@ namespace automotiveApi.Controllers.v1
             var Offre = new Offre()
             {
                 id_vehicule= request.id_vehicule,
-                id_agence = request.id_agence,
                 date_debut = request.date_debut,
                 date_fin = request.date_fin,
                 prix = request.prix,
@@ -79,7 +75,6 @@ namespace automotiveApi.Controllers.v1
 
             // Update the Offre properties
             offre.id_vehicule = request.id_vehicule;
-            offre.id_agence = request.id_agence;
             offre.date_debut = request.date_debut;
             offre.date_fin = request.date_fin;
             offre.prix = request.prix;

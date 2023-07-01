@@ -59,7 +59,6 @@ namespace automotive_api.Controllers.v1
                 gearbox = request.gearbox,
                 moteur = request.moteur,
                 id_agence = request.id_agence,
-                id_marque = request.id_marque,
                 id_modele = request.id_modele,
 
             };
@@ -97,7 +96,6 @@ namespace automotive_api.Controllers.v1
             vehicule.gearbox = request.gearbox;
             vehicule.moteur = request.moteur;
             vehicule.id_agence = request.id_agence;
-            vehicule.id_marque = request.id_marque;
             vehicule.id_modele = request.id_modele;
 
             var updatedVehicule = _VehiculeService.update(vehicule);

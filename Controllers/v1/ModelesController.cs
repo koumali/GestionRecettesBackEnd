@@ -47,7 +47,8 @@ namespace automotive_api.Controllers.v1
         {
             var Modele = new Modele()
             {
-                name = request.Name
+                name = request.Name,
+                id_marque = request.id_marque
             };
             var addedModele = _ModeleService.add(Modele);
             return Ok(addedModele);
@@ -72,6 +73,8 @@ namespace automotive_api.Controllers.v1
 
             // Update the Modele properties
             Modele.name = request.Name;
+            Modele.id_marque = request.id_marque;
+
 
             var updatedModele = _ModeleService.update(Modele);
             return Ok(updatedModele);

@@ -19,7 +19,7 @@ namespace automotiveApi.Models.Dto
         [Required]
         [StringLength(100)]
         public string password { get; set; }
-      
+
 
         [Required]
         public bool? is_active { get; set; }

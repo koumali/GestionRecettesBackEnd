@@ -1,7 +1,7 @@
 using automotiveApi.DAL;
 using automotiveApi.Models;
 using automotiveApi.Models.Dto;
-using automotiveApi.Services.Auth;
+using AutomotiveApi.Services.Auth;
 using Microsoft.AspNetCore.Mvc;
 
 namespace automotiveApi.Controllers.v1

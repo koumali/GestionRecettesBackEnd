@@ -3,6 +3,7 @@ using automotiveApi.Models;
 namespace automotiveApi.Services.Param
 {
     public interface IUser
+
     {        
        User? findByEmail(string email);
        User? add(User user);  
@@ -13,5 +14,6 @@ namespace automotiveApi.Services.Param
        User? delete(int id);
 
        bool changePassword(int id, string newPassword);
+
     }
 }

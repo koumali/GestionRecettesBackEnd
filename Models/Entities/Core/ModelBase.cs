@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace automotiveApi.Models
+﻿namespace automotiveApi.Models
 {
     public partial class ModelBase
     {

@@ -6,7 +6,7 @@ namespace automotiveApi.Models.Dto
     {
         [Required]
         public int id { get; set; }
-        
+
         [Required]
         [MinLength(8)]
         public string newPassword { get; set; }

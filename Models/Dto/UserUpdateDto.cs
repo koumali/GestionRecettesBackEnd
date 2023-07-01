@@ -7,7 +7,7 @@ namespace automotiveApi.Models.Dto
 
         [Required]
         public int id { get; set; }
-        
+
         [Required]
         [StringLength(50)]
         public string first_name { get; set; }
@@ -19,7 +19,7 @@ namespace automotiveApi.Models.Dto
         [Required]
         [EmailAddress]
         public string email { get; set; }
-    
+
         [Required]
         public bool? is_active { get; set; }
 
