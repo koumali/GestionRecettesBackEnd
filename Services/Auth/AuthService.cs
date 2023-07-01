@@ -1,6 +1,7 @@
-using automotiveApi.Models;
 using automotiveApi.Models.Dto;
+using automotiveApi.Models;
 using automotiveApi.Services.Jwt;
+using AutomotiveApi.Services.Auth;
 using automotiveApi.Services.Param;
 
 namespace automotiveApi.Services.Auth
@@ -72,17 +73,3 @@ namespace automotiveApi.Services.Auth
         }
     }
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-

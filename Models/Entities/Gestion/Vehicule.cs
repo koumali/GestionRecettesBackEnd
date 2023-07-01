@@ -1,7 +1,4 @@
-﻿
-using System.Collections.Generic;
-
-namespace automotiveApi.Models
+﻿namespace automotiveApi.Models
 {
     public partial class Vehicule : ModelBase
     {
@@ -22,10 +19,8 @@ namespace automotiveApi.Models
         public string gearbox  { get; set; }
         public string moteur { get; set; }
         public int id_agence { get; set; }
-        public int id_marque { get; set; }
         public int id_modele { get; set; }
         public virtual Agence Agence { get; set; }
-        public virtual Marque Marque { get; set; }
         public virtual Modele Modele { get; set; }
 
         public virtual ICollection<Reservation> Reservation { get; set; }

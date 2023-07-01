@@ -1,5 +1,6 @@
 using automotiveApi.DAL;
 using automotiveApi.Models;
+using Microsoft.EntityFrameworkCore;
 
 namespace automotiveApi.Services.Gestion
 {
@@ -30,7 +31,7 @@ namespace automotiveApi.Services.Gestion
 
         public Reservation? findById(int id)
         {
-            var Reservation = _context.Reservations.Where(u => u.id == id).FirstOrDefault();
+            var Reservation = _context.Reservations.Where(r => r.id == id).FirstOrDefault();
             return Reservation;
         
     
@@ -39,7 +40,8 @@ namespace automotiveApi.Services.Gestion
 
         public IEnumerable<Reservation> getReservations()
         {
-            return _context.Reservations.ToList();
+            var reservations = _context.Reservations.Include(r => r.Vehicule).ToList();
+            return reservations;
         }
         public void delete(int id)
         {

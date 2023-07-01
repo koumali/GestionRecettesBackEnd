@@ -1,3 +1,4 @@
+using AutoMapper;
 using automotiveApi.DAL;
 using automotiveApi.Models;
 using automotiveApi.Models.Dto;
@@ -18,12 +19,14 @@ namespace automotiveApi.Controllers.v1
     {
         private readonly IUser _userService;
         private readonly IJwt _jwtService;
+        private readonly IMapper _mapper;
 
 
-        public UsersController(IUser userService, IJwt jwtService)
+        public UsersController(IUser userService, IJwt jwtService, IMapper mapper)
         {
             _jwtService = jwtService;
             _userService = userService;
+            _mapper = mapper;
         }
 
 
@@ -40,16 +43,95 @@ namespace automotiveApi.Controllers.v1
         //testing
         //</summary>
 
-        [HttpGet("myprofile")]
-        [Authorize(Roles = "Admin, Client")]
-        public ActionResult<User> GetMyProfile()
+        //get user by id
+        [HttpGet("{id}")]
+        [Authorize(Roles = "Admin")]
+        public ActionResult<User> GetUserById(int id)
         {
-            var user= _userService.findById(_jwtService.getUserId());
+            var user = _userService.findById(id);
             return Ok(user);
         }
 
+        //add user
+        [HttpPost]
+        [Authorize(Roles = "Admin")]
+        public ActionResult<User> Add(UserDto userRequest)
+        {
+            var user = _mapper.Map<User>(userRequest);
+            try
+            {
+                var newUser = _userService.add(user);
+                return CreatedAtAction(nameof(GetUserById), new { id = newUser.id }, newUser);
+            }
+            catch (System.Exception ex)
+            {
+                // add message to errors list
+                return BadRequest(new { message = ex.Message });
+            }
+
+        }
+
+        //update user
+
+        [HttpPut]
+        [Authorize(Roles = "Admin")]
+        public ActionResult<User> Update(UserUpdateDto userRequest)
+        {
+            var user = _mapper.Map<User>(userRequest);
+
+            try
+            {
+                var updatedUser = _userService.update(user);
+                return Ok(updatedUser);
+            }
+            catch (System.Exception ex)
+            {
+                // add message to errors list
+                return BadRequest(new { message = ex.Message });
+            }
+
+        }
+
+        //delete user
+
+        [HttpDelete("{id}")]
+        [Authorize(Roles = "Admin")]
+        public ActionResult<User> Delete(int id)
+        {
+            try
+            {
+                var user = _userService.delete(id);
+                return user;
+            }
+            catch (System.Exception ex)
+            {
+                // add message to errors list
+                return BadRequest(new { message = ex.Message });
+            }
+
+        }
+
+        //change password
+        [HttpPut("updatepassword")]
+        [Authorize(Roles = "Admin")]
+
+        public ActionResult<User> ChangePassword(PasswordUpdateDto changePasswordDto)
+        {
+            try
+            {
+                var user = _userService.changePassword(changePasswordDto.id, changePasswordDto.newPassword);
+                return Ok(user);
+            }
+            catch (System.Exception ex)
+            {
+                // add message to errors list
+                return BadRequest(new { message = ex.Message });
+            }
+
+        }
+
+
+
 
     }
-
-
 }

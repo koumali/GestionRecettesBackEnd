@@ -15,14 +15,11 @@ namespace automotiveApi.Controllers.v1
 
     public class ReservationsController : ControllerBase
     {
-
-        private readonly IJwt _jwtService;
         private readonly IReservation _Reservationservice;
 
 
-        public ReservationsController(IUser userService, IJwt jwtService, IReservation Reservationservice)
+        public ReservationsController(IReservation Reservationservice)
         {
-            _jwtService = jwtService;
             _Reservationservice = Reservationservice;
         }
 
@@ -44,7 +41,6 @@ namespace automotiveApi.Controllers.v1
             var Reservation = new Reservation()
             {
                 id_vehicule= request.id_vehicule,
-                id_agence = request.id_agence,
                 date_depart = request.date_depart,
                 date_retour = request.date_retour,
     };
@@ -78,7 +74,6 @@ namespace automotiveApi.Controllers.v1
 
             // Update the Reservation properties
             Reservation.id_vehicule = request.id_vehicule;
-            Reservation.id_agence = request.id_agence;
             Reservation.date_depart = request.date_depart;
             Reservation.date_retour = request.date_retour;
 
