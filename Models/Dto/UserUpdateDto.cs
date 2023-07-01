@@ -2,8 +2,12 @@ using System.ComponentModel.DataAnnotations;
 
 namespace automotiveApi.Models.Dto
 {
-    public class RegisterDto
+    public class UserUpdateDto
     {
+
+        [Required]
+        public int id { get; set; }
+        
         [Required]
         [StringLength(50)]
         public string first_name { get; set; }
@@ -15,16 +19,7 @@ namespace automotiveApi.Models.Dto
         [Required]
         [EmailAddress]
         public string email { get; set; }
-
-        [Required]
-        [StringLength(100)]
-        public string password { get; set; }
-
-        [Required]
-        [StringLength(100)]
-        [Compare("password")]
-        public string confirm_password { get; set; }
-
+    
         [Required]
         public bool? is_active { get; set; }
 

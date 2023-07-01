@@ -23,7 +23,7 @@ namespace automotiveApi.Controllers.v1
 
 
         [HttpPost("register")]
-        public ActionResult<User> Register(RegisterDto request)
+        public ActionResult<User> Register(UserDto request)
         {
             var user = new User
             {
