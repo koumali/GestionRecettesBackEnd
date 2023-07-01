@@ -9,6 +9,7 @@ using automotiveApi.Services.Param;
 using automotiveApi.Services.Auth;
 using Microsoft.OpenApi.Models;
 using automotiveApi.Services.Gestion;
+using automotiveApi.Utility;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -114,6 +115,8 @@ builder.Services.AddScoped<IClient, ClientService>();
 builder.Services.AddScoped<IVehicule, VehiculeService>();
 builder.Services.AddScoped<IOffre, OffreService>();
 builder.Services.AddScoped<IReservation, ReservationService>();
+
+builder.Services.AddAutoMapper(typeof(MapperConfig));
 
 
 builder.Services.AddDbContext<AppDbContext>(options => options.UseMySQL(builder.Configuration.GetConnectionString("DefaultConnectionMySql")));
