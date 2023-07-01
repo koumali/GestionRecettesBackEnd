@@ -76,7 +76,6 @@ namespace automotiveApi.Services.Param
                 userExists.id_role = user.id_role;
                 userExists.id_agence = user.id_agence;
 
-
                 _context.SaveChanges();
 
                 return userExists;
@@ -84,7 +83,8 @@ namespace automotiveApi.Services.Param
             catch (Exception ex)
             {
                 throw new Exception(ex.Message);
-            }
+
+            }            
         }
 
         public User? delete(int id)

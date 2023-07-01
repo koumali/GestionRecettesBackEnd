@@ -66,7 +66,7 @@ namespace automotive_api.Migrations
 
                     b.HasKey("id");
 
-                    b.ToTable("Agence");
+                    b.ToTable("Agences");
                 });
 
             modelBuilder.Entity("automotiveApi.Models.Client", b =>
@@ -243,7 +243,7 @@ namespace automotive_api.Migrations
 
                     b.HasIndex("id_vehicule");
 
-                    b.ToTable("Offre");
+                    b.ToTable("Offres");
                 });
 
             modelBuilder.Entity("automotiveApi.Models.Reservation", b =>
@@ -279,7 +279,7 @@ namespace automotive_api.Migrations
 
                     b.HasIndex("id_vehicule");
 
-                    b.ToTable("Reservation");
+                    b.ToTable("Reservations");
                 });
 
             modelBuilder.Entity("automotiveApi.Models.Role", b =>

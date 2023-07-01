@@ -11,8 +11,8 @@ using automotiveApi.DAL;
 namespace automotive_api.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20230623151512_first")]
-    partial class first
+    [Migration("20230701160347_updated")]
+    partial class updated
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -69,7 +69,7 @@ namespace automotive_api.Migrations
 
                     b.HasKey("id");
 
-                    b.ToTable("Agence");
+                    b.ToTable("Agences");
                 });
 
             modelBuilder.Entity("automotiveApi.Models.Client", b =>
@@ -246,7 +246,7 @@ namespace automotive_api.Migrations
 
                     b.HasIndex("id_vehicule");
 
-                    b.ToTable("Offre");
+                    b.ToTable("Offres");
                 });
 
             modelBuilder.Entity("automotiveApi.Models.Reservation", b =>
@@ -282,7 +282,7 @@ namespace automotive_api.Migrations
 
                     b.HasIndex("id_vehicule");
 
-                    b.ToTable("Reservation");
+                    b.ToTable("Reservations");
                 });
 
             modelBuilder.Entity("automotiveApi.Models.Role", b =>

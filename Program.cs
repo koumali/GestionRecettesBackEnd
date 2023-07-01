@@ -10,8 +10,10 @@ using automotiveApi.Services.Auth;
 using Microsoft.OpenApi.Models;
 using automotiveApi.Services.Gestion;
 using automotiveApi.Utility;
+
 using AutoMapper;
 using AutomotiveApi.Services.Auth;
+
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -124,8 +126,9 @@ var mappingConfig = new MapperConfiguration(mc =>
     mc.AddProfile(new MapperConfig());
 });
 
-IMapper mapper = mappingConfig.CreateMapper();
-builder.Services.AddSingleton(mapper);
+
+builder.Services.AddAutoMapper(typeof(MapperConfig));
+
 builder.Services.AddDbContext<AppDbContext>(options => options.UseMySQL(builder.Configuration.GetConnectionString("DefaultConnectionMySql")));
 
 var app = builder.Build();
