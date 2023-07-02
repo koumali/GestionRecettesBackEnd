@@ -1,5 +1,6 @@
 using automotiveApi.DAL;
 using automotiveApi.Models;
+using Microsoft.EntityFrameworkCore;
 
 namespace automotiveApi.Services.Gestion
 {
@@ -39,7 +40,7 @@ namespace automotiveApi.Services.Gestion
 
         public IEnumerable<Contrat> getContrats()
         {
-            return _context.Contrats.ToList();
+            return _context.Contrats.Include(c => c.Client).ToList();
         }
         public void delete(int id)
         {

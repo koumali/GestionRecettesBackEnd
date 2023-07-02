@@ -38,7 +38,7 @@ namespace automotiveApi.Services.Gestion
         }
         public IEnumerable<Vehicule> getVehicules()
         {
-            return _context.Vehicules.Include(v => v.Modele).Include(v=>v.Agence).ToList();
+            return _context.Vehicules.Include(v => v.Modele).ThenInclude(m => m.Marque).Include(v=>v.Agence).ToList();
         }
         public void delete(int id)
         {
