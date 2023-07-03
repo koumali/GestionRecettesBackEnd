@@ -1,11 +1,11 @@
 using AutoMapper;
-using automotiveApi.DAL;
-using automotiveApi.Models;
-using automotiveApi.Models.Dto;
+using AutomotiveApi.DAL;
+using AutomotiveApi.Models.Dto;
+using AutomotiveApi.Models.Entities.Param;
 using AutomotiveApi.Services.Auth;
 using Microsoft.AspNetCore.Mvc;
 
-namespace automotiveApi.Controllers.v1
+namespace AutomotiveApi.Controllers.v1
 {
 
     [ApiController]

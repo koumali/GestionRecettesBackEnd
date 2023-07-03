@@ -1,10 +1,9 @@
-using automotiveApi.Models.Dto;
-using automotiveApi.Models;
-using automotiveApi.Services.Jwt;
-using AutomotiveApi.Services.Auth;
-using automotiveApi.Services.Param;
+using AutomotiveApi.Models.Dto;
+using AutomotiveApi.Models.Entities.Param;
+using AutomotiveApi.Services.Jwt;
+using AutomotiveApi.Services.Param;
 
-namespace automotiveApi.Services.Auth
+namespace AutomotiveApi.Services.Auth
 {
     public class AuthService : IAuth
     {
@@ -28,7 +27,7 @@ namespace automotiveApi.Services.Auth
             if (!BCrypt.Net.BCrypt.Verify(password, user.password))
             {
                 return null;
-            }        
+            }
 
             var genToken = _jwtService.generateToken(user);
 
@@ -41,8 +40,7 @@ namespace automotiveApi.Services.Auth
 
         public User? register(User user)
         {
-           return _UserService.add(user);
-
+            return _UserService.add(user);
         }
     }
 }

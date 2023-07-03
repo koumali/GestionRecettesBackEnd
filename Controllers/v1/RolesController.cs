@@ -1,21 +1,16 @@
-using automotiveApi.Models;
-using automotiveApi.Models.Dto;
-using automotiveApi.Services.Gestion;
-using automotiveApi.Services.Jwt;
-using automotiveApi.Services.Param;
+using AutomotiveApi.Models.Dto;
+using AutomotiveApi.Models.Entities.Param;
+using AutomotiveApi.Services.Jwt;
+using AutomotiveApi.Services.Param;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
-namespace automotiveApi.Controllers.v1
+namespace AutomotiveApi.Controllers.v1
 {
-
     [ApiController]
-
     [Route("api/v1/[controller]")]
-
     public class RolesController : ControllerBase
     {
-
         private readonly IJwt _jwtService;
         private readonly IRole _roleService;
 
@@ -48,6 +43,7 @@ namespace automotiveApi.Controllers.v1
             var addedRole = _roleService.add(role);
             return Ok(addedRole);
         }
+
         [HttpPost("Load/{id}")]
         [Authorize(Roles = "Admin")]
         public ActionResult<Role> GetRoleById(int id)
@@ -55,6 +51,7 @@ namespace automotiveApi.Controllers.v1
             var role = _roleService.findById(id);
             return Ok(role);
         }
+
         [HttpDelete("Delete/{id}")]
         [Authorize(Roles = "Admin")]
         public ActionResult DeleteRole(int id)
@@ -80,5 +77,4 @@ namespace automotiveApi.Controllers.v1
             return Ok(updatedRole);
         }
     }
-
 }

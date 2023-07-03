@@ -1,6 +1,6 @@
-using automotiveApi.Models;
+using AutomotiveApi.Models.Entities.Gestion;
 
-namespace automotiveApi.Services.Gestion
+namespace AutomotiveApi.Services.Gestion
 {
     public interface IReservation
     {
@@ -9,6 +9,5 @@ namespace automotiveApi.Services.Gestion
         Reservation? add(Reservation Reservation);
         void delete(int id);
         Reservation? update(Reservation Reservation);
-
     }
 }

@@ -1,7 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using AutomotiveApi.Models.Entities.Core;
+using AutomotiveApi.Models.Entities.Param;
 
-namespace automotiveApi.Models
+namespace AutomotiveApi.Models.Entities.Gestion
 {
     public partial class Agence : ModelBase
     {
@@ -10,6 +10,7 @@ namespace automotiveApi.Models
             Vehicules = new HashSet<Vehicule>();
             Users = new HashSet<User>();
         }
+
         public string name { get; set; }
         public string tel { get; set; }
         public string email { get; set; }

@@ -1,4 +1,6 @@
-﻿namespace automotiveApi.Models
+﻿using AutomotiveApi.Models.Entities.Core;
+
+namespace AutomotiveApi.Models.Entities.Gestion
 {
     public partial class Marque : ModelBase
     {

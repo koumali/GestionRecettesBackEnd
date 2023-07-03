@@ -1,8 +1,8 @@
-using automotiveApi.DAL;
-using automotiveApi.Models;
+using AutomotiveApi.DAL;
+using AutomotiveApi.Models.Entities.Gestion;
 using Microsoft.EntityFrameworkCore;
 
-namespace automotiveApi.Services.Gestion
+namespace AutomotiveApi.Services.Gestion
 {
     public class ModeleService : IModele
     {

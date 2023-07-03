@@ -1,12 +1,12 @@
-using automotiveApi.Models;
-using automotiveApi.Models.Dto;
-using automotiveApi.Services.Gestion;
-using automotiveApi.Services.Jwt;
-using automotiveApi.Services.Param;
+using AutomotiveApi.Models.Dto;
+using AutomotiveApi.Models.Entities.Gestion;
+using AutomotiveApi.Services.Gestion;
+using AutomotiveApi.Services.Jwt;
+using AutomotiveApi.Services.Param;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
-namespace automotiveApi.Controllers.v1
+namespace AutomotiveApi.Controllers.v1
 {
 
     [ApiController]

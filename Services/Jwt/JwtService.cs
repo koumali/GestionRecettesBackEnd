@@ -1,12 +1,10 @@
-
-
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
-using automotiveApi.Models;
+using AutomotiveApi.Models.Entities.Param;
 using Microsoft.IdentityModel.Tokens;
 
-namespace automotiveApi.Services.Jwt
+namespace AutomotiveApi.Services.Jwt
 {
     public class JwtService : IJwt
     {
@@ -34,23 +32,24 @@ namespace automotiveApi.Services.Jwt
 
         public string generateToken(User user)
         {
-            List<Claim> claims = new List<Claim> {
-                        new Claim(JwtRegisteredClaimNames.Sub, _configuration["Jwt:Subject"]),
-                        new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
-                        new Claim(JwtRegisteredClaimNames.Iat, DateTime.UtcNow.ToString()),
-                        new Claim("id", user.id.ToString()),
-                        new Claim("email", user.email),
-                        new Claim("fullname", user.first_name + " " + user.last_name),
-                        new Claim(ClaimTypes.Role, user.Role.name)                        
+            List<Claim> claims = new List<Claim>
+            {
+                new Claim(JwtRegisteredClaimNames.Sub, _configuration["Jwt:Subject"]),
+                new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
+                new Claim(JwtRegisteredClaimNames.Iat, DateTime.UtcNow.ToString()),
+                new Claim("id", user.id.ToString()),
+                new Claim("email", user.email),
+                new Claim("fullname", user.first_name + " " + user.last_name),
+                new Claim(ClaimTypes.Role, user.Role.name)
 
 
-                        // new Claim(ClaimTypes.Role, user.Role.name)
-                        
-                    };
+                // new Claim(ClaimTypes.Role, user.Role.name)
+            };
 
 
             var expirationTime = _configuration.GetValue<int>("Jwt:DurationInMinutes");
-            var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration["Jwt:Key"]) ?? throw new InvalidOperationException());
+            var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration["Jwt:Key"]) ??
+                                               throw new InvalidOperationException());
             var signIn = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
             var token = new JwtSecurityToken(
                 _configuration["Jwt:Issuer"],
@@ -63,6 +62,5 @@ namespace automotiveApi.Services.Jwt
             var jwtToken = new JwtSecurityTokenHandler().WriteToken(token);
             return jwtToken;
         }
-
     }
 }

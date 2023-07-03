@@ -1,6 +1,6 @@
-using automotiveApi.Models;
+using AutomotiveApi.Models.Entities.Gestion;
 
-namespace automotiveApi.Services.Gestion
+namespace AutomotiveApi.Services.Gestion
 {
     public interface IMarque
     {
@@ -9,6 +9,5 @@ namespace automotiveApi.Services.Gestion
         Marque? add(Marque marque);
         void delete(int id);
         Marque? update(Marque marque);
-
     }
 }

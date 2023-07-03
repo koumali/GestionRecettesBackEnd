@@ -1,6 +1,6 @@
-using automotiveApi.Models;
+using AutomotiveApi.Models.Entities.Gestion;
 
-namespace automotiveApi.Services.Gestion
+namespace AutomotiveApi.Services.Gestion
 {
     public interface IModele
     {
@@ -9,6 +9,5 @@ namespace automotiveApi.Services.Gestion
         Modele? add(Modele Modele);
         void delete(int id);
         Modele? update(Modele Modele);
-
     }
 }

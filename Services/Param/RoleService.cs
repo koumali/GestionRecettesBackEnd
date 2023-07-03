@@ -1,7 +1,7 @@
-using automotiveApi.DAL;
-using automotiveApi.Models;
+using AutomotiveApi.DAL;
+using AutomotiveApi.Models.Entities.Param;
 
-namespace automotiveApi.Services.Param
+namespace AutomotiveApi.Services.Param
 {
     public class RoleService : IRole
     {
@@ -24,16 +24,13 @@ namespace automotiveApi.Services.Param
             {
                 throw new Exception(ex.Message);
             }
-            
         }
-        
+
 
         public Role? findById(int id)
         {
             var role = _context.Roles.Where(u => u.id == id).FirstOrDefault();
             return role;
-        
-    
         }
 
         public Role? findByName(string name)
@@ -46,6 +43,7 @@ namespace automotiveApi.Services.Param
         {
             return _context.Roles.ToList();
         }
+
         public void delete(int id)
         {
             var role = _context.Roles.Find(id);
@@ -55,6 +53,7 @@ namespace automotiveApi.Services.Param
                 _context.SaveChanges();
             }
         }
+
         public Role update(Role updatedRole)
         {
             try
@@ -68,7 +67,5 @@ namespace automotiveApi.Services.Param
                 throw new Exception(ex.Message);
             }
         }
-
     }
-
 }

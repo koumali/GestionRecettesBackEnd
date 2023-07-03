@@ -1,6 +1,6 @@
-using automotiveApi.Models;
+using AutomotiveApi.Models.Entities.Param;
 
-namespace automotiveApi.Services.Param
+namespace AutomotiveApi.Services.Param
 {
     public interface IRole
     {
@@ -9,8 +9,5 @@ namespace automotiveApi.Services.Param
         Role? add(Role role);
         void delete(int id);
         Role? update(Role role);
-
-
-
     }
 }

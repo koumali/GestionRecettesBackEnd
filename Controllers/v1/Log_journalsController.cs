@@ -1,10 +1,10 @@
-using automotiveApi.Models;
-using automotiveApi.Services.Gestion;
-using automotiveApi.Services.Param;
+using AutomotiveApi.Models.Entities.Gestion;
+using AutomotiveApi.Models.Entities.Param;
+using AutomotiveApi.Services.Param;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
-namespace automotiveApi.Controllers.v1
+namespace AutomotiveApi.Controllers.v1
 {
 
     [ApiController]

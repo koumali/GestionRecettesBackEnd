@@ -1,5 +1,5 @@
-using automotiveApi.Models;
-using automotiveApi.Models.Dto;
+using AutomotiveApi.Models.Dto;
+using AutomotiveApi.Models.Entities.Param;
 
 namespace AutomotiveApi.Services.Auth
 {

@@ -1,18 +1,13 @@
-using automotiveApi.Models;
-using automotiveApi.Models.Dto;
-using automotiveApi.Services.Gestion;
-using automotiveApi.Services.Jwt;
-using automotiveApi.Services.Param;
+using AutomotiveApi.Models.Dto;
+using AutomotiveApi.Models.Entities.Gestion;
+using AutomotiveApi.Services.Gestion;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
-namespace automotiveApi.Controllers.v1
+namespace AutomotiveApi.Controllers.v1
 {
-
     [ApiController]
-
     [Route("api/v1/[controller]")]
-
     public class ReservationsController : ControllerBase
     {
         private readonly IReservation _Reservationservice;
@@ -40,13 +35,14 @@ namespace automotiveApi.Controllers.v1
         {
             var Reservation = new Reservation()
             {
-                id_vehicule= request.id_vehicule,
+                id_vehicule = request.id_vehicule,
                 date_depart = request.date_depart,
                 date_retour = request.date_retour,
-    };
+            };
             var addedReservation = _Reservationservice.add(Reservation);
             return Ok(addedReservation);
         }
+
         [HttpPost("Load/{id}")]
         [Authorize(Roles = "Admin")]
         public ActionResult<Reservation> GetReservationById(int id)
@@ -54,6 +50,7 @@ namespace automotiveApi.Controllers.v1
             var Reservation = _Reservationservice.findById(id);
             return Ok(Reservation);
         }
+
         [HttpDelete("Delete/{id}")]
         [Authorize(Roles = "Admin")]
         public ActionResult DeleteReservation(int id)
@@ -81,5 +78,4 @@ namespace automotiveApi.Controllers.v1
             return Ok(updatedReservation);
         }
     }
-
 }

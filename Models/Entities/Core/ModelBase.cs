@@ -1,4 +1,4 @@
-﻿namespace automotiveApi.Models
+﻿namespace AutomotiveApi.Models.Entities.Core
 {
     public partial class ModelBase
     {

@@ -1,8 +1,8 @@
-using automotiveApi.DAL;
-using automotiveApi.Models;
+using AutomotiveApi.DAL;
+using AutomotiveApi.Models.Entities.Gestion;
 using Microsoft.EntityFrameworkCore;
 
-namespace automotiveApi.Services.Gestion
+namespace AutomotiveApi.Services.Gestion
 {
     public class OffreService : IOffre
     {
@@ -25,16 +25,13 @@ namespace automotiveApi.Services.Gestion
             {
                 throw new Exception(ex.Message);
             }
-            
         }
-        
+
 
         public Offre? findById(int id)
         {
             var Offre = _context.Offres.Where(u => u.id == id).FirstOrDefault();
             return Offre;
-        
-    
         }
 
 
@@ -42,6 +39,7 @@ namespace automotiveApi.Services.Gestion
         {
             return _context.Offres.Include(o => o.Vehicule).ToList();
         }
+
         public void delete(int id)
         {
             var Offre = _context.Offres.Find(id);
@@ -51,6 +49,7 @@ namespace automotiveApi.Services.Gestion
                 _context.SaveChanges();
             }
         }
+
         public Offre update(Offre updatedOffre)
         {
             try
@@ -64,7 +63,5 @@ namespace automotiveApi.Services.Gestion
                 throw new Exception(ex.Message);
             }
         }
-
     }
-
 }

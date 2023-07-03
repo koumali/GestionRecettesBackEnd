@@ -1,7 +1,7 @@
-using automotiveApi.DAL;
-using automotiveApi.Models;
+using AutomotiveApi.DAL;
+using AutomotiveApi.Models.Entities.Gestion;
 
-namespace automotiveApi.Services.Gestion
+namespace AutomotiveApi.Services.Gestion
 {
     public class MarqueService : IMarque
     {
@@ -24,16 +24,13 @@ namespace automotiveApi.Services.Gestion
             {
                 throw new Exception(ex.Message);
             }
-            
         }
-        
+
 
         public Marque? findById(int id)
         {
             var Marque = _context.Marques.Where(u => u.id == id).FirstOrDefault();
             return Marque;
-        
-    
         }
 
 
@@ -41,6 +38,7 @@ namespace automotiveApi.Services.Gestion
         {
             return _context.Marques.ToList();
         }
+
         public void delete(int id)
         {
             var Marque = _context.Marques.Find(id);
@@ -50,6 +48,7 @@ namespace automotiveApi.Services.Gestion
                 _context.SaveChanges();
             }
         }
+
         public Marque update(Marque updatedMarque)
         {
             try
@@ -63,7 +62,5 @@ namespace automotiveApi.Services.Gestion
                 throw new Exception(ex.Message);
             }
         }
-
     }
-
 }

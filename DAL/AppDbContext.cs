@@ -1,9 +1,9 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using AutomotiveApi.Models.Entities.Gestion;
+using AutomotiveApi.Models.Entities.Param;
 
-using automotiveApi.Models;
 
-
-namespace automotiveApi.DAL
+namespace AutomotiveApi.DAL
 {
     public partial class AppDbContext : DbContext
     {
@@ -11,7 +11,6 @@ namespace automotiveApi.DAL
 
         public AppDbContext()
         {
-
         }
 
         public AppDbContext(DbContextOptions<AppDbContext> options) : base(options)
@@ -33,30 +32,27 @@ namespace automotiveApi.DAL
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
         }
+
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-
             modelBuilder.Entity<Role>().HasData(
-             new Role { id = 1, name = "Admin" },
-             new Role { id = 2, name = "Gerant" },
-             new Role { id = 3, name = "Agent" },
-            new Role { id = 4, name = "Client" }
-
-         );
-
+                new Role { id = 1, name = "Admin" },
+                new Role { id = 2, name = "Gerant" },
+                new Role { id = 3, name = "Agent" },
+                new Role { id = 4, name = "Client" }
+            );
 
 
             modelBuilder.Entity<User>(entity =>
             {
-
                 entity.HasOne(d => d.agence)
-                   .WithMany(p => p.Users)
-                   .HasForeignKey(d => d.id_agence)
-                   .OnDelete(DeleteBehavior.ClientSetNull)
-                   .HasConstraintName("FK_Users_id_agence");
+                    .WithMany(p => p.Users)
+                    .HasForeignKey(d => d.id_agence)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK_Users_id_agence");
 
-                entity.HasOne(d => d.Role).WithMany(p => p.users).HasForeignKey(d => d.id_role).OnDelete(DeleteBehavior.ClientSetNull).HasConstraintName("FK_Users_id_role");
-
+                entity.HasOne(d => d.Role).WithMany(p => p.users).HasForeignKey(d => d.id_role)
+                    .OnDelete(DeleteBehavior.ClientSetNull).HasConstraintName("FK_Users_id_role");
             });
 
 
@@ -69,20 +65,18 @@ namespace automotiveApi.DAL
                     .HasConstraintName("FK_Reservation_id_vehicule");
             });
 
-           
+
             modelBuilder.Entity<Modele>(entity =>
             {
                 entity.HasOne(d => d.Marque)
-                .WithMany(p=>p.Modeles)
-                .HasForeignKey(d => d.id_marque)
-                .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK_Modeles_id_marque");
+                    .WithMany(p => p.Modeles)
+                    .HasForeignKey(d => d.id_marque)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK_Modeles_id_marque");
             });
 
             modelBuilder.Entity<Contrat>(entity =>
             {
-
-
                 entity.HasOne(d => d.Client)
                     .WithMany(p => p.Contrats)
                     .HasForeignKey(d => d.id_client)
@@ -99,16 +93,16 @@ namespace automotiveApi.DAL
             modelBuilder.Entity<Vehicule>(entity =>
             {
                 entity.HasOne(d => d.Modele)
-                   .WithMany(p => p.Vehicules)
-                   .HasForeignKey(d => d.id_modele)
-                   .OnDelete(DeleteBehavior.ClientSetNull)
-                   .HasConstraintName("FK_Vehicules_id_modele");
+                    .WithMany(p => p.Vehicules)
+                    .HasForeignKey(d => d.id_modele)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK_Vehicules_id_modele");
 
                 entity.HasOne(d => d.Agence)
-                   .WithMany(p => p.Vehicules)
-                   .HasForeignKey(d => d.id_agence)
-                   .OnDelete(DeleteBehavior.ClientSetNull)
-                   .HasConstraintName("FK_Vehicules_id_agence");
+                    .WithMany(p => p.Vehicules)
+                    .HasForeignKey(d => d.id_agence)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK_Vehicules_id_agence");
             });
 
             modelBuilder.Entity<Offre>(entity =>
@@ -121,7 +115,6 @@ namespace automotiveApi.DAL
             });
 
             OnModelCreatingPartial(modelBuilder);
-
         }
 
         // insert sample data

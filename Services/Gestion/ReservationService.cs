@@ -1,8 +1,8 @@
-using automotiveApi.DAL;
-using automotiveApi.Models;
+using AutomotiveApi.DAL;
+using AutomotiveApi.Models.Entities.Gestion;
 using Microsoft.EntityFrameworkCore;
 
-namespace automotiveApi.Services.Gestion
+namespace AutomotiveApi.Services.Gestion
 {
     public class ReservationService : IReservation
     {
@@ -25,16 +25,13 @@ namespace automotiveApi.Services.Gestion
             {
                 throw new Exception(ex.Message);
             }
-            
         }
-        
+
 
         public Reservation? findById(int id)
         {
             var Reservation = _context.Reservations.Where(r => r.id == id).FirstOrDefault();
             return Reservation;
-        
-    
         }
 
 
@@ -43,6 +40,7 @@ namespace automotiveApi.Services.Gestion
             var reservations = _context.Reservations.Include(r => r.Vehicule).ToList();
             return reservations;
         }
+
         public void delete(int id)
         {
             var Reservation = _context.Reservations.Find(id);
@@ -52,6 +50,7 @@ namespace automotiveApi.Services.Gestion
                 _context.SaveChanges();
             }
         }
+
         public Reservation update(Reservation updatedReservation)
         {
             try
@@ -65,7 +64,5 @@ namespace automotiveApi.Services.Gestion
                 throw new Exception(ex.Message);
             }
         }
-
     }
-
 }

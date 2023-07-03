@@ -1,6 +1,8 @@
-﻿using Newtonsoft.Json;
+﻿using AutomotiveApi.Models.Entities.Core;
+using AutomotiveApi.Models.Entities.Gestion;
+using Newtonsoft.Json;
 
-namespace automotiveApi.Models
+namespace AutomotiveApi.Models.Entities.Param
 {
     public partial class User : ModelBase
     {
@@ -10,9 +12,7 @@ namespace automotiveApi.Models
 
         //ignore password when serializing
 
-        [JsonIgnore]
-
-        public string password { get; set; }
+        [JsonIgnore] public string password { get; set; }
         public bool? is_active { get; set; }
         public int id_role { get; set; }
         public virtual Role Role { get; set; }

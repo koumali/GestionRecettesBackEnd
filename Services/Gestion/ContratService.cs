@@ -1,8 +1,8 @@
-using automotiveApi.DAL;
-using automotiveApi.Models;
+using AutomotiveApi.DAL;
+using AutomotiveApi.Models.Entities.Gestion;
 using Microsoft.EntityFrameworkCore;
 
-namespace automotiveApi.Services.Gestion
+namespace AutomotiveApi.Services.Gestion
 {
     public class ContratService : IContrat
     {
@@ -25,16 +25,13 @@ namespace automotiveApi.Services.Gestion
             {
                 throw new Exception(ex.Message);
             }
-            
         }
-        
+
 
         public Contrat? findById(int id)
         {
             var Contrat = _context.Contrats.Where(u => u.id == id).FirstOrDefault();
             return Contrat;
-        
-    
         }
 
 
@@ -42,6 +39,7 @@ namespace automotiveApi.Services.Gestion
         {
             return _context.Contrats.Include(c => c.Client).ToList();
         }
+
         public void delete(int id)
         {
             var Contrat = _context.Contrats.Find(id);
@@ -51,6 +49,7 @@ namespace automotiveApi.Services.Gestion
                 _context.SaveChanges();
             }
         }
+
         public Contrat update(Contrat updatedContrat)
         {
             try
@@ -64,7 +63,5 @@ namespace automotiveApi.Services.Gestion
                 throw new Exception(ex.Message);
             }
         }
-
     }
-
 }

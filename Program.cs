@@ -1,24 +1,22 @@
-using automotiveApi.DAL;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
 using Microsoft.Extensions.DependencyInjection.Extensions;
-using automotiveApi.Services.Jwt;
-using automotiveApi.Services.Param;
-using automotiveApi.Services.Auth;
 using Microsoft.OpenApi.Models;
-using automotiveApi.Services.Gestion;
-using automotiveApi.Utility;
-
 using AutoMapper;
+using AutomotiveApi.DAL;
 using AutomotiveApi.Services.Auth;
+using AutomotiveApi.Services.Gestion;
+using AutomotiveApi.Services.Jwt;
+using AutomotiveApi.Services.Param;
+using AutomotiveApi.Utility;
+using AutomotiveApi.Utility.Middlwares;
 
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
-
 
 
 builder.Services.AddControllers();
@@ -45,19 +43,20 @@ builder.Services.AddSwaggerGen(c =>
         Name = "Authorization Bearer",
         Type = SecuritySchemeType.ApiKey
     });
-    c.AddSecurityRequirement(new OpenApiSecurityRequirement {
-   {
-     new OpenApiSecurityScheme
-     {
-       Reference = new OpenApiReference
-       {
-         Type = ReferenceType.SecurityScheme,
-         Id = "Bearer"
-       }
-      },
-      new string[] { }
-    }
-  });
+    c.AddSecurityRequirement(new OpenApiSecurityRequirement
+    {
+        {
+            new OpenApiSecurityScheme
+            {
+                Reference = new OpenApiReference
+                {
+                    Type = ReferenceType.SecurityScheme,
+                    Id = "Bearer"
+                }
+            },
+            new string[] { }
+        }
+    });
 });
 
 builder.Services
@@ -88,23 +87,19 @@ builder.Services.AddAuthorization(options =>
     options.AddPolicy("RequireUserRole", p => p.RequireRole("Client"));
     options.AddPolicy("RequireUserRole", p => p.RequireRole("Gearnt"));
     options.AddPolicy("RequireUserRole", p => p.RequireRole("Agent"));
-
 });
 
 
-
 builder.Services.AddCors(options =>
-   {
-       options.AddDefaultPolicy(
-           policy =>
-           {
-               policy.AllowAnyOrigin()
-                   .AllowAnyHeader()
-                   .AllowAnyMethod();
-           });
-   });
-
-
+{
+    options.AddDefaultPolicy(
+        policy =>
+        {
+            policy.AllowAnyOrigin()
+                .AllowAnyHeader()
+                .AllowAnyMethod();
+        });
+});
 
 
 builder.Services.TryAddSingleton<IHttpContextAccessor, HttpContextAccessor>();
@@ -121,15 +116,13 @@ builder.Services.AddScoped<IOffre, OffreService>();
 builder.Services.AddScoped<IReservation, ReservationService>();
 builder.Services.AddScoped<ILog_journal, Log_journalService>();
 builder.Services.AddScoped<IContrat, ContratService>();
-var mappingConfig = new MapperConfiguration(mc =>
-{
-    mc.AddProfile(new MapperConfig());
-});
+var mappingConfig = new MapperConfiguration(mc => { mc.AddProfile(new MapperConfig()); });
 
 
 builder.Services.AddAutoMapper(typeof(MapperConfig));
 
-builder.Services.AddDbContext<AppDbContext>(options => options.UseMySQL(builder.Configuration.GetConnectionString("DefaultConnectionMySql")));
+builder.Services.AddDbContext<AppDbContext>(options =>
+    options.UseMySQL(builder.Configuration.GetConnectionString("DefaultConnectionMySql")));
 
 var app = builder.Build();
 
@@ -146,11 +139,8 @@ app.UseHttpsRedirection();
 app.UseCors();
 
 
-app.UseWhen(context => context.Request.Path.StartsWithSegments("/api"), appBuilder =>
-{
-    appBuilder.UseMiddleware<ApiKeyChecker>();
-});
-
+app.UseWhen(context => context.Request.Path.StartsWithSegments("/api"),
+    appBuilder => { appBuilder.UseMiddleware<ApiKeyChecker>(); });
 
 
 app.UseAuthentication();

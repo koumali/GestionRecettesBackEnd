@@ -1,9 +1,7 @@
-using automotiveApi.DAL;
-using automotiveApi.Models;
-using automotiveApi.Services.Auth;
-using Microsoft.EntityFrameworkCore;
+using AutomotiveApi.DAL;
+using AutomotiveApi.Models.Entities.Param;
 
-namespace automotiveApi.Services.Param
+namespace AutomotiveApi.Services.Param
 {
     public class Log_journalService : ILog_journal
     {
@@ -20,14 +18,11 @@ namespace automotiveApi.Services.Param
             var Log_journals = _context.log_journal.ToList();
             return Log_journals;
         }
+
         public Log_journal? findById(int id)
         {
             var log = _context.log_journal.Where(u => u.id == id).FirstOrDefault();
             return log;
-
-
         }
-
     }
-
 }

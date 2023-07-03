@@ -1,18 +1,17 @@
-﻿using automotiveApi.Models.Dto;
-using automotiveApi.Models;
-using automotiveApi.Services.Jwt;
-using automotiveApi.Services.Param;
+﻿using AutomotiveApi.Models.Dto;
+using AutomotiveApi.Models.Entities.Gestion;
+using AutomotiveApi.Services.Gestion;
+using AutomotiveApi.Services.Jwt;
+using AutomotiveApi.Services.Param;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using automotiveApi.Services.Gestion;
 
-namespace automotive_api.Controllers.v1
+namespace AutomotiveApi.Controllers.v1
 {
     [Route("api/v1/[controller]")]
     [ApiController]
     public class VehiculesController : ControllerBase
     {
-
         private readonly IJwt _jwtService;
         private readonly IVehicule _VehiculeService;
 
@@ -30,6 +29,7 @@ namespace automotive_api.Controllers.v1
             var Vehicules = _VehiculeService.getVehicules();
             return Ok(Vehicules);
         }
+
         [HttpPost("Load/{id}")]
         [Authorize(Roles = "Admin")]
         public ActionResult<Vehicule> GetRoleById(int id)
@@ -60,11 +60,11 @@ namespace automotive_api.Controllers.v1
                 moteur = request.moteur,
                 id_agence = request.id_agence,
                 id_modele = request.id_modele,
-
             };
             var addedVehicule = _VehiculeService.add(Vehicule);
             return Ok(addedVehicule);
         }
+
         [HttpDelete("Delete/{id}")]
         [Authorize(Roles = "Admin")]
         public ActionResult DeleteVehicule(int id)
@@ -102,5 +102,4 @@ namespace automotive_api.Controllers.v1
             return Ok(updatedVehicule);
         }
     }
-
 }

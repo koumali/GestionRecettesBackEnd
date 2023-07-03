@@ -1,13 +1,11 @@
-using System.IdentityModel.Tokens.Jwt;
-using automotiveApi.Models;
+using AutomotiveApi.Models.Entities.Param;
 
-namespace automotiveApi.Services.Jwt
+namespace AutomotiveApi.Services.Jwt
 {
     public interface IJwt
     {
         int getUserId();
         string getRole();
         string generateToken(User user);
-
     }
 }

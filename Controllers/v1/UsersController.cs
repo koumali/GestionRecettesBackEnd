@@ -1,20 +1,15 @@
 using AutoMapper;
-using automotiveApi.DAL;
-using automotiveApi.Models;
-using automotiveApi.Models.Dto;
-using automotiveApi.Services.Auth;
-using automotiveApi.Services.Jwt;
-using automotiveApi.Services.Param;
+using AutomotiveApi.Models.Dto;
+using AutomotiveApi.Models.Entities.Param;
+using AutomotiveApi.Services.Jwt;
+using AutomotiveApi.Services.Param;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
-namespace automotiveApi.Controllers.v1
+namespace AutomotiveApi.Controllers.v1
 {
-
     [ApiController]
-
     [Route("api/v1/[controller]")]
-
     public class UsersController : ControllerBase
     {
         private readonly IUser _userService;
@@ -68,7 +63,6 @@ namespace automotiveApi.Controllers.v1
                 // add message to errors list
                 return BadRequest(new { message = ex.Message });
             }
-
         }
 
         //update user
@@ -89,7 +83,6 @@ namespace automotiveApi.Controllers.v1
                 // add message to errors list
                 return BadRequest(new { message = ex.Message });
             }
-
         }
 
         //delete user
@@ -108,13 +101,11 @@ namespace automotiveApi.Controllers.v1
                 // add message to errors list
                 return BadRequest(new { message = ex.Message });
             }
-
         }
 
         //change password
         [HttpPut("updatepassword")]
         [Authorize(Roles = "Admin")]
-
         public ActionResult<User> ChangePassword(PasswordUpdateDto changePasswordDto)
         {
             try
@@ -127,11 +118,6 @@ namespace automotiveApi.Controllers.v1
                 // add message to errors list
                 return BadRequest(new { message = ex.Message });
             }
-
         }
-
-
-
-
     }
 }

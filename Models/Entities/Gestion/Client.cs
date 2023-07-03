@@ -1,7 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using AutomotiveApi.Models.Entities.Core;
 
-namespace automotiveApi.Models
+namespace AutomotiveApi.Models.Entities.Gestion
 {
     public partial class Client : ModelBase
     {
@@ -9,6 +8,7 @@ namespace automotiveApi.Models
         {
             Contrats = new HashSet<Contrat>();
         }
+
         public string first_name { get; set; }
         public string last_name { get; set; }
         public string tel { get; set; }
@@ -21,6 +21,5 @@ namespace automotiveApi.Models
         public string permis_verso { get; set; }
 
         public virtual ICollection<Contrat> Contrats { get; set; }
-
     }
 }

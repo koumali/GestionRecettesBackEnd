@@ -1,11 +1,10 @@
-using automotiveApi.Models;
+using AutomotiveApi.Models.Entities.Param;
 
-namespace automotiveApi.Services.Param
+namespace AutomotiveApi.Services.Param
 {
     public interface ILog_journal
-    {   
-       IEnumerable<Log_journal> getLog_journals();
+    {
+        IEnumerable<Log_journal> getLog_journals();
         Log_journal? findById(int id);
-
     }
 }

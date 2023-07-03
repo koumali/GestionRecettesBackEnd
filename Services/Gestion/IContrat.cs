@@ -1,6 +1,6 @@
-using automotiveApi.Models;
+using AutomotiveApi.Models.Entities.Gestion;
 
-namespace automotiveApi.Services.Gestion
+namespace AutomotiveApi.Services.Gestion
 {
     public interface IContrat
     {
@@ -9,6 +9,5 @@ namespace automotiveApi.Services.Gestion
         Contrat? add(Contrat Contrat);
         void delete(int id);
         Contrat? update(Contrat Contrat);
-
     }
 }

@@ -1,37 +1,38 @@
 using Microsoft.Extensions.Primitives;
 
-public class ApiKeyChecker
+namespace AutomotiveApi.Utility.Middlwares
 {
-    private readonly RequestDelegate _next;
-    private readonly IConfiguration _configuration;
-    public ApiKeyChecker(RequestDelegate next, IConfiguration configuration)
+    public class ApiKeyChecker
     {
-        _next = next;
-        _configuration = configuration;
-    }
-    public async Task InvokeAsync(HttpContext context)
-    {
-        string HeaderKeyName = _configuration["ApiKey:HeaderName"] ?? "";
-        string key = _configuration["ApiKey:KeyValue"] ?? "";
+        private readonly RequestDelegate _next;
+        private readonly IConfiguration _configuration;
 
-
-
-        //GET VALUE FROM HEADER
-        StringValues headerValues;
-        context.Request.Headers.TryGetValue(HeaderKeyName, out headerValues);
-        string headerValue = headerValues.FirstOrDefault() ?? "";
-
-
-
-        if (headerValue != key)
+        public ApiKeyChecker(RequestDelegate next, IConfiguration configuration)
         {
-            context.Response.StatusCode = 401;
-            await context.Response.WriteAsync("Invalid API Key");
-            return;
+            _next = next;
+            _configuration = configuration;
         }
 
-        await _next(context);
+        public async Task InvokeAsync(HttpContext context)
+        {
+            string HeaderKeyName = _configuration["ApiKey:HeaderName"] ?? "";
+            string key = _configuration["ApiKey:KeyValue"] ?? "";
 
 
+            //GET VALUE FROM HEADER
+            StringValues headerValues;
+            context.Request.Headers.TryGetValue(HeaderKeyName, out headerValues);
+            string headerValue = headerValues.FirstOrDefault() ?? "";
+
+
+            if (headerValue != key)
+            {
+                context.Response.StatusCode = 401;
+                await context.Response.WriteAsync("Invalid API Key");
+                return;
+            }
+
+            await _next(context);
+        }
     }
 }

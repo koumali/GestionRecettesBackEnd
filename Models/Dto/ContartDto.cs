@@ -1,6 +1,6 @@
 using System.ComponentModel.DataAnnotations;
 
-namespace automotiveApi.Models.Dto
+namespace AutomotiveApi.Models.Dto
 {
     public class ContratDto
     {

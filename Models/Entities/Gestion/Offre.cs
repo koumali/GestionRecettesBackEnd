@@ -1,7 +1,6 @@
-﻿
-using System;
+﻿using AutomotiveApi.Models.Entities.Core;
 
-namespace automotiveApi.Models
+namespace AutomotiveApi.Models.Entities.Gestion
 {
     public partial class Offre : ModelBase
     {

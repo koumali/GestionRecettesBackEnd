@@ -1,8 +1,8 @@
-using automotiveApi.DAL;
-using automotiveApi.Models;
+using AutomotiveApi.DAL;
+using AutomotiveApi.Models.Entities.Param;
 using Microsoft.EntityFrameworkCore;
 
-namespace automotiveApi.Services.Param
+namespace AutomotiveApi.Services.Param
 {
     public class UserService : IUser
     {
@@ -41,7 +41,6 @@ namespace automotiveApi.Services.Param
             {
                 throw new Exception(ex.Message);
             }
-
         }
 
         public IEnumerable<User> getUsers()
@@ -59,7 +58,6 @@ namespace automotiveApi.Services.Param
         public User? update(User user)
 
         {
-
             Console.WriteLine("user id: " + user.id);
             var userExists = findById(user.id);
             if (userExists == null)
@@ -83,8 +81,7 @@ namespace automotiveApi.Services.Param
             catch (Exception ex)
             {
                 throw new Exception(ex.Message);
-
-            }            
+            }
         }
 
         public User? delete(int id)
@@ -126,9 +123,5 @@ namespace automotiveApi.Services.Param
                 throw new Exception(ex.Message);
             }
         }
-
-
-
     }
-
 }

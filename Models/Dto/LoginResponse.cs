@@ -1,6 +1,6 @@
-using System.IdentityModel.Tokens.Jwt;
+using AutomotiveApi.Models.Entities.Param;
 
-namespace automotiveApi.Models.Dto
+namespace AutomotiveApi.Models.Dto
 {
     public class LoginResponse
     {
