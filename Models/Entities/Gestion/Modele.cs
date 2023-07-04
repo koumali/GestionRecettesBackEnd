@@ -1,4 +1,5 @@
-﻿using AutomotiveApi.Models.Entities.Core;
+﻿using System.ComponentModel.DataAnnotations.Schema;
+using AutomotiveApi.Models.Entities.Core;
 
 namespace AutomotiveApi.Models.Entities.Gestion
 {
@@ -9,9 +10,9 @@ namespace AutomotiveApi.Models.Entities.Gestion
             Vehicules = new HashSet<Vehicule>();
         }
 
-        public string name { get; set; }
-        public int id_marque { get; set; }
-
+        public string Name { get; set; }
+        public int IdMarque { get; set; }
+        [ForeignKey("IdMarque")]
         public virtual Marque Marque { get; set; }
         public virtual ICollection<Vehicule> Vehicules { get; set; }
     }

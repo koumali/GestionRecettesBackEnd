@@ -8,6 +8,7 @@ using AutoMapper;
 using AutomotiveApi.DAL;
 using AutomotiveApi.Services.Auth;
 using AutomotiveApi.Services.Gestion;
+using AutomotiveApi.Services.Gestion.Interfaces;
 using AutomotiveApi.Services.Jwt;
 using AutomotiveApi.Services.Param;
 using AutomotiveApi.Utility;
@@ -26,7 +27,6 @@ builder.Services.AddControllers().AddNewtonsoftJson(options =>
 );
 
 
-// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddSwaggerGen(c =>
@@ -116,6 +116,7 @@ builder.Services.AddScoped<IOffre, OffreService>();
 builder.Services.AddScoped<IReservation, ReservationService>();
 builder.Services.AddScoped<ILog_journal, Log_journalService>();
 builder.Services.AddScoped<IContrat, ContratService>();
+
 var mappingConfig = new MapperConfiguration(mc => { mc.AddProfile(new MapperConfig()); });
 
 

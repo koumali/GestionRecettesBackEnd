@@ -6,26 +6,26 @@ namespace AutomotiveApi.Models.Dto
     {
 
         [Required]
-        public int id { get; set; }
+        public int Id { get; set; }
 
         [Required]
         [StringLength(50)]
-        public string first_name { get; set; }
+        public string FirstName { get; set; }
 
         [Required]
         [StringLength(50)]
-        public string last_name { get; set; }
+        public string LastName { get; set; }
 
         [Required]
         [EmailAddress]
-        public string email { get; set; }
+        public string Email { get; set; }
 
         [Required]
-        public bool? is_active { get; set; }
+        public bool? IsActive { get; set; }
 
         [Required]
-        public int id_role { get; set; }
+        public int IdRole { get; set; }
 
-        public int? id_agence { get; set; }
+        public int? IdAgence { get; set; }
     }
 }

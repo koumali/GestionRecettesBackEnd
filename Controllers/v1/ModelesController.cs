@@ -1,8 +1,9 @@
-﻿using AutomotiveApi.Models.Dto;
+﻿using AutoMapper;
+using AutomotiveApi.Models.Dto;
 using AutomotiveApi.Models.Entities.Gestion;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using AutomotiveApi.Services.Gestion;
+using AutomotiveApi.Services.Gestion.Interfaces;
 using AutomotiveApi.Services.Jwt;
 using AutomotiveApi.Services.Param;
 
@@ -12,29 +13,31 @@ namespace AutomotiveApi.Controllers.v1
     [ApiController]
     public class ModelesController : ControllerBase
     {
-
         private readonly IJwt _jwtService;
-        private readonly IModele _ModeleService;
+        private readonly IMapper _mapper;
+        private readonly IModele _modeleService;
 
 
-        public ModelesController(IUser userService, IJwt jwtService, IModele ModeleService)
+        public ModelesController(IUser userService, IJwt jwtService, IModele ModeleService, IMapper mapper)
         {
             _jwtService = jwtService;
-            _ModeleService = ModeleService;
+            _modeleService = ModeleService;
+            _mapper = mapper;
         }
 
         [HttpGet]
         [Authorize(Roles = "Admin")]
-        public ActionResult<IEnumerable<Modele>> GetModeles()
+        public async Task<ActionResult<IEnumerable<Modele>>> GetModeles()
         {
-            var modeles = _ModeleService.getModeles();
+            var modeles = await _modeleService.GetAllAsync();
             return Ok(modeles);
         }
+
         [HttpPost("Load/{id}")]
         [Authorize(Roles = "Admin")]
-        public ActionResult<Modele> GetRoleById(int id)
+        public async Task<ActionResult<Modele>> GetRoleById(int id)
         {
-            var modele = _ModeleService.findById(id);
+            var modele = await _modeleService.GetByIdAsync(id);
             return Ok(modele);
         }
         //<summary>
@@ -43,42 +46,39 @@ namespace AutomotiveApi.Controllers.v1
 
         [HttpPost("Insert")]
         [Authorize(Roles = "Admin")]
-        public ActionResult<Modele> AddModele(ModeleDto request)
+        public async Task<ActionResult<Modele>> AddModele(ModeleDto request)
         {
-            var Modele = new Modele()
-            {
-                name = request.Name,
-                id_marque = request.id_marque
-            };
-            var addedModele = _ModeleService.add(Modele);
+            var modele = _mapper.Map<Modele>(request);
+            var addedModele = await _modeleService.CreateAsync(modele);
             return Ok(addedModele);
         }
+
         [HttpDelete("Delete/{id}")]
         [Authorize(Roles = "Admin")]
-        public ActionResult DeleteModele(int id)
+        public async Task<ActionResult> DeleteModele(int id)
         {
-            _ModeleService.delete(id);
+            await _modeleService.DeleteAsync(id);
             return Ok();
         }
 
         [HttpPut("Update/{id}")]
         [Authorize(Roles = "Admin")]
-        public ActionResult<Modele> UpdateModele(int id, ModeleDto request)
+        public async Task<ActionResult<Modele>> UpdateModele(int id, ModeleDto request)
         {
-            var Modele = _ModeleService.findById(id);
-            if (Modele == null)
+            var result = await _modeleService.GetByIdAsync(id);
+            if (result == null)
             {
                 return NotFound();
             }
 
             // Update the Modele properties
-            Modele.name = request.Name;
-            Modele.id_marque = request.id_marque;
+            var modele = _mapper.Map<Modele>(request);
+            modele.Name = request.Name;
+            modele.IdMarque = request.IdMarque;
 
 
-            var updatedModele = _ModeleService.update(Modele);
+            var updatedModele = await _modeleService.UpdateAsync(modele);
             return Ok(updatedModele);
         }
     }
-
 }

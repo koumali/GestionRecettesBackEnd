@@ -4,7 +4,7 @@ namespace AutomotiveApi.Models.Dto
 {
     public class ContratDto
     {
-        public int id_client { get; set; }
-        public int id_reservation { get; set; }
+        public int IdClient { get; set; }
+        public int IdReservation { get; set; }
     }
 }

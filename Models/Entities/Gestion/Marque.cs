@@ -9,7 +9,7 @@ namespace AutomotiveApi.Models.Entities.Gestion
             Modeles = new HashSet<Modele>();
         }
 
-        public string name { get; set; }
+        public string Name { get; set; }
 
         public virtual ICollection<Modele> Modeles { get; set; }
     }

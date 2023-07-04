@@ -36,22 +36,22 @@ namespace AutomotiveApi.DAL
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<Role>().HasData(
-                new Role { id = 1, name = "Admin" },
-                new Role { id = 2, name = "Gerant" },
-                new Role { id = 3, name = "Agent" },
-                new Role { id = 4, name = "Client" }
+                new Role { Id = 1, Name = "Admin" },
+                new Role { Id = 2, Name = "Gerant" },
+                new Role { Id = 3, Name = "Agent" },
+                new Role { Id = 4, Name = "Client" }
             );
 
 
             modelBuilder.Entity<User>(entity =>
             {
-                entity.HasOne(d => d.agence)
+                entity.HasOne(d => d.Agence)
                     .WithMany(p => p.Users)
-                    .HasForeignKey(d => d.id_agence)
+                    .HasForeignKey(d => d.IdAgence)
                     .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("FK_Users_id_agence");
 
-                entity.HasOne(d => d.Role).WithMany(p => p.users).HasForeignKey(d => d.id_role)
+                entity.HasOne(d => d.Role).WithMany(p => p.Users).HasForeignKey(d => d.IdRole)
                     .OnDelete(DeleteBehavior.ClientSetNull).HasConstraintName("FK_Users_id_role");
             });
 
@@ -60,7 +60,7 @@ namespace AutomotiveApi.DAL
             {
                 entity.HasOne(d => d.Vehicule)
                     .WithMany(p => p.Reservation)
-                    .HasForeignKey(d => d.id_vehicule)
+                    .HasForeignKey(d => d.IdVehicule)
                     .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("FK_Reservation_id_vehicule");
             });
@@ -70,7 +70,7 @@ namespace AutomotiveApi.DAL
             {
                 entity.HasOne(d => d.Marque)
                     .WithMany(p => p.Modeles)
-                    .HasForeignKey(d => d.id_marque)
+                    .HasForeignKey(d => d.IdMarque)
                     .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("FK_Modeles_id_marque");
             });
@@ -79,13 +79,13 @@ namespace AutomotiveApi.DAL
             {
                 entity.HasOne(d => d.Client)
                     .WithMany(p => p.Contrats)
-                    .HasForeignKey(d => d.id_client)
+                    .HasForeignKey(d => d.IdClient)
                     .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("FK_Contrats_id_client");
 
                 entity.HasOne(d => d.Reservation)
                     .WithMany(p => p.Contrats)
-                    .HasForeignKey(d => d.id_reservation)
+                    .HasForeignKey(d => d.IdReservation)
                     .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("FK_Contrats_id_reservation");
             });
@@ -94,13 +94,13 @@ namespace AutomotiveApi.DAL
             {
                 entity.HasOne(d => d.Modele)
                     .WithMany(p => p.Vehicules)
-                    .HasForeignKey(d => d.id_modele)
+                    .HasForeignKey(d => d.IdModele)
                     .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("FK_Vehicules_id_modele");
 
                 entity.HasOne(d => d.Agence)
                     .WithMany(p => p.Vehicules)
-                    .HasForeignKey(d => d.id_agence)
+                    .HasForeignKey(d => d.IdAgence)
                     .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("FK_Vehicules_id_agence");
             });
@@ -109,7 +109,7 @@ namespace AutomotiveApi.DAL
             {
                 entity.HasOne(d => d.Vehicule)
                     .WithMany(p => p.Offre)
-                    .HasForeignKey(d => d.id_vehicule)
+                    .HasForeignKey(d => d.IdVehicule)
                     .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("FK_Offre_id_vehicule");
             });

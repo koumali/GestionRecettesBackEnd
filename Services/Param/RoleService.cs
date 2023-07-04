@@ -29,13 +29,13 @@ namespace AutomotiveApi.Services.Param
 
         public Role? findById(int id)
         {
-            var role = _context.Roles.Where(u => u.id == id).FirstOrDefault();
+            var role = _context.Roles.Where(u => u.Id == id).FirstOrDefault();
             return role;
         }
 
         public Role? findByName(string name)
         {
-            var role = _context.Roles.Where(u => u.name == name).FirstOrDefault();
+            var role = _context.Roles.Where(u => u.Name == name).FirstOrDefault();
             return role;
         }
 

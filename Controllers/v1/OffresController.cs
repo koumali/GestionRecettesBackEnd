@@ -1,33 +1,33 @@
+using AutoMapper;
 using AutomotiveApi.Models.Dto;
 using AutomotiveApi.Models.Entities.Gestion;
-using AutomotiveApi.Services.Gestion;
+using AutomotiveApi.Services.Gestion.Interfaces;
 using AutomotiveApi.Services.Param;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace AutomotiveApi.Controllers.v1
 {
-
     [ApiController]
-
     [Route("api/v1/[controller]")]
-
     public class OffresController : ControllerBase
     {
-        private readonly IOffre _Offreservice;
+        private readonly IOffre _offreservice;
+        private readonly IMapper _mapper;
 
 
-        public OffresController(IUser userService,  IOffre Offreservice)
+        public OffresController(IUser userService, IOffre Offreservice, IMapper mapper)
         {
-            _Offreservice = Offreservice;
+            _offreservice = Offreservice;
+            _mapper = mapper;
         }
 
         [HttpGet]
         [Authorize(Roles = "Admin")]
-        public ActionResult<IEnumerable<Offre>> GetOffres()
+        public async Task<ActionResult<IEnumerable<Offre>>> GetOffres()
         {
-            var Offres = _Offreservice.getOffres();
-            return Ok(Offres);
+            var offres = await _offreservice.GetAllAsync();
+            return Ok(offres);
         }
         //<summary>
         //Add Offre
@@ -35,52 +35,48 @@ namespace AutomotiveApi.Controllers.v1
 
         [HttpPost("Insert")]
         [Authorize(Roles = "Admin")]
-        public ActionResult<Offre> AddOffre(OffreDto request)
+        public async Task<ActionResult<Offre>> AddOffre(OffreDto request)
         {
-            var Offre = new Offre()
-            {
-                id_vehicule= request.id_vehicule,
-                date_debut = request.date_debut,
-                date_fin = request.date_fin,
-                prix = request.prix,
-    };
-            var addedOffre = _Offreservice.add(Offre);
+            var offre = _mapper.Map<Offre>(request);
+            var addedOffre = await _offreservice.CreateAsync(offre);
             return Ok(addedOffre);
         }
+
         [HttpPost("Load/{id}")]
         [Authorize(Roles = "Admin")]
-        public ActionResult<Offre> GetOffreById(int id)
+        public async Task<ActionResult<Offre>> GetOffreById(int id)
         {
-            var Offre = _Offreservice.findById(id);
-            return Ok(Offre);
+            var offre = await _offreservice.GetByIdAsync(id);
+            return Ok(offre);
         }
+
         [HttpDelete("Delete/{id}")]
         [Authorize(Roles = "Admin")]
-        public ActionResult DeleteOffre(int id)
+        public async Task<ActionResult> DeleteOffre(int id)
         {
-            _Offreservice.delete(id);
+            await _offreservice.DeleteAsync(id);
             return Ok();
         }
 
         [HttpPut("Update/{id}")]
         [Authorize(Roles = "Admin")]
-        public ActionResult<Offre> UpdateOffre(int id, OffreDto request)
+        public async Task<ActionResult<Offre>> UpdateOffre(int id, OffreDto request)
         {
-            var offre = _Offreservice.findById(id);
-            if (offre == null)
+            var result = await _offreservice.GetByIdAsync(id);
+            if (result == null)
             {
                 return NotFound();
             }
 
             // Update the Offre properties
-            offre.id_vehicule = request.id_vehicule;
-            offre.date_debut = request.date_debut;
-            offre.date_fin = request.date_fin;
-            offre.prix = request.prix;
+            var offre = _mapper.Map<Offre>(request);
+            // offre.id_vehicule = request.id_vehicule;
+            // offre.date_debut = request.date_debut;
+            // offre.date_fin = request.date_fin;
+            // offre.prix = request.prix;
 
-            var updatedOffre = _Offreservice.update(offre);
+            var updatedOffre = await _offreservice.UpdateAsync(offre);
             return Ok(updatedOffre);
         }
     }
-
 }

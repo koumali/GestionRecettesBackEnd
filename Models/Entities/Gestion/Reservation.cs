@@ -1,4 +1,5 @@
-﻿using AutomotiveApi.Models.Entities.Core;
+﻿using System.ComponentModel.DataAnnotations.Schema;
+using AutomotiveApi.Models.Entities.Core;
 
 namespace AutomotiveApi.Models.Entities.Gestion
 {
@@ -9,9 +10,10 @@ namespace AutomotiveApi.Models.Entities.Gestion
             Contrats = new HashSet<Contrat>();
         }
 
-        public DateTime date_depart { get; set; }
-        public DateTime date_retour { get; set; }
-        public int id_vehicule { get; set; }
+        public DateTime DateDepart { get; set; }
+        public DateTime DateRetour { get; set; }
+        public int IdVehicule { get; set; }
+        [ForeignKey("IdVehicule")]
         public virtual Vehicule Vehicule { get; set; }
         public virtual ICollection<Contrat> Contrats { get; set; }
     }

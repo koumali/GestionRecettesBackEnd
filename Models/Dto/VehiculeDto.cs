@@ -6,19 +6,19 @@ namespace AutomotiveApi.Models.Dto
     {
         [Required]
         [MaxLength(50)]
-        public string name { get; set; }
-        public string matricule { get; set; }
-        public double prix { get; set; }
-        public int nb_port { get; set; }
-        public int nb_passager { get; set; }
-        public int km { get; set; }
-        public bool climat { get; set; }
-        public bool airbag { get; set; }
-        public string image { get; set; }
-        public string gearbox { get; set; }
-        public string moteur { get; set; }
-        public int id_agence { get; set; }
-        public int id_marque { get; set; }
-        public int id_modele { get; set; }
+        public string Name { get; set; }
+        public string Matricule { get; set; }
+        public double Prix { get; set; }
+        public int NbPort { get; set; }
+        public int NbPassager { get; set; }
+        public int Km { get; set; }
+        public bool Climat { get; set; }
+        public bool Airbag { get; set; }
+        public string Image { get; set; }
+        public string Gearbox { get; set; }
+        public string Moteur { get; set; }
+        public int IdAgence { get; set; }
+        public int IdMarque { get; set; }
+        public int IdModele { get; set; }
     }
 }

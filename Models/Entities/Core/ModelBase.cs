@@ -2,9 +2,9 @@
 {
     public partial class ModelBase
     {
-        public int id { get; set; }
-        public DateTime created_at { get; set; }
-        public DateTime? updated_at { get; set; }
-        public DateTime? deleted_at { get; set; }
+        public int Id { get; set; }
+        public DateTime CreatedAt { get; set; }
+        public DateTime? UpdatedAt { get; set; }
+        public DateTime? DeletedAt { get; set; }
     }
 }

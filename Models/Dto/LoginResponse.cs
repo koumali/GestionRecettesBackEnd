@@ -4,7 +4,7 @@ namespace AutomotiveApi.Models.Dto
 {
     public class LoginResponse
     {
-        public string? token { get; set; }
-        public User? user { get; set; }
+        public string? Token { get; set; }
+        public User? User { get; set; }
     }
 }

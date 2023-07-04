@@ -15,13 +15,13 @@ namespace AutomotiveApi.Services.Param
 
         public User? findByEmail(string email)
         {
-            var user = _context.Users.Where(u => u.email == email).Include(u => u.Role).FirstOrDefault();
+            var user = _context.Users.Where(u => u.Email == email).Include(u => u.Role).FirstOrDefault();
             return user;
         }
 
         public User? add(User user)
         {
-            User? userExists = findByEmail(user.email);
+            User? userExists = findByEmail(user.Email);
             if (userExists != null)
             {
                 throw new Exception("User already exists");
@@ -29,12 +29,12 @@ namespace AutomotiveApi.Services.Param
 
             try
             {
-                user.password = BCrypt.Net.BCrypt.HashPassword(user.password);
+                user.Password = BCrypt.Net.BCrypt.HashPassword(user.Password);
 
                 _context.Users.Add(user);
                 _context.SaveChanges();
                 // return user with role
-                user.Role = _context.Roles.Where(r => r.id == user.id_role).FirstOrDefault();
+                user.Role = _context.Roles.Where(r => r.Id == user.IdRole).FirstOrDefault();
                 return user;
             }
             catch (Exception ex)
@@ -45,21 +45,21 @@ namespace AutomotiveApi.Services.Param
 
         public IEnumerable<User> getUsers()
         {
-            var users = _context.Users.Where(u => u.deleted_at == null).Include(u => u.Role).ToList();
+            var users = _context.Users.Where(u => u.DeletedAt == null).Include(u => u.Role).ToList();
             return users;
         }
 
         public User? findById(int id)
         {
-            var user = _context.Users.Where(u => u.id == id).Include(u => u.Role).FirstOrDefault();
+            var user = _context.Users.Where(u => u.Id == id).Include(u => u.Role).FirstOrDefault();
             return user;
         }
 
         public User? update(User user)
 
         {
-            Console.WriteLine("user id: " + user.id);
-            var userExists = findById(user.id);
+            Console.WriteLine("user id: " + user.Id);
+            var userExists = findById(user.Id);
             if (userExists == null)
             {
                 throw new Exception("User not found");
@@ -67,12 +67,12 @@ namespace AutomotiveApi.Services.Param
 
             try
             {
-                userExists.first_name = user.first_name;
-                userExists.last_name = user.last_name;
-                userExists.email = user.email;
-                userExists.is_active = user.is_active;
-                userExists.id_role = user.id_role;
-                userExists.id_agence = user.id_agence;
+                userExists.FirstName = user.FirstName;
+                userExists.LastName = user.LastName;
+                userExists.Email = user.Email;
+                userExists.IsActive = user.IsActive;
+                userExists.IdRole = user.IdRole;
+                userExists.IdAgence = user.IdAgence;
 
                 _context.SaveChanges();
 
@@ -86,7 +86,7 @@ namespace AutomotiveApi.Services.Param
 
         public User? delete(int id)
         {
-            var user = _context.Users.Where(u => u.id == id).FirstOrDefault();
+            var user = _context.Users.Where(u => u.Id == id).FirstOrDefault();
             if (user == null)
             {
                 throw new Exception("User not found");
@@ -94,7 +94,7 @@ namespace AutomotiveApi.Services.Param
 
             try
             {
-                user.deleted_at = DateTime.Now;
+                user.DeletedAt = DateTime.Now;
                 _context.SaveChanges();
                 return user;
             }
@@ -106,7 +106,7 @@ namespace AutomotiveApi.Services.Param
 
         public bool changePassword(int id, string newPassword)
         {
-            var user = _context.Users.Where(u => u.id == id).FirstOrDefault();
+            var user = _context.Users.Where(u => u.Id == id).FirstOrDefault();
             if (user == null)
             {
                 throw new Exception("User not found");
@@ -114,7 +114,7 @@ namespace AutomotiveApi.Services.Param
 
             try
             {
-                user.password = BCrypt.Net.BCrypt.HashPassword(newPassword);
+                user.Password = BCrypt.Net.BCrypt.HashPassword(newPassword);
                 _context.SaveChanges();
                 return true;
             }

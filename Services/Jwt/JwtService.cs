@@ -37,10 +37,10 @@ namespace AutomotiveApi.Services.Jwt
                 new Claim(JwtRegisteredClaimNames.Sub, _configuration["Jwt:Subject"]),
                 new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
                 new Claim(JwtRegisteredClaimNames.Iat, DateTime.UtcNow.ToString()),
-                new Claim("id", user.id.ToString()),
-                new Claim("email", user.email),
-                new Claim("fullname", user.first_name + " " + user.last_name),
-                new Claim(ClaimTypes.Role, user.Role.name)
+                new Claim("id", user.Id.ToString()),
+                new Claim("email", user.Email),
+                new Claim("fullname", user.FirstName + " " + user.LastName),
+                new Claim(ClaimTypes.Role, user.Role.Name)
 
 
                 // new Claim(ClaimTypes.Role, user.Role.name)

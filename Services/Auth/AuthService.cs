@@ -24,7 +24,7 @@ namespace AutomotiveApi.Services.Auth
                 return null;
             }
 
-            if (!BCrypt.Net.BCrypt.Verify(password, user.password))
+            if (!BCrypt.Net.BCrypt.Verify(password, user.Password))
             {
                 return null;
             }
@@ -33,8 +33,8 @@ namespace AutomotiveApi.Services.Auth
 
             return new LoginResponse
             {
-                token = genToken,
-                user = user
+                Token = genToken,
+                User = user
             };
         }
 

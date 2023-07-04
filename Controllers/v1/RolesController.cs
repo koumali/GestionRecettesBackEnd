@@ -38,7 +38,7 @@ namespace AutomotiveApi.Controllers.v1
         {
             var role = new Role()
             {
-                name = request.Name
+                Name = request.Name
             };
             var addedRole = _roleService.add(role);
             return Ok(addedRole);
@@ -71,7 +71,7 @@ namespace AutomotiveApi.Controllers.v1
             }
 
             // Update the role properties
-            role.name = request.Name;
+            role.Name = request.Name;
 
             var updatedRole = _roleService.update(role);
             return Ok(updatedRole);

@@ -56,7 +56,7 @@ namespace AutomotiveApi.Controllers.v1
             try
             {
                 var newUser = _userService.add(user);
-                return CreatedAtAction(nameof(GetUserById), new { id = newUser.id }, newUser);
+                return CreatedAtAction(nameof(GetUserById), new { id = newUser.Id }, newUser);
             }
             catch (System.Exception ex)
             {
@@ -110,7 +110,7 @@ namespace AutomotiveApi.Controllers.v1
         {
             try
             {
-                var user = _userService.changePassword(changePasswordDto.id, changePasswordDto.newPassword);
+                var user = _userService.changePassword(changePasswordDto.Id, changePasswordDto.NewPassword);
                 return Ok(user);
             }
             catch (System.Exception ex)

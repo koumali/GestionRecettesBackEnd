@@ -1,13 +1,15 @@
-﻿using AutomotiveApi.Models.Entities.Core;
+﻿using System.ComponentModel.DataAnnotations.Schema;
+using AutomotiveApi.Models.Entities.Core;
 
 namespace AutomotiveApi.Models.Entities.Gestion
 {
     public partial class Offre : ModelBase
     {
-        public int id_vehicule { get; set; }
-        public DateTime date_debut { get; set; }
-        public DateTime date_fin { get; set; }
-        public double prix { get; set; }
+        public int IdVehicule { get; set; }
+        public DateTime DateDebut { get; set; }
+        public DateTime DateFin { get; set; }
+        public double Prix { get; set; }
+        [ForeignKey("IdVehicule")]
         public virtual Vehicule Vehicule { get; set; }
     }
 }

@@ -4,8 +4,8 @@ namespace AutomotiveApi.Models.Entities.Param
 {
     public partial class Role : ModelBase
     {
-        public string name { get; set; }
+        public string Name { get; set; }
 
-        public virtual ICollection<User> users { get; set; }
+        public virtual ICollection<User> Users { get; set; }
     }
 }

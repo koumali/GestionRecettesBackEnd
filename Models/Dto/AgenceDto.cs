@@ -6,13 +6,13 @@ namespace AutomotiveApi.Models.Dto
     {
         [Required]
         [MaxLength(50)]
-        public string name { get; set; }
-        public string tel { get; set; }
-        public string email { get; set; }
-        public string address { get; set; }
-        public string city { get; set; }
-        public string zip_code { get; set; }
-        public Double latitude { get; set; }
-        public Double longitude { get; set; }
+        public string Name { get; set; }
+        public string Tel { get; set; }
+        public string Email { get; set; }
+        public string Address { get; set; }
+        public string City { get; set; }
+        public string ZipCode { get; set; }
+        public double Latitude { get; set; }
+        public double Longitude { get; set; }
     }
 }

@@ -21,7 +21,7 @@ namespace AutomotiveApi.Services.Param
 
         public Log_journal? findById(int id)
         {
-            var log = _context.log_journal.Where(u => u.id == id).FirstOrDefault();
+            var log = _context.log_journal.Where(u => u.Id == id).FirstOrDefault();
             return log;
         }
     }

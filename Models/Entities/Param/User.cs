@@ -1,4 +1,5 @@
-﻿using AutomotiveApi.Models.Entities.Core;
+﻿using System.ComponentModel.DataAnnotations.Schema;
+using AutomotiveApi.Models.Entities.Core;
 using AutomotiveApi.Models.Entities.Gestion;
 using Newtonsoft.Json;
 
@@ -6,17 +7,17 @@ namespace AutomotiveApi.Models.Entities.Param
 {
     public partial class User : ModelBase
     {
-        public string first_name { get; set; }
-        public string last_name { get; set; }
-        public string email { get; set; }
+        public string FirstName { get; set; }
+        public string LastName { get; set; }
+        public string Email { get; set; }
 
         //ignore password when serializing
 
-        [JsonIgnore] public string password { get; set; }
-        public bool? is_active { get; set; }
-        public int id_role { get; set; }
-        public virtual Role Role { get; set; }
-        public int? id_agence { get; set; }
-        public virtual Agence agence { get; set; }
+        [JsonIgnore] public string Password { get; set; }
+        public bool? IsActive { get; set; }
+        public int IdRole { get; set; }
+        [ForeignKey("IdRole")] public virtual Role Role { get; set; }
+        public int? IdAgence { get; set; }
+        [ForeignKey("IdAgence")] public virtual Agence Agence { get; set; }
     }
 }

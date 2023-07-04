@@ -7,6 +7,6 @@ namespace AutomotiveApi.Models.Dto
         [Required]
         [MaxLength(50)]
         public string Name { get; set; }
-        public int id_marque { get; set; }
+        public int IdMarque { get; set; }
     }
 }

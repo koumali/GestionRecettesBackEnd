@@ -1,8 +1,9 @@
-﻿using AutomotiveApi.Models.Dto;
+﻿using AutoMapper;
+using AutomotiveApi.Models.Dto;
 using AutomotiveApi.Models.Entities.Gestion;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using AutomotiveApi.Services.Gestion;
+using AutomotiveApi.Services.Gestion.Interfaces;
 using AutomotiveApi.Services.Jwt;
 using AutomotiveApi.Services.Param;
 
@@ -12,29 +13,31 @@ namespace AutomotiveApi.Controllers.v1
     [ApiController]
     public class MarquesController : ControllerBase
     {
-
         private readonly IJwt _jwtService;
+        private readonly IMapper _mapper;
         private readonly IMarque _marqueService;
 
 
-        public MarquesController(IUser userService, IJwt jwtService, IMarque marqueService)
+        public MarquesController(IUser userService, IJwt jwtService, IMarque marqueService, IMapper mapper)
         {
             _jwtService = jwtService;
             _marqueService = marqueService;
+            _mapper = mapper;
         }
 
         [HttpGet]
         [Authorize(Roles = "Admin")]
-        public ActionResult<IEnumerable<Marque>> GetMarques()
+        public async Task<ActionResult<IEnumerable<Marque>>> GetMarques()
         {
-            var Marques = _marqueService.getMarques();
-            return Ok(Marques);
+            var marques = await _marqueService.GetAllAsync();
+            return Ok(marques);
         }
+
         [HttpPost("Load/{id}")]
         [Authorize(Roles = "Admin")]
-        public ActionResult<Marque> GetRoleById(int id)
+        public async Task<ActionResult<Marque>> GetRoleById(int id)
         {
-            var marque = _marqueService.findById(id);
+            var marque = await _marqueService.GetByIdAsync(id);
             return Ok(marque);
         }
         //<summary>
@@ -43,39 +46,37 @@ namespace AutomotiveApi.Controllers.v1
 
         [HttpPost("Insert")]
         [Authorize(Roles = "Admin")]
-        public ActionResult<Marque> AddMarque(MarqueDto request)
+        public async Task<ActionResult<Marque>> AddMarque(MarqueDto request)
         {
-            var Marque = new Marque()
-            {
-                name = request.Name
-            };
-            var addedMarque = _marqueService.add(Marque);
+            var marque = _mapper.Map<Marque>(request);
+            var addedMarque = await _marqueService.CreateAsync(marque);
             return Ok(addedMarque);
         }
+
         [HttpDelete("Delete/{id}")]
         [Authorize(Roles = "Admin")]
-        public ActionResult DeleteMarque(int id)
+        public async Task<ActionResult> DeleteMarque(int id)
         {
-            _marqueService.delete(id);
+            await _marqueService.DeleteAsync(id);
             return Ok();
         }
 
         [HttpPut("Update/{id}")]
         [Authorize(Roles = "Admin")]
-        public ActionResult<Marque> UpdateMarque(int id, MarqueDto request)
+        public async Task<ActionResult<Marque>> UpdateMarque(int id, MarqueDto request)
         {
-            var Marque = _marqueService.findById(id);
-            if (Marque == null)
+            var result = await _marqueService.GetByIdAsync(id);
+            if (result == null)
             {
                 return NotFound();
             }
 
             // Update the Marque properties
-            Marque.name = request.Name;
+            var marque = _mapper.Map<Marque>(request);
+            marque.Name = request.Name;
 
-            var updatedMarque = _marqueService.update(Marque);
+            var updatedMarque = await _marqueService.UpdateAsync(marque);
             return Ok(updatedMarque);
         }
     }
-
 }

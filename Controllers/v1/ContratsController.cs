@@ -1,6 +1,7 @@
+using AutoMapper;
 using AutomotiveApi.Models.Dto;
 using AutomotiveApi.Models.Entities.Gestion;
-using AutomotiveApi.Services.Gestion;
+using AutomotiveApi.Services.Gestion.Interfaces;
 using AutomotiveApi.Services.Jwt;
 using AutomotiveApi.Services.Param;
 using Microsoft.AspNetCore.Authorization;
@@ -8,30 +9,28 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace AutomotiveApi.Controllers.v1
 {
-
     [ApiController]
-
     [Route("api/v1/[controller]")]
-
     public class ContratsController : ControllerBase
     {
-
         private readonly IJwt _jwtService;
-        private readonly IContrat _ContratService;
+        private readonly IMapper _mapper;
+        private readonly IContrat _contratService;
 
 
-        public ContratsController(IUser userService, IJwt jwtService, IContrat ContratService)
+        public ContratsController(IUser userService, IJwt jwtService, IContrat ContratService, IMapper mapper)
         {
             _jwtService = jwtService;
-            _ContratService = ContratService;
+            _contratService = ContratService;
+            _mapper = mapper;
         }
 
         [HttpGet]
         [Authorize(Roles = "Admin")]
-        public ActionResult<IEnumerable<Contrat>> GetContrats()
+        public async Task<ActionResult<IEnumerable<Contrat>>> GetContrats()
         {
-            var Contrats = _ContratService.getContrats();
-            return Ok(Contrats);
+            var contrats = await _contratService.GetAllAsync();
+            return Ok(contrats);
         }
         //<summary>
         //Add Contrat
@@ -39,49 +38,54 @@ namespace AutomotiveApi.Controllers.v1
 
         [HttpPost("Insert")]
         [Authorize(Roles = "Admin")]
-        public ActionResult<Contrat> AddContrat(ContratDto request)
+        public async Task<ActionResult<Contrat>> AddContrat(ContratDto request)
         {
-            var Contrat = new Contrat()
-            {
-            };
-            Contrat.id_client = request.id_client;
-            Contrat.id_reservation = request.id_reservation;
+            // var Contrat = new Contrat()
+            // {
+            // };
+            // Contrat.id_client = request.id_client;
+            // Contrat.id_reservation = request.id_reservation;
 
-        var addedContrat = _ContratService.add(Contrat);
+            var contrat = _mapper.Map<Contrat>(request);
+
+            var addedContrat = await _contratService.CreateAsync(contrat);
             return Ok(addedContrat);
         }
+
         [HttpPost("Load/{id}")]
         [Authorize(Roles = "Admin")]
-        public ActionResult<Contrat> GetContratById(int id)
+        public async Task<ActionResult<Contrat>> GetContratById(int id)
         {
-            var Contrat = _ContratService.findById(id);
-            return Ok(Contrat);
+            var contrat = await _contratService.GetByIdAsync(id);
+            return Ok(contrat);
         }
+
         [HttpDelete("Delete/{id}")]
         [Authorize(Roles = "Admin")]
-        public ActionResult DeleteContrat(int id)
+        public async Task<ActionResult> DeleteContrat(int id)
         {
-            _ContratService.delete(id);
+            await _contratService.DeleteAsync(id);
             return Ok();
         }
 
         [HttpPut("Update/{id}")]
         [Authorize(Roles = "Admin")]
-        public ActionResult<Contrat> UpdateContrat(int id, ContratDto request)
+        public async Task<ActionResult<Contrat>> UpdateContrat(int id, ContratDto request)
         {
-            var Contrat = _ContratService.findById(id);
-            if (Contrat == null)
+            var result = await _contratService.GetByIdAsync(id);
+            if (result == null)
             {
                 return NotFound();
             }
 
             // Update the Contrat properties
-            Contrat.id_client = request.id_client;
-            Contrat.id_reservation = request.id_reservation;
+            // contrat.id_client = request.id_client;
+            // contrat.id_reservation = request.id_reservation;
 
-            var updatedContrat = _ContratService.update(Contrat);
+            var contrat = _mapper.Map<Contrat>(request);
+
+            var updatedContrat = await _contratService.UpdateAsync(contrat);
             return Ok(updatedContrat);
         }
     }
-
 }
