@@ -27,9 +27,9 @@ namespace AutomotiveApi.Controllers.v1
 
         [HttpGet("")]
         [Authorize(Roles = "Admin")]
-        public ActionResult<IEnumerable<User>> GetUsers()
+        public async Task<ActionResult<IEnumerable<User>>> GetUsers()
         {
-            var users = _userService.getUsers();
+            var users = await _userService.GetAllAsync();
             return Ok(users);
         }
 
@@ -41,24 +41,24 @@ namespace AutomotiveApi.Controllers.v1
         //get user by id
         [HttpGet("{id}")]
         [Authorize(Roles = "Admin")]
-        public ActionResult<User> GetUserById(int id)
+        public async Task<ActionResult<User>> GetUserById(int id)
         {
-            var user = _userService.findById(id);
+            var user = await _userService.GetByIdAsync(id);
             return Ok(user);
         }
 
         //add user
         [HttpPost]
         [Authorize(Roles = "Admin")]
-        public ActionResult<User> Add(UserDto userRequest)
+        public async Task<ActionResult<User>> Add(UserDto userRequest)
         {
             var user = _mapper.Map<User>(userRequest);
             try
             {
-                var newUser = _userService.add(user);
+                var newUser = await _userService.CreateAsync(user);
                 return CreatedAtAction(nameof(GetUserById), new { id = newUser.Id }, newUser);
             }
-            catch (System.Exception ex)
+            catch (Exception ex)
             {
                 // add message to errors list
                 return BadRequest(new { message = ex.Message });
@@ -69,13 +69,13 @@ namespace AutomotiveApi.Controllers.v1
 
         [HttpPut]
         [Authorize(Roles = "Admin")]
-        public ActionResult<User> Update(UserUpdateDto userRequest)
+        public async Task<ActionResult<User>> Update(UserUpdateDto userRequest)
         {
             var user = _mapper.Map<User>(userRequest);
 
             try
             {
-                var updatedUser = _userService.update(user);
+                var updatedUser = await _userService.UpdateAsync(user);
                 return Ok(updatedUser);
             }
             catch (System.Exception ex)
@@ -89,11 +89,11 @@ namespace AutomotiveApi.Controllers.v1
 
         [HttpDelete("{id}")]
         [Authorize(Roles = "Admin")]
-        public ActionResult<User> Delete(int id)
+        public async Task<ActionResult<bool>> Delete(int id)
         {
             try
             {
-                var user = _userService.delete(id);
+                var user = await _userService.DeleteAsync(id);
                 return user;
             }
             catch (System.Exception ex)

@@ -3,11 +3,11 @@ using AutomotiveApi.Models.Entities.Param;
 
 namespace AutomotiveApi.Services.Param
 {
-    public class Log_journalService : ILog_journal
+    public class LogJournalService : ILogJournal
     {
         private readonly AppDbContext _context;
 
-        public Log_journalService(AppDbContext context)
+        public LogJournalService(AppDbContext context)
         {
             _context = context;
         }
@@ -15,13 +15,13 @@ namespace AutomotiveApi.Services.Param
 
         public IEnumerable<Log_journal> getLog_journals()
         {
-            var Log_journals = _context.log_journal.ToList();
-            return Log_journals;
+            var logJournals = _context.log_journal.ToList();
+            return logJournals;
         }
 
         public Log_journal? findById(int id)
         {
-            var log = _context.log_journal.Where(u => u.Id == id).FirstOrDefault();
+            var log = _context.log_journal.FirstOrDefault(u => u.Id == id);
             return log;
         }
     }

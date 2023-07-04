@@ -23,9 +23,9 @@ namespace AutomotiveApi.Controllers.v1
 
         [HttpGet]
         [Authorize(Roles = "Admin")]
-        public ActionResult<IEnumerable<Role>> GetRoles()
+        public async Task<ActionResult<IEnumerable<Role>>> GetRoles()
         {
-            var roles = _roleService.getRoles();
+            var roles = await _roleService.GetAllAsync();
             return Ok(roles);
         }
         //<summary>
@@ -34,37 +34,37 @@ namespace AutomotiveApi.Controllers.v1
 
         [HttpPost("Insert")]
         [Authorize(Roles = "Admin")]
-        public ActionResult<Role> AddRole(RoleDto request)
+        public async Task<ActionResult<Role>> AddRole(RoleDto request)
         {
             var role = new Role()
             {
                 Name = request.Name
             };
-            var addedRole = _roleService.add(role);
+            var addedRole = await _roleService.CreateAsync(role);
             return Ok(addedRole);
         }
 
         [HttpPost("Load/{id}")]
         [Authorize(Roles = "Admin")]
-        public ActionResult<Role> GetRoleById(int id)
+        public async Task<ActionResult<Role>> GetRoleById(int id)
         {
-            var role = _roleService.findById(id);
+            var role = await _roleService.GetByIdAsync(id);
             return Ok(role);
         }
 
         [HttpDelete("Delete/{id}")]
         [Authorize(Roles = "Admin")]
-        public ActionResult DeleteRole(int id)
+        public async Task<ActionResult> DeleteRole(int id)
         {
-            _roleService.delete(id);
+            await _roleService.DeleteAsync(id);
             return Ok();
         }
 
         [HttpPut("Update/{id}")]
         [Authorize(Roles = "Admin")]
-        public ActionResult<Role> UpdateRole(int id, RoleDto request)
+        public async Task<ActionResult<Role>> UpdateRole(int id, RoleDto request)
         {
-            var role = _roleService.findById(id);
+            var role = await _roleService.GetByIdAsync(id);
             if (role == null)
             {
                 return NotFound();
@@ -73,7 +73,7 @@ namespace AutomotiveApi.Controllers.v1
             // Update the role properties
             role.Name = request.Name;
 
-            var updatedRole = _roleService.update(role);
+            var updatedRole = await _roleService.UpdateAsync(role);
             return Ok(updatedRole);
         }
     }

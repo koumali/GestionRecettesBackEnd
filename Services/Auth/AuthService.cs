@@ -7,18 +7,18 @@ namespace AutomotiveApi.Services.Auth
 {
     public class AuthService : IAuth
     {
-        private readonly IUser _UserService;
+        private readonly IUser _userService;
         private readonly IJwt _jwtService;
 
-        public AuthService(IUser UserService, IJwt jwtService)
+        public AuthService(IUser userService, IJwt jwtService)
         {
-            _UserService = UserService;
+            _userService = userService;
             _jwtService = jwtService;
         }
 
         public LoginResponse? login(string email, string password)
         {
-            var user = _UserService.findByEmail(email);
+            var user = _userService.findByEmail(email);
             if (user == null)
             {
                 return null;
@@ -38,9 +38,9 @@ namespace AutomotiveApi.Services.Auth
             };
         }
 
-        public User? register(User user)
+        public async Task<User?> register(User user)
         {
-            return _UserService.add(user);
+            return await _userService.CreateAsync(user);
         }
     }
 }

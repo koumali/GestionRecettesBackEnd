@@ -13,9 +13,9 @@ namespace AutomotiveApi.Controllers.v1
 
     public class Log_journalsController : ControllerBase
     {
-        private readonly ILog_journal _Log_journalService;
+        private readonly ILogJournal _Log_journalService;
 
-        public Log_journalsController(ILog_journal Log_journalService)
+        public Log_journalsController(ILogJournal Log_journalService)
         {
             _Log_journalService = Log_journalService;
         }
