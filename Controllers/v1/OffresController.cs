@@ -2,7 +2,6 @@ using AutoMapper;
 using AutomotiveApi.Models.Dto;
 using AutomotiveApi.Models.Entities.Gestion;
 using AutomotiveApi.Services.Gestion.Interfaces;
-using AutomotiveApi.Services.Param;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -16,9 +15,9 @@ namespace AutomotiveApi.Controllers.v1
         private readonly IMapper _mapper;
 
 
-        public OffresController(IUser userService, IOffre Offreservice, IMapper mapper)
+        public OffresController(IOffre offreservice, IMapper mapper)
         {
-            _offreservice = Offreservice;
+            _offreservice = offreservice;
             _mapper = mapper;
         }
 
@@ -62,19 +61,17 @@ namespace AutomotiveApi.Controllers.v1
         [Authorize(Roles = "Admin")]
         public async Task<ActionResult<Offre>> UpdateOffre(int id, OffreDto request)
         {
-            var result = await _offreservice.GetByIdAsync(id);
-            if (result == null)
+            var offre = await _offreservice.GetByIdAsync(id);
+            if (offre == null)
             {
                 return NotFound();
             }
 
-            // Update the Offre properties
-            var offre = _mapper.Map<Offre>(request);
-            // offre.id_vehicule = request.id_vehicule;
-            // offre.date_debut = request.date_debut;
-            // offre.date_fin = request.date_fin;
-            // offre.prix = request.prix;
-
+            offre.IdVehicule = request.IdVehicule;
+            offre.DateDebut = request.DateDebut;
+            offre.DateFin = request.DateFin;
+            offre.Prix = request.Prix;
+            offre.Id = id;
             var updatedOffre = await _offreservice.UpdateAsync(offre);
             return Ok(updatedOffre);
         }

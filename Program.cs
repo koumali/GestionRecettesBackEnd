@@ -101,21 +101,20 @@ builder.Services.AddCors(options =>
         });
 });
 
-
 builder.Services.TryAddSingleton<IHttpContextAccessor, HttpContextAccessor>();
-builder.Services.AddScoped<IJwt, JwtService>();
-builder.Services.AddScoped<IUser, UserService>();
-builder.Services.AddScoped<IAuth, AuthService>();
-builder.Services.AddScoped<IRole, RoleService>();
-builder.Services.AddScoped<IAgence, AgenceService>();
-builder.Services.AddScoped<IMarque, MarqueService>();
-builder.Services.AddScoped<IModele, ModeleService>();
-builder.Services.AddScoped<IClient, ClientService>();
-builder.Services.AddScoped<IVehicule, VehiculeService>();
-builder.Services.AddScoped<IOffre, OffreService>();
-builder.Services.AddScoped<IReservation, ReservationService>();
-builder.Services.AddScoped<ILogJournal, LogJournalService>();
-builder.Services.AddScoped<IContrat, ContratService>();
+builder.Services.AddTransient<IJwt, JwtService>();
+builder.Services.AddTransient<IUser, UserService>();
+builder.Services.AddTransient<IAuth, AuthService>();
+builder.Services.AddTransient<IRole, RoleService>();
+builder.Services.AddTransient<IAgence, AgenceService>();
+builder.Services.AddTransient<IMarque, MarqueService>();
+builder.Services.AddTransient<IModele, ModeleService>();
+builder.Services.AddTransient<IClient, ClientService>();
+builder.Services.AddTransient<IVehicule, VehiculeService>();
+builder.Services.AddTransient<IOffre, OffreService>();
+builder.Services.AddTransient<IReservation, ReservationService>();
+builder.Services.AddTransient<ILogJournal, LogJournalService>();
+builder.Services.AddTransient<IContrat, ContratService>();
 
 var mappingConfig = new MapperConfiguration(mc => { mc.AddProfile(new MapperConfig()); });
 

@@ -1,7 +1,6 @@
 using AutoMapper;
 using AutomotiveApi.Models.Dto;
 using AutomotiveApi.Models.Entities.Param;
-using AutomotiveApi.Services.Jwt;
 using AutomotiveApi.Services.Param;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -13,13 +12,11 @@ namespace AutomotiveApi.Controllers.v1
     public class UsersController : ControllerBase
     {
         private readonly IUser _userService;
-        private readonly IJwt _jwtService;
         private readonly IMapper _mapper;
 
 
-        public UsersController(IUser userService, IJwt jwtService, IMapper mapper)
+        public UsersController(IUser userService, IMapper mapper)
         {
-            _jwtService = jwtService;
             _userService = userService;
             _mapper = mapper;
         }
@@ -78,7 +75,7 @@ namespace AutomotiveApi.Controllers.v1
                 var updatedUser = await _userService.UpdateAsync(user);
                 return Ok(updatedUser);
             }
-            catch (System.Exception ex)
+            catch (Exception ex)
             {
                 // add message to errors list
                 return BadRequest(new { message = ex.Message });
@@ -96,7 +93,7 @@ namespace AutomotiveApi.Controllers.v1
                 var user = await _userService.DeleteAsync(id);
                 return user;
             }
-            catch (System.Exception ex)
+            catch (Exception ex)
             {
                 // add message to errors list
                 return BadRequest(new { message = ex.Message });
@@ -113,7 +110,7 @@ namespace AutomotiveApi.Controllers.v1
                 var user = _userService.changePassword(changePasswordDto.Id, changePasswordDto.NewPassword);
                 return Ok(user);
             }
-            catch (System.Exception ex)
+            catch (Exception ex)
             {
                 // add message to errors list
                 return BadRequest(new { message = ex.Message });

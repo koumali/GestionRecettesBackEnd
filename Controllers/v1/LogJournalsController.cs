@@ -11,13 +11,13 @@ namespace AutomotiveApi.Controllers.v1
 
     [Route("api/v1/[controller]")]
 
-    public class Log_journalsController : ControllerBase
+    public class LogJournalsController : ControllerBase
     {
-        private readonly ILogJournal _Log_journalService;
+        private readonly ILogJournal _logJournalService;
 
-        public Log_journalsController(ILogJournal Log_journalService)
+        public LogJournalsController(ILogJournal logJournalService)
         {
-            _Log_journalService = Log_journalService;
+            _logJournalService = logJournalService;
         }
 
 
@@ -25,15 +25,15 @@ namespace AutomotiveApi.Controllers.v1
         [Authorize(Roles = "Admin")]
         public ActionResult<IEnumerable<Log_journal>> GetLog_journals()
         {
-            var Log_journals = _Log_journalService.getLog_journals();
-            return Ok(Log_journals);
+            var logJournals = _logJournalService.getLog_journals();
+            return Ok(logJournals);
         }
         [HttpPost("Load/{id}")]
         [Authorize(Roles = "Admin")]
         public ActionResult<Client> GetClientById(int id)
         {
-            var Client = _Log_journalService.findById(id);
-            return Ok(Client);
+            var client = _logJournalService.findById(id);
+            return Ok(client);
         }
 
     }

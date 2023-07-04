@@ -7,9 +7,11 @@ namespace AutomotiveApi.Services.Gestion
 {
     public class ContratService : GenericDataService<Contrat>, IContrat
     {
+        private readonly AppDbContext _context;
 
         public ContratService(AppDbContext context) : base(context)
         {
+            _context = context;
         }
 
         // public Contrat? add(Contrat Contrat)
@@ -34,6 +36,12 @@ namespace AutomotiveApi.Services.Gestion
         // }
         //
         //
+        public new async Task<IEnumerable<Contrat>> GetAllAsync()
+        {
+            return await _context.Contrats.Include(c => c.Client)
+                .Include(r => r.Reservation)
+                .ToListAsync();
+        }
         // public IEnumerable<Contrat> getContrats()
         // {
         //     return _context.Contrats.Include(c => c.Client).ToList();

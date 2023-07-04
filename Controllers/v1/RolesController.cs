@@ -1,6 +1,5 @@
 using AutomotiveApi.Models.Dto;
 using AutomotiveApi.Models.Entities.Param;
-using AutomotiveApi.Services.Jwt;
 using AutomotiveApi.Services.Param;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -11,13 +10,11 @@ namespace AutomotiveApi.Controllers.v1
     [Route("api/v1/[controller]")]
     public class RolesController : ControllerBase
     {
-        private readonly IJwt _jwtService;
         private readonly IRole _roleService;
 
 
-        public RolesController(IUser userService, IJwt jwtService, IRole roleService)
+        public RolesController(IRole roleService)
         {
-            _jwtService = jwtService;
             _roleService = roleService;
         }
 
@@ -72,7 +69,7 @@ namespace AutomotiveApi.Controllers.v1
 
             // Update the role properties
             role.Name = request.Name;
-
+            role.Id = id;
             var updatedRole = await _roleService.UpdateAsync(role);
             return Ok(updatedRole);
         }

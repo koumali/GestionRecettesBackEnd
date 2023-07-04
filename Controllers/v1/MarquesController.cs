@@ -4,8 +4,6 @@ using AutomotiveApi.Models.Entities.Gestion;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using AutomotiveApi.Services.Gestion.Interfaces;
-using AutomotiveApi.Services.Jwt;
-using AutomotiveApi.Services.Param;
 
 namespace AutomotiveApi.Controllers.v1
 {
@@ -13,14 +11,12 @@ namespace AutomotiveApi.Controllers.v1
     [ApiController]
     public class MarquesController : ControllerBase
     {
-        private readonly IJwt _jwtService;
         private readonly IMapper _mapper;
         private readonly IMarque _marqueService;
 
 
-        public MarquesController(IUser userService, IJwt jwtService, IMarque marqueService, IMapper mapper)
+        public MarquesController(IMarque marqueService, IMapper mapper)
         {
-            _jwtService = jwtService;
             _marqueService = marqueService;
             _mapper = mapper;
         }
@@ -65,16 +61,14 @@ namespace AutomotiveApi.Controllers.v1
         [Authorize(Roles = "Admin")]
         public async Task<ActionResult<Marque>> UpdateMarque(int id, MarqueDto request)
         {
-            var result = await _marqueService.GetByIdAsync(id);
-            if (result == null)
+            var marque = await _marqueService.GetByIdAsync(id);
+            if (marque == null)
             {
                 return NotFound();
             }
 
             // Update the Marque properties
-            var marque = _mapper.Map<Marque>(request);
             marque.Name = request.Name;
-
             var updatedMarque = await _marqueService.UpdateAsync(marque);
             return Ok(updatedMarque);
         }

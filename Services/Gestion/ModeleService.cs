@@ -7,8 +7,11 @@ namespace AutomotiveApi.Services.Gestion
 {
     public class ModeleService : GenericDataService<Modele>, IModele
     {
-        public ModeleService(AppDbContext context): base(context)
+        private readonly AppDbContext _context;
+
+        public ModeleService(AppDbContext context) : base(context)
         {
+            _context = context;
         }
 
         // public Modele? add(Modele modele)
@@ -33,6 +36,10 @@ namespace AutomotiveApi.Services.Gestion
         // }
         //
         //
+        public new async Task<IEnumerable<Modele>> GetAllAsync()
+        {
+            return await _context.Modeles.Include(o => o.Marque).ToListAsync();
+        }
         // public IEnumerable<Modele> getModeles()
         // {
         //     return _context.Modeles.Include(o => o.Marque).ToList();

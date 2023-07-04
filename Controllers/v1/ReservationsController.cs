@@ -11,20 +11,21 @@ namespace AutomotiveApi.Controllers.v1
     [Route("api/v1/[controller]")]
     public class ReservationsController : ControllerBase
     {
-        private readonly IReservation _reservationservice;
+        private readonly IReservation _reservationService;
         private readonly IMapper _mapper;
 
 
-        public ReservationsController(IReservation Reservationservice)
+        public ReservationsController(IReservation reservationService, IMapper mapper)
         {
-            _reservationservice = Reservationservice;
+            _reservationService = reservationService;
+            _mapper = mapper;
         }
 
         [HttpGet]
         [Authorize(Roles = "Admin")]
         public async Task<ActionResult<IEnumerable<Reservation>>> GetReservations()
         {
-            var reservations = await _reservationservice.GetAllAsync();
+            var reservations = await _reservationService.GetAllAsync();
             return Ok(reservations);
         }
         //<summary>
@@ -36,7 +37,7 @@ namespace AutomotiveApi.Controllers.v1
         public async Task<ActionResult<Reservation>> AddReservation(ReservationDto request)
         {
             var reservation = _mapper.Map<Reservation>(request);
-            var addedReservation = await _reservationservice.CreateAsync(reservation);
+            var addedReservation = await _reservationService.CreateAsync(reservation);
             return Ok(addedReservation);
         }
 
@@ -44,7 +45,7 @@ namespace AutomotiveApi.Controllers.v1
         [Authorize(Roles = "Admin")]
         public async Task<ActionResult<Reservation>> GetReservationById(int id)
         {
-            var reservation = await _reservationservice.GetByIdAsync(id);
+            var reservation = await _reservationService.GetByIdAsync(id);
             return Ok(reservation);
         }
 
@@ -52,7 +53,7 @@ namespace AutomotiveApi.Controllers.v1
         [Authorize(Roles = "Admin")]
         public async Task<ActionResult> DeleteReservation(int id)
         {
-            await _reservationservice.DeleteAsync(id);
+            await _reservationService.DeleteAsync(id);
             return Ok();
         }
 
@@ -60,19 +61,16 @@ namespace AutomotiveApi.Controllers.v1
         [Authorize(Roles = "Admin")]
         public async Task<ActionResult<Reservation>> UpdateReservation(int id, ReservationDto request)
         {
-            var result = await _reservationservice.GetByIdAsync(id);
-            if (result == null)
+            var reservation = await _reservationService.GetByIdAsync(id);
+            if (reservation == null)
             {
                 return NotFound();
             }
 
-            // Update the Reservation properties
-            var reservation = _mapper.Map<Reservation>(request);
-            // reservation.id_vehicule = request.id_vehicule;
-            // reservation.date_depart = request.date_depart;
-            // reservation.date_retour = request.date_retour;
-
-            var updatedReservation = await _reservationservice.UpdateAsync(reservation);
+            reservation.IdVehicule = request.IdVehicule;
+            reservation.DateDepart = request.DateDepart;
+            reservation.DateRetour = request.DateRetour;
+            var updatedReservation = await _reservationService.UpdateAsync(reservation);
             return Ok(updatedReservation);
         }
     }

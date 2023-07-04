@@ -2,8 +2,6 @@
 using AutomotiveApi.Models.Dto;
 using AutomotiveApi.Models.Entities.Gestion;
 using AutomotiveApi.Services.Gestion.Interfaces;
-using AutomotiveApi.Services.Jwt;
-using AutomotiveApi.Services.Param;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -13,14 +11,12 @@ namespace AutomotiveApi.Controllers.v1
     [ApiController]
     public class AgencesController : ControllerBase
     {
-        private readonly IJwt _jwtService;
         private readonly IMapper _mapper;
         private readonly IAgence _agenceService;
 
-        public AgencesController(IUser userService, IJwt jwtService, IAgence AgenceService, IMapper mapper)
+        public AgencesController(IAgence agenceService, IMapper mapper)
         {
-            _jwtService = jwtService;
-            _agenceService = AgenceService;
+            _agenceService = agenceService;
             _mapper = mapper;
         }
 
@@ -38,17 +34,6 @@ namespace AutomotiveApi.Controllers.v1
         [Authorize(Roles = "Admin")]
         public async Task<ActionResult<Agence>> AddAgence(AgenceDto request)
         {
-            // var agence = new Agence()
-            // {
-            // };
-            // agence.name = request.name;
-            // agence.tel = request.tel;
-            // agence.email = request.email;
-            // agence.address = request.address;
-            // agence.city = request.city;
-            // agence.zip_code = request.zip_code;
-            // agence.latitude = request.latitude;
-            // agence.longitude = request.longitude;
             var agence = _mapper.Map<Agence>(request);
 
             var addedAgence = await _agenceService.CreateAsync(agence);
@@ -75,22 +60,17 @@ namespace AutomotiveApi.Controllers.v1
         [Authorize(Roles = "Admin")]
         public async Task<ActionResult<Agence>> UpdateAgence(int id, AgenceDto request)
         {
-            var result = await _agenceService.GetByIdAsync(id);
-            if (result == null)
-            {
-                return NotFound();
-            }
+            var agence = await _agenceService.GetByIdAsync(id);
+            if (agence == null) return NotFound();
 
-            // Update the Agence properties
-            // agence.name = request.name;
-            // agence.tel = request.tel;
-            // agence.email = request.email;
-            // agence.address = request.address;
-            // agence.city = request.city;
-            // agence.zip_code = request.zip_code;
-            // agence.latitude = request.latitude;
-            // agence.longitude = request.longitude;
-            var agence = _mapper.Map<Agence>(request);
+            agence.Name = request.Name;
+            agence.Tel = request.Tel;
+            agence.Email = request.Email;
+            agence.Address = request.Address;
+            agence.City = request.City;
+            agence.ZipCode = request.ZipCode;
+            agence.Latitude = request.Latitude;
+            agence.Longitude = request.Longitude;
 
             var updatedAgence = await _agenceService.UpdateAsync(agence);
             return Ok(updatedAgence);

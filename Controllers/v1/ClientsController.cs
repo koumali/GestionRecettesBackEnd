@@ -2,8 +2,6 @@ using AutoMapper;
 using AutomotiveApi.Models.Dto;
 using AutomotiveApi.Models.Entities.Gestion;
 using AutomotiveApi.Services.Gestion.Interfaces;
-using AutomotiveApi.Services.Jwt;
-using AutomotiveApi.Services.Param;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -13,15 +11,13 @@ namespace AutomotiveApi.Controllers.v1
     [Route("api/v1/[controller]")]
     public class ClientsController : ControllerBase
     {
-        private readonly IJwt _jwtService;
         private readonly IMapper _mapper;
         private readonly IClient _clientService;
 
 
-        public ClientsController(IUser userService, IJwt jwtService, IClient ClientService, IMapper mapper)
+        public ClientsController(IClient clientService, IMapper mapper)
         {
-            _jwtService = jwtService;
-            _clientService = ClientService;
+            _clientService = clientService;
             _mapper = mapper;
         }
 
@@ -40,19 +36,6 @@ namespace AutomotiveApi.Controllers.v1
         [Authorize(Roles = "Admin")]
         public async Task<ActionResult<Client>> AddClient(ClientDto request)
         {
-            // var client = new Client()
-            // {
-            // };
-            // client.first_name = request.first_name;
-            // client.last_name = request.last_name;
-            // client.tel = request.tel;
-            // client.email = request.email;
-            // client.ville = request.ville;
-            // client.zipcode = request.zipcode;
-            // client.adresse = request.adresse;
-            // client.adresse2 = request.adresse2;
-            // client.permis_recto = request.permis_recto;
-            // client.permis_verso = request.permis_verso;
             var client = _mapper.Map<Client>(request);
 
             var addedClient = await _clientService.CreateAsync(client);
@@ -79,25 +62,22 @@ namespace AutomotiveApi.Controllers.v1
         [Authorize(Roles = "Admin")]
         public async Task<ActionResult<Client>> UpdateClient(int id, ClientDto request)
         {
-            var result = await _clientService.GetByIdAsync(id);
-            if (result == null)
+            var client = await _clientService.GetByIdAsync(id);
+            if (client == null)
             {
                 return NotFound();
             }
 
-            // Update the Client properties
-            // client.first_name = request.first_name;
-            // client.last_name = request.last_name;
-            // client.tel = request.tel;
-            // client.email = request.email;
-            // client.ville = request.ville;
-            // client.zipcode = request.zipcode;
-            // client.adresse = request.adresse;
-            // client.adresse2 = request.adresse2;
-            // client.permis_recto = request.permis_recto;
-            // client.permis_verso = request.permis_verso;
-            var client = _mapper.Map<Client>(request);
-
+            client.FirstName = request.FirstName;
+            client.LastName = request.LastName;
+            client.Tel = request.Tel;
+            client.Email = request.Email;
+            client.Ville = request.Ville;
+            client.ZipCode = request.ZipCode;
+            client.Adresse = request.Adresse;
+            client.Adresse2 = request.Adresse2;
+            client.PermisRecto = request.PermisRecto;
+            client.PermisVerso = request.PermisVerso;
             var updatedClient = await _clientService.UpdateAsync(client);
             return Ok(updatedClient);
         }

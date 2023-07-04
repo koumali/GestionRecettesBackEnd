@@ -7,9 +7,11 @@ namespace AutomotiveApi.Services.Gestion
 {
     public class ReservationService : GenericDataService<Reservation>, IReservation
     {
+        private readonly AppDbContext _context;
 
-        public ReservationService(AppDbContext context): base(context)
+        public ReservationService(AppDbContext context) : base(context)
         {
+            _context = context;
         }
 
         // public Reservation? add(Reservation Reservation)
@@ -34,6 +36,11 @@ namespace AutomotiveApi.Services.Gestion
         // }
         //
         //
+        public new async Task<IEnumerable<Reservation>> GetAllAsync()
+        {
+            var reservations = await _context.Reservations.Include(r => r.Vehicule).ToListAsync();
+            return reservations;
+        }
         // public IEnumerable<Reservation> getReservations()
         // {
         //     var reservations = _context.Reservations.Include(r => r.Vehicule).ToList();
