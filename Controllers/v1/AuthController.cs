@@ -26,13 +26,13 @@ namespace AutomotiveApi.Controllers.v1
 
 
         [HttpPost("register")]
-        public ActionResult<User> Register(UserDto request)
+        public async Task<ActionResult<User>> Register(UserDto request)
         {
             var user = _mapper.Map<User>(request);
 
             try
             {
-                var newUser = _authService.register(user);
+                var newUser = await _authService.register(user);
                 return Ok(newUser);
             }
             catch (Exception ex)
@@ -49,7 +49,7 @@ namespace AutomotiveApi.Controllers.v1
             var email = request.Email;
             var password = request.Password;
 
-            var loginResponse = _authService.login(email, password);
+            var loginResponse = await _authService.login(email, password);
             if (loginResponse == null)
             {
                 return Unauthorized(new { message = "Invalid Credentials" });

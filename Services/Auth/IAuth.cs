@@ -5,7 +5,7 @@ namespace AutomotiveApi.Services.Auth
 {
     public interface IAuth
     {
-        public LoginResponse? login(string email, string password);
-        public Task<User?> register(User user);
+        Task<LoginResponse?> login(string email, string password);
+        Task<User?> register(User user);
     }
 }
