@@ -103,12 +103,17 @@ namespace AutomotiveApi.Controllers.v1
         //change password
         [HttpPut("updatepassword")]
         [Authorize(Roles = "Admin")]
-        public ActionResult<User> ChangePassword(PasswordUpdateDto changePasswordDto)
+        public async Task<ActionResult> ChangePassword(PasswordUpdateDto changePasswordDto)
         {
             try
             {
-                var user = _userService.changePassword(changePasswordDto.Id, changePasswordDto.NewPassword);
-                return Ok(user);
+                var isChanged = await _userService.changePassword(changePasswordDto.Id, changePasswordDto.NewPassword);
+                if (isChanged)
+                {
+                    return Ok(new { message = "Password changed successfully" });
+                }
+
+                return BadRequest(new { message = "Password not changed" });
             }
             catch (Exception ex)
             {

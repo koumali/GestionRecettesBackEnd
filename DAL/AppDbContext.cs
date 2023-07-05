@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using AutomotiveApi.Models.Entities.Gestion;
 using AutomotiveApi.Models.Entities.Param;
+using Bogus;
 
 
 namespace AutomotiveApi.DAL
@@ -113,6 +114,20 @@ namespace AutomotiveApi.DAL
                     .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("FK_Offre_id_vehicule");
             });
+
+            modelBuilder
+        .Entity<Agence>()
+        .HasData(DataSeeder.seedAgence().Generate(10));
+
+            modelBuilder.Entity<Marque>()
+        .HasData(DataSeeder.seedMarque().Generate(10));
+
+            modelBuilder.Entity<Modele>().HasData(DataSeeder.seedModele().Generate(10));
+
+            modelBuilder.Entity<User>().HasData(DataSeeder.seedUser().Generate(10));
+            
+
+
 
             OnModelCreatingPartial(modelBuilder);
         }
