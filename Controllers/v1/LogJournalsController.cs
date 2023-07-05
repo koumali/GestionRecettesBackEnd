@@ -21,7 +21,7 @@ namespace AutomotiveApi.Controllers.v1
         }
 
 
-        [HttpGet("")]
+        [HttpGet]
         [Authorize(Roles = "Admin")]
         public ActionResult<IEnumerable<Log_journal>> GetLog_journals()
         {

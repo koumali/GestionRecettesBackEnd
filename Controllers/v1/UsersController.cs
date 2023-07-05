@@ -22,7 +22,7 @@ namespace AutomotiveApi.Controllers.v1
         }
 
 
-        [HttpGet("")]
+        [HttpGet]
         [Authorize(Roles = "Admin")]
         public async Task<ActionResult<IEnumerable<User>>> GetUsers()
         {
@@ -45,7 +45,7 @@ namespace AutomotiveApi.Controllers.v1
         }
 
         //add user
-        [HttpPost]
+        [HttpPost("Insert")]
         [Authorize(Roles = "Admin")]
         public async Task<ActionResult<User>> Add(UserDto userRequest)
         {
@@ -53,7 +53,7 @@ namespace AutomotiveApi.Controllers.v1
             try
             {
                 var newUser = await _userService.CreateAsync(user);
-                return CreatedAtAction(nameof(GetUserById), new { id = newUser.Id }, newUser);
+                return Ok(newUser);
             }
             catch (Exception ex)
             {
@@ -64,7 +64,7 @@ namespace AutomotiveApi.Controllers.v1
 
         //update user
 
-        [HttpPut]
+        [HttpPut("Update")]
         [Authorize(Roles = "Admin")]
         public async Task<ActionResult<User>> Update(UserUpdateDto userRequest)
         {
@@ -84,7 +84,7 @@ namespace AutomotiveApi.Controllers.v1
 
         //delete user
 
-        [HttpDelete("{id}")]
+        [HttpDelete("Delete/{id}")]
         [Authorize(Roles = "Admin")]
         public async Task<ActionResult<bool>> Delete(int id)
         {

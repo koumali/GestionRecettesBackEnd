@@ -1,13 +1,17 @@
 using AutomotiveApi.DAL;
 using AutomotiveApi.Models.Entities.Gestion;
 using AutomotiveApi.Services.Gestion.Interfaces;
+using Microsoft.EntityFrameworkCore;
 
 namespace AutomotiveApi.Services.Gestion
 {
     public class OffreService : GenericDataService<Offre>, IOffre
     {
+        private readonly AppDbContext _context;
+
         public OffreService(AppDbContext context) : base(context)
         {
+            _context = context;
         }
 
         // public Offre? add(Offre Offre)
@@ -32,6 +36,10 @@ namespace AutomotiveApi.Services.Gestion
         // }
         //
         //
+        public new async Task<IEnumerable<Offre>> GetAllAsync()
+        {
+            return await _context.Offres.Include(o => o.Vehicule).ToListAsync();
+        }
         // public IEnumerable<Offre> getOffres()
         // {
         //     return _context.Offres.Include(o => o.Vehicule).ToList();
