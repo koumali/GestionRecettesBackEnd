@@ -31,7 +31,7 @@ namespace AutomotiveApi.DAL
         public virtual DbSet<Log_journal> log_journal { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-        {
+        {            
         }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
