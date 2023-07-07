@@ -37,7 +37,10 @@ namespace AutomotiveApi.Services.Gestion
         //
         public new async Task<IEnumerable<Vehicule>> GetAllAsync()
         {
-            return await _context.Vehicules.Include(v => v.Modele).ThenInclude(m => m.Marque).Include(v => v.Agence)
+            return await _context.Vehicules
+                .Include(v => v.Agence)
+                .Include(v => v.Modele)
+                .ThenInclude(m => m.Marque)
                 .ToListAsync();
         }
         // public IEnumerable<Vehicule> getVehicules()
