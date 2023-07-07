@@ -16,9 +16,9 @@ namespace AutomotiveApi.Services.Auth
             _jwtService = jwtService;
         }
 
-        public LoginResponse? login(string email, string password)
+        public async Task<LoginResponse?> login(string email, string password)
         {
-            var user = _userService.findByEmail(email);
+            var user = await _userService.findByEmail(email);
             if (user == null)
             {
                 return null;

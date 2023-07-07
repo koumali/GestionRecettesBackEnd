@@ -28,6 +28,20 @@ namespace AutomotiveApi.Controllers.v1
             var offres = await _offreservice.GetAllAsync();
             return Ok(offres);
         }
+
+        [HttpGet("public/offres")] // Route for public users
+        [AllowAnonymous]
+        public async Task<ActionResult<IEnumerable<Offre>>> GetAgencesForPublic()
+        {
+            return Ok(await _offreservice.GetAllAsync());
+        }
+        [HttpPost("public/offres/Load/{id}")]
+        [AllowAnonymous]
+        public async Task<ActionResult<Offre>> GetOffreByIdPublic(int id)
+        {
+            var offre = await _offreservice.GetByIdAsync(id);
+            return Ok(offre);
+        }
         //<summary>
         //Add Offre
         //</summary>
@@ -75,5 +89,6 @@ namespace AutomotiveApi.Controllers.v1
             var updatedOffre = await _offreservice.UpdateAsync(offre);
             return Ok(updatedOffre);
         }
+        
     }
 }

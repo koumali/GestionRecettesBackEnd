@@ -14,15 +14,15 @@ namespace AutomotiveApi.Services.Param
             _context = context;
         }
 
-        public User? findByEmail(string email)
+        public Task<User?> findByEmail(string email)
         {
-            var user = _context.Users.Where(u => u.Email == email).Include(u => u.Role).FirstOrDefault();
+            var user = _context.Users.Where(u => u.Email == email).Include(u => u.Role).Include(u => u.Agence).FirstOrDefaultAsync();
             return user;
         }
 
         public new async Task<User> CreateAsync(User user)
         {
-            User? userExists = findByEmail(user.Email);
+            User? userExists = await findByEmail(user.Email);
             if (userExists != null)
             {
                 throw new Exception("User already exists");
@@ -44,41 +44,27 @@ namespace AutomotiveApi.Services.Param
             }
         }
 
-        // public User? add(User user)
-        // {
-        //     User? userExists = findByEmail(user.Email);
-        //     if (userExists != null)
-        //     {
-        //         throw new Exception("User already exists");
-        //     }
-        //
-        //     try
-        //     {
-        //         user.Password = BCrypt.Net.BCrypt.HashPassword(user.Password);
-        //
-        //         _context.Users.Add(user);
-        //         _context.SaveChanges();
-        //         // return user with role
-        //         user.Role = _context.Roles.Where(r => r.Id == user.IdRole).FirstOrDefault();
-        //         return user;
-        //     }
-        //     catch (Exception ex)
-        //     {
-        //         throw new Exception(ex.Message);
-        //     }
-        // }
-
         public new async Task<IEnumerable<User>> GetAllAsync()
         {
-            var users = await _context.Users.Where(u => u.DeletedAt == null).Include(u => u.Role).ToListAsync();
+            var users = await _context.Users.Where(u => u.DeletedAt == null).Include(u => u.Role).Include(u => u.Agence).Select
+            (
+                u => new User
+                {
+                    Id = u.Id,
+                    FirstName = u.FirstName,
+                    LastName = u.LastName,
+                    Email = u.Email,
+                    IsActive = u.IsActive,
+                    IdRole = u.IdRole,
+                    IdAgence = u.IdAgence,
+                    Role = u.Role,
+                    Agence = u.Agence
+                }
+            ).ToListAsync();
+
             return users;
         }
 
-        // public IEnumerable<User> getUsers()
-        // {
-        //     var users = _context.Users.Where(u => u.DeletedAt == null).Include(u => u.Role).ToList();
-        //     return users;
-        // }
 
         public new async Task<User?> GetByIdAsync(int id)
         {
@@ -86,64 +72,9 @@ namespace AutomotiveApi.Services.Param
             return user;
         }
 
-        // public User? findById(int id)
-        // {
-        //     var user = _context.Users.Where(u => u.Id == id).Include(u => u.Role).FirstOrDefault();
-        //     return user;
-        // }
-
-        // public User? update(User user)
-        //
-        // {
-        //     Console.WriteLine("user id: " + user.Id);
-        //     var userExists = findById(user.Id);
-        //     if (userExists == null)
-        //     {
-        //         throw new Exception("User not found");
-        //     }
-        //
-        //     try
-        //     {
-        //         userExists.FirstName = user.FirstName;
-        //         userExists.LastName = user.LastName;
-        //         userExists.Email = user.Email;
-        //         userExists.IsActive = user.IsActive;
-        //         userExists.IdRole = user.IdRole;
-        //         userExists.IdAgence = user.IdAgence;
-        //
-        //         _context.SaveChanges();
-        //
-        //         return userExists;
-        //     }
-        //     catch (Exception ex)
-        //     {
-        //         throw new Exception(ex.Message);
-        //     }
-        // }
-
-        // public User? delete(int id)
-        // {
-        //     var user = _context.Users.Where(u => u.Id == id).FirstOrDefault();
-        //     if (user == null)
-        //     {
-        //         throw new Exception("User not found");
-        //     }
-        //
-        //     try
-        //     {
-        //         user.DeletedAt = DateTime.Now;
-        //         _context.SaveChanges();
-        //         return user;
-        //     }
-        //     catch (Exception ex)
-        //     {
-        //         throw new Exception(ex.Message);
-        //     }
-        // }
-
-        public bool changePassword(int id, string newPassword)
+        public async Task<bool> changePassword(int id, string newPassword)
         {
-            var user = _context.Users.FirstOrDefault(u => u.Id == id);
+            var user = await _context.Users.Where(u => u.Id == id).FirstOrDefaultAsync();
             if (user == null)
             {
                 throw new Exception("User not found");
@@ -159,6 +90,39 @@ namespace AutomotiveApi.Services.Param
             {
                 throw new Exception(ex.Message);
             }
+        }
+
+        public new async Task<User> UpdateAsync(User user)
+        {
+            var userExists = await _context.Users.Where(u => u.Id == user.Id).FirstOrDefaultAsync();
+            if (userExists == null)
+            {
+                throw new Exception("User not found");
+            }
+
+            //verifier si l'email existe deja
+            var emailExists = await _context.Users.Where(u => u.Email == user.Email && u.Id != user.Id).FirstOrDefaultAsync();
+            if (emailExists != null)
+            {
+                throw new Exception("Email already exists");
+            }
+
+            try
+            {
+                userExists.FirstName = user.FirstName;
+                userExists.LastName = user.LastName;
+                userExists.Email = user.Email;
+                userExists.IdRole = user.IdRole;
+                userExists.IdAgence = user.IdAgence;
+                userExists.UpdatedAt = DateTime.Now;
+                await _context.SaveChangesAsync();
+                return userExists;
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+
         }
     }
 }

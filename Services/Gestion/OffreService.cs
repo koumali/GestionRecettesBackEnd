@@ -8,65 +8,31 @@ namespace AutomotiveApi.Services.Gestion
     public class OffreService : GenericDataService<Offre>, IOffre
     {
         private readonly AppDbContext _context;
-
         public OffreService(AppDbContext context) : base(context)
         {
             _context = context;
         }
-
-        // public Offre? add(Offre Offre)
-        // {
-        //     try
-        //     {
-        //         _context.Offres.Add(Offre);
-        //         _context.SaveChanges();
-        //         return Offre;
-        //     }
-        //     catch (Exception ex)
-        //     {
-        //         throw new Exception(ex.Message);
-        //     }
-        // }
-        //
-        //
-        // public Offre? findById(int id)
-        // {
-        //     var Offre = _context.Offres.Where(u => u.id == id).FirstOrDefault();
-        //     return Offre;
-        // }
-        //
-        //
+        
         public new async Task<IEnumerable<Offre>> GetAllAsync()
         {
             return await _context.Offres.Include(o => o.Vehicule).ToListAsync();
         }
-        // public IEnumerable<Offre> getOffres()
-        // {
-        //     return _context.Offres.Include(o => o.Vehicule).ToList();
-        // }
-        //
-        // public void delete(int id)
-        // {
-        //     var Offre = _context.Offres.Find(id);
-        //     if (Offre != null)
-        //     {
-        //         _context.Offres.Remove(Offre);
-        //         _context.SaveChanges();
-        //     }
-        // }
-        //
-        // public Offre update(Offre updatedOffre)
-        // {
-        //     try
-        //     {
-        //         _context.Offres.Update(updatedOffre);
-        //         _context.SaveChanges();
-        //         return updatedOffre;
-        //     }
-        //     catch (Exception ex)
-        //     {
-        //         throw new Exception(ex.Message);
-        //     }
-        // }
+         public new async Task<Offre?> GetByIdAsync(int id)
+         {
+             return await _context.Offres.Where(u => u.Id == id)
+                                        .Include(o=>o.Vehicule.Agence)
+                                        .Include(o => o.Vehicule.Modele)
+                                            .ThenInclude(m => m.Marque)
+                                        .FirstOrDefaultAsync(); ;
+         }
+        
+        
+        public new async Task<IEnumerable<Offre>> GetAllAsync()
+         {
+             return await _context.Offres.Include(o => o.Vehicule.Agence)
+                                          .Include(o => o.Vehicule.Modele)
+                                              .ThenInclude(m => m.Marque)
+                                          .ToListAsync();
+        }
     }
 }
