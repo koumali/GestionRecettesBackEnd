@@ -4,7 +4,7 @@ namespace AutomotiveApi.Services.Gestion.Interfaces
 {
     public interface IClient :  IGenericData<Client>
     {
-        // IEnumerable<Client> getClients();
+        Task<List<Contrat>> GetClientsAgence(int id);
         // Client? findById(int id);
         // Client? add(Client client);
         // void delete(int id);

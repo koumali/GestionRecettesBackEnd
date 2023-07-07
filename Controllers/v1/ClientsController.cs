@@ -28,6 +28,16 @@ namespace AutomotiveApi.Controllers.v1
             var clients = await _clientService.GetAllAsync();
             return Ok(clients);
         }
+        
+        // get clients of a specific agence
+        [HttpGet("{idAgence}")]
+        [Authorize(Roles = "Commercial, Gerant")]
+        public async Task<ActionResult<IEnumerable<Client>>> GetClientsAgence(int idAgence)
+        {
+            var clients = await _clientService.GetClientsAgence(idAgence);
+            return Ok(clients);
+        }
+        
         //<summary>
         //Add Client
         //</summary>

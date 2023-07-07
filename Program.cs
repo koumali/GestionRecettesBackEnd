@@ -87,6 +87,7 @@ builder.Services.AddAuthorization(options =>
     options.AddPolicy("RequireUserRole", p => p.RequireRole("Client"));
     options.AddPolicy("RequireUserRole", p => p.RequireRole("Gearnt"));
     options.AddPolicy("RequireUserRole", p => p.RequireRole("Agent"));
+    options.AddPolicy("RequireUserRole", p => p.RequireRole("Commercial"));
 });
 
 

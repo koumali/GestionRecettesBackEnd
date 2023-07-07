@@ -12,22 +12,11 @@ namespace AutomotiveApi.Services.Gestion
         {
             _context = context;
         }
-
-        // public Offre? add(Offre Offre)
-        // {
-        //     try
-        //     {
-        //         _context.Offres.Add(Offre);
-        //         _context.SaveChanges();
-        //         return Offre;
-        //     }
-        //     catch (Exception ex)
-        //     {
-        //         throw new Exception(ex.Message);
-        //     }
-        // }
-        //
-        //
+        
+        public new async Task<IEnumerable<Offre>> GetAllAsync()
+        {
+            return await _context.Offres.Include(o => o.Vehicule).ToListAsync();
+        }
          public new async Task<Offre?> GetByIdAsync(int id)
          {
              return await _context.Offres.Where(u => u.Id == id)
@@ -45,29 +34,5 @@ namespace AutomotiveApi.Services.Gestion
                                               .ThenInclude(m => m.Marque)
                                           .ToListAsync();
         }
-        //
-        // public void delete(int id)
-        // {
-        //     var Offre = _context.Offres.Find(id);
-        //     if (Offre != null)
-        //     {
-        //         _context.Offres.Remove(Offre);
-        //         _context.SaveChanges();
-        //     }
-        // }
-        //
-        // public Offre update(Offre updatedOffre)
-        // {
-        //     try
-        //     {
-        //         _context.Offres.Update(updatedOffre);
-        //         _context.SaveChanges();
-        //         return updatedOffre;
-        //     }
-        //     catch (Exception ex)
-        //     {
-        //         throw new Exception(ex.Message);
-        //     }
-        // }
     }
 }
