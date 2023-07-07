@@ -61,7 +61,7 @@ namespace AutomotiveApi.Services.Param
                     Agence = u.Agence
                 }
             ).ToListAsync();
-            
+
             return users;
         }
 
@@ -98,6 +98,13 @@ namespace AutomotiveApi.Services.Param
             if (userExists == null)
             {
                 throw new Exception("User not found");
+            }
+
+            //verifier si l'email existe deja
+            var emailExists = await _context.Users.Where(u => u.Email == user.Email && u.Id != user.Id).FirstOrDefaultAsync();
+            if (emailExists != null)
+            {
+                throw new Exception("Email already exists");
             }
 
             try

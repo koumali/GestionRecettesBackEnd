@@ -45,7 +45,7 @@ namespace AutomotiveApi.Controllers.v1
         }
 
         //add user
-        [HttpPost("Insert")]
+        [HttpPost("")]
         [Authorize(Roles = "Admin")]
         public async Task<ActionResult<User>> Add(UserDto userRequest)
         {
@@ -58,13 +58,13 @@ namespace AutomotiveApi.Controllers.v1
             catch (Exception ex)
             {
                 // add message to errors list
-                return BadRequest(new { message = ex.Message });
+                return BadRequest(new { errors = ex.Message });
             }
         }
 
         //update user
 
-        [HttpPut("Update")]
+        [HttpPut("")]
         [Authorize(Roles = "Admin")]
         public async Task<ActionResult<User>> Update(UserUpdateDto userRequest)
         {
@@ -78,13 +78,13 @@ namespace AutomotiveApi.Controllers.v1
             catch (Exception ex)
             {
                 // add message to errors list
-                return BadRequest(new { message = ex.Message });
+                return BadRequest(new { errors = ex.Message });
             }
         }
 
         //delete user
 
-        [HttpDelete("Delete/{id}")]
+        [HttpDelete("{id}")]
         [Authorize(Roles = "Admin")]
         public async Task<ActionResult<bool>> Delete(int id)
         {
@@ -96,7 +96,7 @@ namespace AutomotiveApi.Controllers.v1
             catch (Exception ex)
             {
                 // add message to errors list
-                return BadRequest(new { message = ex.Message });
+                return BadRequest(new { errors = ex.Message });
             }
         }
 
@@ -118,7 +118,7 @@ namespace AutomotiveApi.Controllers.v1
             catch (Exception ex)
             {
                 // add message to errors list
-                return BadRequest(new { message = ex.Message });
+                return BadRequest(new { errors = ex.Message });
             }
         }
     }
