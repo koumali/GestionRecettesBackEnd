@@ -63,7 +63,7 @@ namespace AutomotiveApi.Controllers.v1
         }
 
         //update user
-        [HttpPut("")
+        [HttpPut("")]
         [Authorize(Roles = "Admin")]
         public async Task<ActionResult<User>> Update(UserUpdateDto userRequest)
         {
@@ -83,7 +83,7 @@ namespace AutomotiveApi.Controllers.v1
 
         //delete user
 
-        [HttpDelete("Delete/{id}")]
+        [HttpDelete("{id}")]
         [Authorize(Roles = "Admin")]
         public async Task<ActionResult<bool>> Delete(int id)
         {
