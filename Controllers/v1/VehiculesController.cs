@@ -29,6 +29,14 @@ namespace AutomotiveApi.Controllers.v1
             return Ok(vehicules);
         }
 
+        [HttpGet("{idAgence}")]
+        [Authorize(Roles = "Commercial, Agent, Gerant")]
+        public async Task<ActionResult<IEnumerable<Vehicule>>> GetVehiculesAgence(int idAgence)
+        {
+            var vehicules = await _vehiculeService.GetVehiculesAgence(idAgence);
+            return Ok(vehicules);
+        }
+
         [HttpPost("Load/{id}")]
         [Authorize(Roles = "Admin")]
         public async Task<ActionResult<Vehicule>> GetRoleById(int id)

@@ -1,64 +1,33 @@
 using AutomotiveApi.DAL;
 using AutomotiveApi.Models.Entities.Gestion;
 using AutomotiveApi.Services.Gestion.Interfaces;
+using Microsoft.EntityFrameworkCore;
 
 namespace AutomotiveApi.Services.Gestion
 {
     public class MarqueService : GenericDataService<Marque>, IMarque
     {
+        private readonly AppDbContext _context;
+
         public MarqueService(AppDbContext context) : base(context)
         {
+            _context = context;
         }
 
-        // public Marque? add(Marque Marque)
-        // {
-        //     try
-        //     {
-        //         _context.Marques.Add(Marque);
-        //         _context.SaveChanges();
-        //         return Marque;
-        //     }
-        //     catch (Exception ex)
-        //     {
-        //         throw new Exception(ex.Message);
-        //     }
-        // }
-        //
-        //
-        // public Marque? findById(int id)
-        // {
-        //     var Marque = _context.Marques.Where(u => u.id == id).FirstOrDefault();
-        //     return Marque;
-        // }
-        //
-        //
-        // public IEnumerable<Marque> getMarques()
-        // {
-        //     return _context.Marques.ToList();
-        // }
-        //
-        // public void delete(int id)
-        // {
-        //     var Marque = _context.Marques.Find(id);
-        //     if (Marque != null)
-        //     {
-        //         _context.Marques.Remove(Marque);
-        //         _context.SaveChanges();
-        //     }
-        // }
-        //
-        // public Marque update(Marque updatedMarque)
-        // {
-        //     try
-        //     {
-        //         _context.Marques.Update(updatedMarque);
-        //         _context.SaveChanges();
-        //         return updatedMarque;
-        //     }
-        //     catch (Exception ex)
-        //     {
-        //         throw new Exception(ex.Message);
-        //     }
-        // }
+        public async Task<IEnumerable<Marque>> GetMarquesAgence(int idAgence)
+        {
+            var listVehicules = await _context.Vehicules
+                .Include(m => m.Modele)
+                .ThenInclude(m => m.Marque)
+                .Where(v => v.IdAgence == idAgence)
+                .ToListAsync();
+            var listMarques = new List<Marque>();
+            listVehicules.ForEach(v => listMarques.Add(new Marque
+            {
+                Id = v.Modele.Marque.Id,
+                Name = v.Modele.Marque.Name,
+            }));
+            return listMarques.DistinctBy(m => m.Name);
+        }
     }
 }

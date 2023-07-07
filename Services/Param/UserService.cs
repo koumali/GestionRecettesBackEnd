@@ -20,6 +20,14 @@ namespace AutomotiveApi.Services.Param
             return user;
         }
 
+        public async Task<IEnumerable<User>> GetUsersAgence(int idAgence)
+        {
+            return await _context.Users
+                .Include(u => u.Role)
+                .Where(u => u.IdAgence == idAgence)
+                .ToListAsync();
+        }
+
         public new async Task<User> CreateAsync(User user)
         {
             User? userExists = findByEmail(user.Email);
@@ -44,41 +52,11 @@ namespace AutomotiveApi.Services.Param
             }
         }
 
-        // public User? add(User user)
-        // {
-        //     User? userExists = findByEmail(user.Email);
-        //     if (userExists != null)
-        //     {
-        //         throw new Exception("User already exists");
-        //     }
-        //
-        //     try
-        //     {
-        //         user.Password = BCrypt.Net.BCrypt.HashPassword(user.Password);
-        //
-        //         _context.Users.Add(user);
-        //         _context.SaveChanges();
-        //         // return user with role
-        //         user.Role = _context.Roles.Where(r => r.Id == user.IdRole).FirstOrDefault();
-        //         return user;
-        //     }
-        //     catch (Exception ex)
-        //     {
-        //         throw new Exception(ex.Message);
-        //     }
-        // }
-
         public new async Task<IEnumerable<User>> GetAllAsync()
         {
             var users = await _context.Users.Where(u => u.DeletedAt == null).Include(u => u.Role).ToListAsync();
             return users;
         }
-
-        // public IEnumerable<User> getUsers()
-        // {
-        //     var users = _context.Users.Where(u => u.DeletedAt == null).Include(u => u.Role).ToList();
-        //     return users;
-        // }
 
         public new async Task<User?> GetByIdAsync(int id)
         {

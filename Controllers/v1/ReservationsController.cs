@@ -28,6 +28,14 @@ namespace AutomotiveApi.Controllers.v1
             var reservations = await _reservationService.GetAllAsync();
             return Ok(reservations);
         }
+
+        [HttpGet("{idAgence}")]
+        [Authorize(Roles = "Commercial, Gerant")]
+        public async Task<ActionResult<IEnumerable<Reservation>>> GetReservationsAgence(int idAgence)
+        {
+            var reservations = await _reservationService.GetReservationsAgence(idAgence);
+            return Ok(reservations);
+        }
         //<summary>
         //Add Reservation
         //</summary>

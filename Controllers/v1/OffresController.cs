@@ -28,6 +28,14 @@ namespace AutomotiveApi.Controllers.v1
             var offres = await _offreservice.GetAllAsync();
             return Ok(offres);
         }
+
+        [HttpGet("{idAgence}")]
+        [Authorize(Roles = "Commercial, Gerant")]
+        public async Task<ActionResult<IEnumerable<Offre>>> GetOffresAgence(int idAgence)
+        {
+            var offres = await _offreservice.GetOffresAgence(idAgence);
+            return Ok(offres);
+        }
         //<summary>
         //Add Offre
         //</summary>

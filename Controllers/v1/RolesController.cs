@@ -25,6 +25,14 @@ namespace AutomotiveApi.Controllers.v1
             var roles = await _roleService.GetAllAsync();
             return Ok(roles);
         }
+        
+        [HttpGet("{idAgence}")]
+        [Authorize(Roles = "Gerant")]
+        public async Task<ActionResult<IEnumerable<Role>>> GetRolesAgence(int idAgence)
+        {
+            var roles = await _roleService.GetRolesAgence(idAgence);
+            return Ok(roles);
+        }
         //<summary>
         //Add role
         //</summary>

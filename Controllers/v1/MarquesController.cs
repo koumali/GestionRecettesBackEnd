@@ -28,6 +28,14 @@ namespace AutomotiveApi.Controllers.v1
             var marques = await _marqueService.GetAllAsync();
             return Ok(marques);
         }
+        
+        [HttpGet("{id}")]
+        [Authorize(Roles = "Commercial, Agent, Gerant")]
+        public async Task<ActionResult<IEnumerable<Marque>>> GetMarquesAgence(int id)
+        {
+            var marques = await _marqueService.GetMarquesAgence(id);
+            return Ok(marques);
+        }
 
         [HttpPost("Load/{id}")]
         [Authorize(Roles = "Admin")]
