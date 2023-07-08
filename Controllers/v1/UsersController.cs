@@ -44,7 +44,7 @@ namespace AutomotiveApi.Controllers.v1
         //</summary>
 
         //get user by id
-        [HttpGet("Load/{id}")]
+        [HttpGet("{id}")]
         [Authorize(Roles = "Admin")]
         public async Task<ActionResult<User>> GetUserById(int id)
         {
