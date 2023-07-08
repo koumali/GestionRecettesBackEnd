@@ -20,6 +20,14 @@ namespace AutomotiveApi.Services.Param
             return user;
         }
 
+        public async Task<IEnumerable<User>> GetUsersAgence(int idAgence)
+        {
+            return await _context.Users
+                .Include(u => u.Role)
+                .Where(u => u.IdAgence == idAgence)
+                .ToListAsync();
+        }
+
         public new async Task<User> CreateAsync(User user)
         {
             User? userExists = await findByEmail(user.Email);

@@ -4,7 +4,7 @@ namespace AutomotiveApi.Services.Gestion.Interfaces
 {
     public interface IOffre : IGenericData<Offre>
     {
-        // IEnumerable<Offre> getOffres();
+        Task<IEnumerable<Offre>> GetOffresAgence(int idAgence);
         // Offre? findById(int id);
         // Offre? add(Offre Offre);
         // void delete(int id);

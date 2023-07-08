@@ -1,69 +1,32 @@
 using AutomotiveApi.DAL;
 using AutomotiveApi.Models.Entities.Param;
 using AutomotiveApi.Services.Gestion;
+using Microsoft.EntityFrameworkCore;
 
 namespace AutomotiveApi.Services.Param
 {
     public class RoleService : GenericDataService<Role>, IRole
     {
+        private readonly AppDbContext _context;
+
         public RoleService(AppDbContext context) : base(context)
         {
+            _context = context;
         }
 
-        // public Role? add(Role role)
-        // {
-        //     try
-        //     {
-        //         _context.Roles.Add(role);
-        //         _context.SaveChanges();
-        //         return role;
-        //     }
-        //     catch (Exception ex)
-        //     {
-        //         throw new Exception(ex.Message);
-        //     }
-        // }
-        //
-        //
-        // public Role? findById(int id)
-        // {
-        //     var role = _context.Roles.FirstOrDefault(u => u.Id == id);
-        //     return role;
-        // }
-        //
-        // public Role? findByName(string name)
-        // {
-        //     var role = _context.Roles.FirstOrDefault(u => u.Name == name);
-        //     return role;
-        // }
-        //
-        // public IEnumerable<Role> getRoles()
-        // {
-        //     return _context.Roles.ToList();
-        // }
-        //
-        // public void delete(int id)
-        // {
-        //     var role = _context.Roles.Find(id);
-        //     if (role != null)
-        //     {
-        //         _context.Roles.Remove(role);
-        //         _context.SaveChanges();
-        //     }
-        // }
-        //
-        // public Role update(Role updatedRole)
-        // {
-        //     try
-        //     {
-        //         _context.Roles.Update(updatedRole);
-        //         _context.SaveChanges();
-        //         return updatedRole;
-        //     }
-        //     catch (Exception ex)
-        //     {
-        //         throw new Exception(ex.Message);
-        //     }
-        // }
+        public async Task<IEnumerable<Role>> GetRolesAgence(int idAgence)
+        {
+            var listUers = await _context.Users
+                .Include(u => u.Role)
+                .Where(u => u.IdAgence == idAgence && u.IdAgence != null)
+                .ToListAsync();
+            var listRoles = new List<Role>();
+            listUers.ForEach(u => listRoles.Add(new Role
+            {
+                Id = u.Role.Id,
+                Name = u.Role.Name
+            }));
+            return listRoles.DistinctBy(r => r.Name);
+        }
     }
 }

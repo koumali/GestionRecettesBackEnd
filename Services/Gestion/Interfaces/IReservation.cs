@@ -4,7 +4,7 @@ namespace AutomotiveApi.Services.Gestion.Interfaces
 {
     public interface IReservation :  IGenericData<Reservation>
     {
-        // IEnumerable<Reservation> getReservations();
+        Task<IEnumerable<Reservation>> GetReservationsAgence(int idAgence);
         // Reservation? findById(int id);
         // Reservation? add(Reservation Reservation);
         // void delete(int id);

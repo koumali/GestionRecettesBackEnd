@@ -14,59 +14,29 @@ namespace AutomotiveApi.Services.Gestion
             _context = context;
         }
 
-        // public Modele? add(Modele modele)
-        // {
-        //     try
-        //     {
-        //         _context.Modeles.Add(modele);
-        //         _context.SaveChanges();
-        //         return modele;
-        //     }
-        //     catch (Exception ex)
-        //     {
-        //         throw new Exception(ex.Message);
-        //     }
-        // }
-        //
-        //
-        // public Modele? findById(int id)
-        // {
-        //     var Modele = _context.Modeles.Where(u => u.id == id).FirstOrDefault();
-        //     return Modele;
-        // }
-        //
-        //
         public new async Task<IEnumerable<Modele>> GetAllAsync()
         {
-            return await _context.Modeles.Include(o => o.Marque).ToListAsync();
+            return await _context.Modeles
+                .Include(o => o.Marque)
+                .ToListAsync();
         }
-        // public IEnumerable<Modele> getModeles()
-        // {
-        //     return _context.Modeles.Include(o => o.Marque).ToList();
-        // }
-        //
-        // public void delete(int id)
-        // {
-        //     var modele = _context.Modeles.Find(id);
-        //     if (modele != null)
-        //     {
-        //         _context.Modeles.Remove(modele);
-        //         _context.SaveChanges();
-        //     }
-        // }
-        //
-        // public Modele update(Modele updatedModele)
-        // {
-        //     try
-        //     {
-        //         _context.Modeles.Update(updatedModele);
-        //         _context.SaveChanges();
-        //         return updatedModele;
-        //     }
-        //     catch (Exception ex)
-        //     {
-        //         throw new Exception(ex.Message);
-        //     }
-        // }
+
+        public async Task<IEnumerable<Modele>> GetModelesAgence(int idAgence)
+        {
+            var listVehicules = await _context.Vehicules
+                .Include(m => m.Modele)
+                .ThenInclude(o => o.Marque)
+                .Where(v => v.IdAgence == idAgence)
+                .ToListAsync();
+            var listModels = new List<Modele>();
+            listVehicules.ForEach(v => listModels.Add(new Modele
+            {
+                Id = v.Modele.Id,
+                Name = v.Modele.Name,
+                IdMarque = v.Modele.IdMarque,
+                Marque = v.Modele.Marque
+            }));
+            return listModels.DistinctBy(m => m.Name);
+        }
     }
 }

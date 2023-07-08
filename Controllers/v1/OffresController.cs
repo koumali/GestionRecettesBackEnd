@@ -29,6 +29,13 @@ namespace AutomotiveApi.Controllers.v1
             return Ok(offres);
         }
 
+
+        [HttpGet("{idAgence}")]
+        [Authorize(Roles = "Commercial, Gerant")]
+        public async Task<ActionResult<IEnumerable<Offre>>> GetOffresAgence(int idAgence)
+        {
+            var offres = await _offreservice.GetOffresAgence(idAgence);
+            return Ok(offres);
         [HttpGet("public/offres")] // Route for public users
         [AllowAnonymous]
         public async Task<ActionResult<IEnumerable<Offre>>> GetAgencesForPublic()

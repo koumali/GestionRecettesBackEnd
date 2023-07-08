@@ -30,13 +30,21 @@ namespace AutomotiveApi.Controllers.v1
             return Ok(users);
         }
 
+        [HttpGet("{idAgence}")]
+        [Authorize(Roles = "Gerant")]
+        public async Task<ActionResult<IEnumerable<User>>> GetUsersAgence(int idAgence)
+        {
+            var users = await _userService.GetUsersAgence(idAgence);
+            return Ok(users);
+        }
+
         //<summary>
         //Get user by id
         //testing
         //</summary>
 
         //get user by id
-        [HttpGet("{id}")]
+        [HttpGet("Load/{id}")]
         [Authorize(Roles = "Admin")]
         public async Task<ActionResult<User>> GetUserById(int id)
         {

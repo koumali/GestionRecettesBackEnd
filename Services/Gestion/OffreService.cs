@@ -12,11 +12,20 @@ namespace AutomotiveApi.Services.Gestion
         {
             _context = context;
         }
-        
+
         public new async Task<IEnumerable<Offre>> GetAllAsync()
         {
             return await _context.Offres.Include(o => o.Vehicule).ToListAsync();
         }
+
+
+        public async Task<IEnumerable<Offre>> GetOffresAgence(int idAgence)
+        {
+            return await _context.Offres
+                .Include(o => o.Vehicule)
+                .Where(o => o.Vehicule.Agence.Id == idAgence)
+                .ToListAsync();
+
          public new async Task<Offre?> GetByIdAsync(int id)
          {
              return await _context.Offres.Where(u => u.Id == id)
@@ -33,6 +42,7 @@ namespace AutomotiveApi.Services.Gestion
                                           .Include(o => o.Vehicule.Modele)
                                               .ThenInclude(m => m.Marque)
                                           .ToListAsync();
+
         }
     }
 }

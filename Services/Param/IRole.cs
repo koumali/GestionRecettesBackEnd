@@ -6,7 +6,7 @@ namespace AutomotiveApi.Services.Param
 {
     public interface IRole : IGenericData<Role>
     {
-        // IEnumerable<Role> getRoles();
+        Task<IEnumerable<Role>> GetRolesAgence(int idAgence);
         // Role? findById(int id);
         // Role? add(Role role);
         // void delete(int id);
