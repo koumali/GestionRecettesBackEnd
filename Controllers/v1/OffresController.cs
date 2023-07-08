@@ -36,6 +36,7 @@ namespace AutomotiveApi.Controllers.v1
         {
             var offres = await _offreservice.GetOffresAgence(idAgence);
             return Ok(offres);
+        }
         [HttpGet("public/offres")] // Route for public users
         [AllowAnonymous]
         public async Task<ActionResult<IEnumerable<Offre>>> GetAgencesForPublic()
