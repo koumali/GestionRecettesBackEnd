@@ -53,7 +53,7 @@ namespace AutomotiveApi.Controllers.v1
         }
 
         //add user
-        [HttpPost("Insert")]
+        [HttpPost("")]
         [Authorize(Roles = "Admin")]
         public async Task<ActionResult<User>> Add(UserDto userRequest)
         {
@@ -66,13 +66,12 @@ namespace AutomotiveApi.Controllers.v1
             catch (Exception ex)
             {
                 // add message to errors list
-                return BadRequest(new { message = ex.Message });
+                return BadRequest(new { errors = ex.Message });
             }
         }
 
         //update user
-
-        [HttpPut("Update")]
+        [HttpPut("")]
         [Authorize(Roles = "Admin")]
         public async Task<ActionResult<User>> Update(UserUpdateDto userRequest)
         {
@@ -86,13 +85,13 @@ namespace AutomotiveApi.Controllers.v1
             catch (Exception ex)
             {
                 // add message to errors list
-                return BadRequest(new { message = ex.Message });
+                return BadRequest(new { errors = ex.Message });
             }
         }
 
         //delete user
 
-        [HttpDelete("Delete/{id}")]
+        [HttpDelete("{id}")]
         [Authorize(Roles = "Admin")]
         public async Task<ActionResult<bool>> Delete(int id)
         {
@@ -104,24 +103,29 @@ namespace AutomotiveApi.Controllers.v1
             catch (Exception ex)
             {
                 // add message to errors list
-                return BadRequest(new { message = ex.Message });
+                return BadRequest(new { errors = ex.Message });
             }
         }
 
         //change password
         [HttpPut("updatepassword")]
         [Authorize(Roles = "Admin")]
-        public ActionResult<User> ChangePassword(PasswordUpdateDto changePasswordDto)
+        public async Task<ActionResult> ChangePassword(PasswordUpdateDto changePasswordDto)
         {
             try
             {
-                var user = _userService.changePassword(changePasswordDto.Id, changePasswordDto.NewPassword);
-                return Ok(user);
+                var isChanged = await _userService.changePassword(changePasswordDto.Id, changePasswordDto.NewPassword);
+                if (isChanged)
+                {
+                    return Ok(new { message = "Password changed successfully" });
+                }
+
+                return BadRequest(new { message = "Password not changed" });
             }
             catch (Exception ex)
             {
                 // add message to errors list
-                return BadRequest(new { message = ex.Message });
+                return BadRequest(new { errors = ex.Message });
             }
         }
     }
