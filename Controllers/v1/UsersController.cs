@@ -30,7 +30,7 @@ namespace AutomotiveApi.Controllers.v1
             return Ok(users);
         }
 
-        [HttpGet("agences/{idAgence}")]
+        [HttpGet("agence/{idAgence}")]
         [Authorize(Roles = "Gerant")]
         public async Task<ActionResult<IEnumerable<User>>> GetUsersAgence(int idAgence)
         {
@@ -44,7 +44,7 @@ namespace AutomotiveApi.Controllers.v1
         //</summary>
 
         //get user by id
-        [HttpGet("Load/{id}")]
+        [HttpGet("{id}")]
         [Authorize(Roles = "Admin, Gerant")]
         public async Task<ActionResult<User>> GetUserById(int id)
         {
@@ -53,7 +53,7 @@ namespace AutomotiveApi.Controllers.v1
         }
 
         //add user
-        [HttpPost("")]
+        [HttpPost]
         [Authorize(Roles = "Admin, Gerant")]
         public async Task<ActionResult<User>> Add(UserDto userRequest)
         {
@@ -71,10 +71,15 @@ namespace AutomotiveApi.Controllers.v1
         }
 
         //update user
-        [HttpPut("")]
+        [HttpPut("{id}")]
         [Authorize(Roles = "Admin, Gerant")]
-        public async Task<ActionResult<User>> Update(UserUpdateDto userRequest)
+        public async Task<ActionResult<User>> Update(int id, UserUpdateDto userRequest)
         {
+            if (id != userRequest.Id)
+            {
+                return BadRequest(new { errors = "Invalid user id" });
+            }
+
             var user = _mapper.Map<User>(userRequest);
 
             try
@@ -108,10 +113,15 @@ namespace AutomotiveApi.Controllers.v1
         }
 
         //change password
-        [HttpPut("updatepassword")]
+        [HttpPut("{id}/password")]
         [Authorize(Roles = "Admin, Gerant")]
-        public async Task<ActionResult> ChangePassword(PasswordUpdateDto changePasswordDto)
+        public async Task<ActionResult> ChangePassword(int id,PasswordUpdateDto changePasswordDto)
         {
+            if (id != changePasswordDto.Id)
+            {
+                return BadRequest(new { errors = "Invalid user id" });
+            }
+            
             try
             {
                 var isChanged = await _userService.changePassword(changePasswordDto.Id, changePasswordDto.NewPassword);

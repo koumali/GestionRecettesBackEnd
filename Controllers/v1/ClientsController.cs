@@ -30,7 +30,7 @@ namespace AutomotiveApi.Controllers.v1
         }
 
         // get clients of a specific agence
-        [HttpGet("{idAgence}")]
+        [HttpGet("agence/{idAgence}")]
         [Authorize(Roles = "Commercial, Gerant")]
         public async Task<ActionResult<IEnumerable<Client>>> GetClientsAgence(int idAgence)
         {
@@ -42,7 +42,7 @@ namespace AutomotiveApi.Controllers.v1
         //Add Client
         //</summary>
 
-        [HttpPost("Insert")]
+        [HttpPost]
         [Authorize(Roles = "Admin, Commercial, Gerant")]
         public async Task<ActionResult<Client>> AddClient(ClientDto request)
         {
@@ -52,7 +52,7 @@ namespace AutomotiveApi.Controllers.v1
             return Ok(addedClient);
         }
 
-        [HttpPost("Load/{id}")]
+        [HttpGet("{id}")]
         [Authorize(Roles = "Admin, Gerant, Commercial")]
         public async Task<ActionResult<Client>> GetClientById(int id)
         {
@@ -60,7 +60,7 @@ namespace AutomotiveApi.Controllers.v1
             return Ok(client);
         }
 
-        [HttpDelete("Delete/{id}")]
+        [HttpDelete("{id}")]
         [Authorize(Roles = "Admin, Gerant, Commercial")]
         public async Task<ActionResult> DeleteClient(int id)
         {
@@ -68,7 +68,7 @@ namespace AutomotiveApi.Controllers.v1
             return Ok();
         }
 
-        [HttpPut("Update/{id}")]
+        [HttpPut("{id}")]
         [Authorize(Roles = "Admin, Gerant, Commercial")]
         public async Task<ActionResult<Client>> UpdateClient(int id, ClientDto request)
         {

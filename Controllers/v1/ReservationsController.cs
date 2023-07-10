@@ -29,7 +29,7 @@ namespace AutomotiveApi.Controllers.v1
             return Ok(reservations);
         }
 
-        [HttpGet("{idAgence}")]
+        [HttpGet("agence/{idAgence}")]
         [Authorize(Roles = "Commercial, Gerant")]
         public async Task<ActionResult<IEnumerable<Reservation>>> GetReservationsAgence(int idAgence)
         {
@@ -40,7 +40,7 @@ namespace AutomotiveApi.Controllers.v1
         //Add Reservation
         //</summary>
 
-        [HttpPost("Insert")]
+        [HttpPost]
         [Authorize(Roles = "Admin, Commercial, Gerant")]
         public async Task<ActionResult<Reservation>> AddReservation(ReservationDto request)
         {
@@ -49,7 +49,7 @@ namespace AutomotiveApi.Controllers.v1
             return Ok(addedReservation);
         }
 
-        [HttpPost("Load/{id}")]
+        [HttpGet("{id}")]
         [Authorize(Roles = "Admin, Commercial, Gerant")]
         public async Task<ActionResult<Reservation>> GetReservationById(int id)
         {
@@ -57,7 +57,7 @@ namespace AutomotiveApi.Controllers.v1
             return Ok(reservation);
         }
 
-        [HttpDelete("Delete/{id}")]
+        [HttpDelete("{id}")]
         [Authorize(Roles = "Admin, Commercial, Gerant")]
         public async Task<ActionResult> DeleteReservation(int id)
         {
@@ -65,7 +65,7 @@ namespace AutomotiveApi.Controllers.v1
             return Ok();
         }
 
-        [HttpPut("Update/{id}")]
+        [HttpPut("{id}")]
         [Authorize(Roles = "Admin, Commercial, Gerant")]
         public async Task<ActionResult<Reservation>> UpdateReservation(int id, ReservationDto request)
         {

@@ -29,15 +29,15 @@ namespace AutomotiveApi.Controllers.v1
             return Ok(marques);
         }
         
-        [HttpGet("{id}")]
+       [HttpGet("agence/{idAgence}")]
         [Authorize(Roles = "Commercial, Agent, Gerant")]
-        public async Task<ActionResult<IEnumerable<Marque>>> GetMarquesAgence(int id)
+        public async Task<ActionResult<IEnumerable<Marque>>> GetMarquesAgence(int idAgence)
         {
-            var marques = await _marqueService.GetMarquesAgence(id);
+            var marques = await _marqueService.GetMarquesAgence(idAgence);
             return Ok(marques);
         }
 
-        [HttpPost("Load/{id}")]
+        [HttpGet("{id}")]
         [Authorize(Roles = "Admin, Commercial, Agent, Gerant")]
         public async Task<ActionResult<Marque>> GetMarqueById(int id)
         {
@@ -48,7 +48,7 @@ namespace AutomotiveApi.Controllers.v1
         //Add Marque
         //</summary>
 
-        [HttpPost("Insert")]
+        [HttpPost]
         [Authorize(Roles = "Admin, Commercial, Agent, Gerant")]
         public async Task<ActionResult<Marque>> AddMarque(MarqueDto request)
         {
@@ -57,7 +57,7 @@ namespace AutomotiveApi.Controllers.v1
             return Ok(addedMarque);
         }
 
-        [HttpDelete("Delete/{id}")]
+        [HttpDelete("{id}")]
         [Authorize(Roles = "Admin, Commercial, Agent, Gerant")]
         public async Task<ActionResult> DeleteMarque(int id)
         {
@@ -65,7 +65,7 @@ namespace AutomotiveApi.Controllers.v1
             return Ok();
         }
 
-        [HttpPut("Update/{id}")]
+        [HttpPut("{id}")]
         [Authorize(Roles = "Admin, Commercial, Agent, Gerant")]
         public async Task<ActionResult<Marque>> UpdateMarque(int id, MarqueDto request)
         {

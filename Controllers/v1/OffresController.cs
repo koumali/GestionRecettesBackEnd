@@ -21,8 +21,7 @@ namespace AutomotiveApi.Controllers.v1
             _mapper = mapper;
         }
 
-        [HttpGet]
-        [Authorize(Roles = "Admin")]
+        [HttpGet]       
         public async Task<ActionResult<IEnumerable<Offre>>> GetOffres()
         {
             var offres = await _offreservice.GetAllAsync();
@@ -30,33 +29,19 @@ namespace AutomotiveApi.Controllers.v1
         }
 
 
-        [HttpGet("{idAgence}")]
+       [HttpGet("agence/{idAgence}")]
         [Authorize(Roles = "Commercial, Gerant")]
         public async Task<ActionResult<IEnumerable<Offre>>> GetOffresAgence(int idAgence)
         {
             var offres = await _offreservice.GetOffresAgence(idAgence);
             return Ok(offres);
         }
-
-        [HttpGet("public/offres")] // Route for public users
-        [AllowAnonymous]
-        public async Task<ActionResult<IEnumerable<Offre>>> GetAgencesForPublic()
-        {
-            return Ok(await _offreservice.GetAllAsync());
-        }
-
-        [HttpPost("public/offres/Load/{id}")]
-        [AllowAnonymous]
-        public async Task<ActionResult<Offre>> GetOffreByIdPublic(int id)
-        {
-            var offre = await _offreservice.GetByIdAsync(id);
-            return Ok(offre);
-        }
+       
         //<summary>
         //Add Offre
         //</summary>
 
-        [HttpPost("Insert")]
+        [HttpPost]
         [Authorize(Roles = "Admin, Commercial, Gerant")]
         public async Task<ActionResult<Offre>> AddOffre(OffreDto request)
         {
@@ -65,15 +50,14 @@ namespace AutomotiveApi.Controllers.v1
             return Ok(addedOffre);
         }
 
-        [HttpPost("Load/{id}")]
-        [Authorize(Roles = "Admin, Commercial, Gerant")]
+        [HttpGet("{id}")]        
         public async Task<ActionResult<Offre>> GetOffreById(int id)
         {
             var offre = await _offreservice.GetByIdAsync(id);
             return Ok(offre);
         }
 
-        [HttpDelete("Delete/{id}")]
+        [HttpDelete("{id}")]
         [Authorize(Roles = "Admin, Commercial, Gerant")]
         public async Task<ActionResult> DeleteOffre(int id)
         {
@@ -81,7 +65,7 @@ namespace AutomotiveApi.Controllers.v1
             return Ok();
         }
 
-        [HttpPut("Update/{id}")]
+        [HttpPut("{id}")]
         [Authorize(Roles = "Admin, Commercial, Gerant")]
         public async Task<ActionResult<Offre>> UpdateOffre(int id, OffreDto request)
         {

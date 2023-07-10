@@ -29,15 +29,15 @@ namespace AutomotiveApi.Controllers.v1
             return Ok(modeles);
         }
         
-        [HttpGet("{id}")]
+     [HttpGet("agence/{idAgence}")]
         [Authorize(Roles = "Commercial, Gerant, Agent")]
-        public async Task<ActionResult<IEnumerable<Modele>>> GetModelesAgence(int id)
+        public async Task<ActionResult<IEnumerable<Modele>>> GetModelesAgence(int idAgence)
         {
-            var modeles = await _modeleService.GetModelesAgence(id);
+            var modeles = await _modeleService.GetModelesAgence(idAgence);
             return Ok(modeles);
         }
 
-        [HttpGet("Load/{id}")]
+        [HttpGet("{id}")]
         [Authorize(Roles = "Admin, Commercial, Agent, Gerant")]
         public async Task<ActionResult<Modele>> GetModeleById(int id)
         {
@@ -48,7 +48,7 @@ namespace AutomotiveApi.Controllers.v1
         //Add Modele
         //</summary>
 
-        [HttpPost("Insert")]
+        [HttpPost]
         [Authorize(Roles = "Admin, Commercial, Agent, Gerant")]
         public async Task<ActionResult<Modele>> AddModele(ModeleDto request)
         {
@@ -57,7 +57,7 @@ namespace AutomotiveApi.Controllers.v1
             return Ok(addedModele);
         }
 
-        [HttpDelete("Delete/{id}")]
+        [HttpDelete("{id}")]
         [Authorize(Roles = "Admin, Commercial, Agent, Gerant")]
         public async Task<ActionResult> DeleteModele(int id)
         {
@@ -65,7 +65,7 @@ namespace AutomotiveApi.Controllers.v1
             return Ok();
         }
 
-        [HttpPut("Update/{id}")]
+        [HttpPut("{id}")]
         [Authorize(Roles = "Admin, Commercial, Agent, Gerant")]
         public async Task<ActionResult<Modele>> UpdateModele(int id, ModeleDto request)
         {

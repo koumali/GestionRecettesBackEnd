@@ -28,7 +28,7 @@ namespace AutomotiveApi.Controllers.v1
             var logJournals = _logJournalService.getLog_journals();
             return Ok(logJournals);
         }
-        [HttpPost("Load/{id}")]
+        [HttpGet("{id}")]
         [Authorize(Roles = "Admin")]
         public ActionResult<Client> GetClientById(int id)
         {

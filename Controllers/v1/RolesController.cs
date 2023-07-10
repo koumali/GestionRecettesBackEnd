@@ -26,7 +26,7 @@ namespace AutomotiveApi.Controllers.v1
             return Ok(roles);
         }
         
-        [HttpGet("{idAgence}")]
+        [HttpGet("agence/{idAgence}")]
         [Authorize(Roles = "Gerant")]
         public async Task<ActionResult<IEnumerable<Role>>> GetRolesAgence(int idAgence)
         {
@@ -37,7 +37,7 @@ namespace AutomotiveApi.Controllers.v1
         //Add role
         //</summary>
 
-        [HttpPost("Insert")]
+        [HttpPost]
         [Authorize(Roles = "Admin, Gerant")]
         public async Task<ActionResult<Role>> AddRole(RoleDto request)
         {
@@ -49,7 +49,7 @@ namespace AutomotiveApi.Controllers.v1
             return Ok(addedRole);
         }
 
-        [HttpPost("Load/{id}")]
+        [HttpGet("{id}")]
         [Authorize(Roles = "Admin, Gerant")]
         public async Task<ActionResult<Role>> GetRoleById(int id)
         {
@@ -57,7 +57,7 @@ namespace AutomotiveApi.Controllers.v1
             return Ok(role);
         }
 
-        [HttpDelete("Delete/{id}")]
+        [HttpDelete("{id}")]
         [Authorize(Roles = "Admin, Gerant")]
         public async Task<ActionResult> DeleteRole(int id)
         {
@@ -65,7 +65,7 @@ namespace AutomotiveApi.Controllers.v1
             return Ok();
         }
 
-        [HttpPut("Update/{id}")]
+        [HttpPut("{id}")]
         [Authorize(Roles = "Admin, Gerant")]
         public async Task<ActionResult<Role>> UpdateRole(int id, RoleDto request)
         {

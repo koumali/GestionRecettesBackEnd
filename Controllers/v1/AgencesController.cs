@@ -30,7 +30,7 @@ namespace AutomotiveApi.Controllers.v1
         //Add Agence
         //</summary>
 
-        [HttpPost("Insert")]
+        [HttpPost]
         [Authorize(Roles = "Admin")]
         public async Task<ActionResult<Agence>> AddAgence(AgenceDto request)
         {
@@ -40,7 +40,7 @@ namespace AutomotiveApi.Controllers.v1
             return Ok(addedAgence);
         }
 
-        [HttpGet("Load/{id}")]
+        [HttpGet("{id}")]
         [Authorize(Roles = "Admin, Commercial, Agent, Gerant")]
         public async Task<ActionResult<Agence>> GetAgenceById(int id)
         {
@@ -48,7 +48,7 @@ namespace AutomotiveApi.Controllers.v1
             return Ok(agence);
         }
 
-        [HttpDelete("Delete/{id}")]
+        [HttpDelete("{id}")]
         [Authorize(Roles = "Admin")]
         public async Task<ActionResult> DeleteAgence(int id)
         {
@@ -56,7 +56,7 @@ namespace AutomotiveApi.Controllers.v1
             return Ok();
         }
 
-        [HttpPut("Update/{id}")]
+        [HttpPut("{id}")]
         [Authorize(Roles = "Admin")]
         public async Task<ActionResult<Agence>> UpdateAgence(int id, AgenceDto request)
         {

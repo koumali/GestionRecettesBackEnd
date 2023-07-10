@@ -32,7 +32,7 @@ namespace AutomotiveApi.Controllers.v1
         //Add Contrat
         //</summary>
 
-        [HttpPost("Insert")]
+        [HttpPost]
         [Authorize(Roles = "Admin")]
         public async Task<ActionResult<Contrat>> AddContrat(ContratDto request)
         {
@@ -42,7 +42,7 @@ namespace AutomotiveApi.Controllers.v1
             return Ok(addedContrat);
         }
 
-        [HttpPost("Load/{id}")]
+        [HttpGet("{id}")]
         [Authorize(Roles = "Admin")]
         public async Task<ActionResult<Contrat>> GetContratById(int id)
         {
@@ -50,7 +50,7 @@ namespace AutomotiveApi.Controllers.v1
             return Ok(contrat);
         }
 
-        [HttpDelete("Delete/{id}")]
+        [HttpDelete("{id}")]
         [Authorize(Roles = "Admin")]
         public async Task<ActionResult> DeleteContrat(int id)
         {
@@ -58,7 +58,7 @@ namespace AutomotiveApi.Controllers.v1
             return Ok();
         }
 
-        [HttpPut("Update/{id}")]
+        [HttpPut("{id}")]
         [Authorize(Roles = "Admin")]
         public async Task<ActionResult<Contrat>> UpdateContrat(int id, ContratDto request)
         {
