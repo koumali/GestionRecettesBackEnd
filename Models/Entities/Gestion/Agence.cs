@@ -21,9 +21,5 @@ namespace AutomotiveApi.Models.Entities.Gestion
         public double Longitude { get; set; }
         public virtual ICollection<Vehicule> Vehicules { get; set; }
         public virtual ICollection<User> Users { get; set; }
-        public void Dispose()
-        {
-            throw new NotImplementedException();
-        }
     }
 }

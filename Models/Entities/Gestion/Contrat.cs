@@ -8,7 +8,7 @@ namespace AutomotiveApi.Models.Entities.Gestion
         public int IdClient { get; set; }
         public int IdReservation { get; set; }
         public virtual Reservation Reservation { get; set; }
-        [ForeignKey("IdClient")]
+        // [ForeignKey("IdClient")]
         public virtual Client Client { get; set; }
     }
 }

@@ -39,8 +39,9 @@ namespace AutomotiveApi.DAL
             modelBuilder.Entity<Role>().HasData(
                 new Role { Id = 1, Name = "Admin" },
                 new Role { Id = 2, Name = "Gerant" },
-                new Role { Id = 3, Name = "Commercial" },
-                new Role { Id = 4, Name = "Agent" }                
+                new Role { Id = 3, Name = "Agent" },
+                new Role { Id = 4, Name = "Client" },
+                new Role { Id = 5, Name = "Commercial" }     
             );
 
 
