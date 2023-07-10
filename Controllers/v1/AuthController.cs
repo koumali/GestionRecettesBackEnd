@@ -37,7 +37,7 @@ namespace AutomotiveApi.Controllers.v1
             }
             catch (Exception ex)
             {
-                return BadRequest(ex.Message);
+                return BadRequest(new { errors = ex.Message });
             }
 
 
@@ -52,7 +52,7 @@ namespace AutomotiveApi.Controllers.v1
             var loginResponse = await _authService.login(email, password);
             if (loginResponse == null)
             {
-                return Unauthorized(new { message = "Invalid Credentials" });
+                return Unauthorized(new { errors = "Invalid Credentials" });
             }
 
             return Ok(loginResponse);

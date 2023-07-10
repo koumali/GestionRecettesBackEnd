@@ -45,7 +45,32 @@ namespace AutomotiveApi.Services.Gestion
                 .Include(v => v.Agence)
                 .Include(v => v.Modele)
                 .ThenInclude(m => m.Marque)
-                .ToListAsync();
+                .Select(v => new Vehicule
+                {
+                    Id = v.Id,
+                    Name = v.Name,
+                    Matricule = v.Matricule,
+                    Prix = v.Prix,
+                    Agence = v.Agence,
+                    NbPort = v.NbPort,
+                    NbPassager = v.NbPassager,
+                    Km = v.Km,
+                    Climat = v.Climat,
+                    Airbag = v.Airbag,
+                    Image = v.Image,
+                    Gearbox = v.Gearbox,
+                    Moteur = v.Moteur,                    
+                    IdAgence = v.IdAgence,
+                    IdModele = v.IdModele,                                          
+                    Modele = new Modele
+                    {
+
+                        Id = v.Modele.Id,
+                        Name = v.Modele.Name,
+                        Marque = v.Modele.Marque,
+                        IdMarque = v.Modele.IdMarque,
+                    }
+                }).ToListAsync();
         }
 
         public async Task<IEnumerable<Vehicule>> GetVehiculesAgence(int idAgence)

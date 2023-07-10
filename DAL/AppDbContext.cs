@@ -41,7 +41,7 @@ namespace AutomotiveApi.DAL
                 new Role { Id = 2, Name = "Gerant" },
                 new Role { Id = 3, Name = "Agent" },
                 new Role { Id = 4, Name = "Client" },
-                new Role { Id = 5, Name = "Commercial" }
+                new Role { Id = 5, Name = "Commercial" }     
             );
 
 
