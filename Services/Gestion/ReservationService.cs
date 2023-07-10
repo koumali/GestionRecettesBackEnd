@@ -16,13 +16,17 @@ namespace AutomotiveApi.Services.Gestion
 
         public new async Task<IEnumerable<Reservation>> GetAllAsync()
         {
-            var reservations = await _context.Reservations.Include(r => r.Vehicule).ToListAsync();
+            var reservations = await _context.Reservations
+                .Where(t => t.DeletedAt == null)
+                .Include(r => r.Vehicule)
+                .ToListAsync();
             return reservations;
         }
 
         public async Task<IEnumerable<Reservation>> GetReservationsAgence(int idAgence)
         {
             return await _context.Reservations
+                .Where(t => t.DeletedAt == null)
                 .Include(r => r.Vehicule)
                 .Where(r => r.Vehicule.Agence.Id == idAgence)
                 .ToListAsync();

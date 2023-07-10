@@ -38,8 +38,11 @@ namespace AutomotiveApi.Services.Gestion
         //
         public new async Task<IEnumerable<Contrat>> GetAllAsync()
         {
-            return await _context.Contrats.Include(c => c.Client)
-                .Include(r => r.Reservation).ToListAsync();
+            return await _context.Contrats
+                .Where(t => t.DeletedAt == null)
+                .Include(c => c.Client)
+                .Include(r => r.Reservation)
+                .ToListAsync();
         }
         // public IEnumerable<Contrat> getContrats()
         // {

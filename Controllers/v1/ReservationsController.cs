@@ -41,7 +41,7 @@ namespace AutomotiveApi.Controllers.v1
         //</summary>
 
         [HttpPost("Insert")]
-        [Authorize(Roles = "Admin")]
+        [Authorize(Roles = "Admin, Commercial, Gerant")]
         public async Task<ActionResult<Reservation>> AddReservation(ReservationDto request)
         {
             var reservation = _mapper.Map<Reservation>(request);
@@ -50,7 +50,7 @@ namespace AutomotiveApi.Controllers.v1
         }
 
         [HttpPost("Load/{id}")]
-        [Authorize(Roles = "Admin")]
+        [Authorize(Roles = "Admin, Commercial, Gerant")]
         public async Task<ActionResult<Reservation>> GetReservationById(int id)
         {
             var reservation = await _reservationService.GetByIdAsync(id);
@@ -58,7 +58,7 @@ namespace AutomotiveApi.Controllers.v1
         }
 
         [HttpDelete("Delete/{id}")]
-        [Authorize(Roles = "Admin")]
+        [Authorize(Roles = "Admin, Commercial, Gerant")]
         public async Task<ActionResult> DeleteReservation(int id)
         {
             await _reservationService.DeleteAsync(id);
@@ -66,7 +66,7 @@ namespace AutomotiveApi.Controllers.v1
         }
 
         [HttpPut("Update/{id}")]
-        [Authorize(Roles = "Admin")]
+        [Authorize(Roles = "Admin, Commercial, Gerant")]
         public async Task<ActionResult<Reservation>> UpdateReservation(int id, ReservationDto request)
         {
             var reservation = await _reservationService.GetByIdAsync(id);

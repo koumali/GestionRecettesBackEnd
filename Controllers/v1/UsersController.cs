@@ -44,8 +44,8 @@ namespace AutomotiveApi.Controllers.v1
         //</summary>
 
         //get user by id
-        [HttpGet("{id}")]
-        [Authorize(Roles = "Admin")]
+        [HttpGet("Load/{id}")]
+        [Authorize(Roles = "Admin, Gerant")]
         public async Task<ActionResult<User>> GetUserById(int id)
         {
             var user = await _userService.GetByIdAsync(id);
@@ -54,7 +54,7 @@ namespace AutomotiveApi.Controllers.v1
 
         //add user
         [HttpPost("")]
-        [Authorize(Roles = "Admin")]
+        [Authorize(Roles = "Admin, Gerant")]
         public async Task<ActionResult<User>> Add(UserDto userRequest)
         {
             var user = _mapper.Map<User>(userRequest);
@@ -72,7 +72,7 @@ namespace AutomotiveApi.Controllers.v1
 
         //update user
         [HttpPut("")]
-        [Authorize(Roles = "Admin")]
+        [Authorize(Roles = "Admin, Gerant")]
         public async Task<ActionResult<User>> Update(UserUpdateDto userRequest)
         {
             var user = _mapper.Map<User>(userRequest);
@@ -92,7 +92,7 @@ namespace AutomotiveApi.Controllers.v1
         //delete user
 
         [HttpDelete("{id}")]
-        [Authorize(Roles = "Admin")]
+        [Authorize(Roles = "Admin, Gerant")]
         public async Task<ActionResult<bool>> Delete(int id)
         {
             try
@@ -109,7 +109,7 @@ namespace AutomotiveApi.Controllers.v1
 
         //change password
         [HttpPut("updatepassword")]
-        [Authorize(Roles = "Admin")]
+        [Authorize(Roles = "Admin, Gerant")]
         public async Task<ActionResult> ChangePassword(PasswordUpdateDto changePasswordDto)
         {
             try

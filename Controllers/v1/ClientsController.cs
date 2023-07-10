@@ -28,7 +28,7 @@ namespace AutomotiveApi.Controllers.v1
             var clients = await _clientService.GetAllAsync();
             return Ok(clients);
         }
-        
+
         // get clients of a specific agence
         [HttpGet("{idAgence}")]
         [Authorize(Roles = "Commercial, Gerant")]
@@ -37,13 +37,13 @@ namespace AutomotiveApi.Controllers.v1
             var clients = await _clientService.GetClientsAgence(idAgence);
             return Ok(clients);
         }
-        
+
         //<summary>
         //Add Client
         //</summary>
 
         [HttpPost("Insert")]
-        [Authorize(Roles = "Admin")]
+        [Authorize(Roles = "Admin, Commercial, Gerant")]
         public async Task<ActionResult<Client>> AddClient(ClientDto request)
         {
             var client = _mapper.Map<Client>(request);
@@ -53,7 +53,7 @@ namespace AutomotiveApi.Controllers.v1
         }
 
         [HttpPost("Load/{id}")]
-        [Authorize(Roles = "Admin")]
+        [Authorize(Roles = "Admin, Gerant, Commercial")]
         public async Task<ActionResult<Client>> GetClientById(int id)
         {
             var client = await _clientService.GetByIdAsync(id);
@@ -61,7 +61,7 @@ namespace AutomotiveApi.Controllers.v1
         }
 
         [HttpDelete("Delete/{id}")]
-        [Authorize(Roles = "Admin")]
+        [Authorize(Roles = "Admin, Gerant, Commercial")]
         public async Task<ActionResult> DeleteClient(int id)
         {
             await _clientService.DeleteAsync(id);
@@ -69,7 +69,7 @@ namespace AutomotiveApi.Controllers.v1
         }
 
         [HttpPut("Update/{id}")]
-        [Authorize(Roles = "Admin")]
+        [Authorize(Roles = "Admin, Gerant, Commercial")]
         public async Task<ActionResult<Client>> UpdateClient(int id, ClientDto request)
         {
             var client = await _clientService.GetByIdAsync(id);

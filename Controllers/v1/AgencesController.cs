@@ -40,8 +40,8 @@ namespace AutomotiveApi.Controllers.v1
             return Ok(addedAgence);
         }
 
-        [HttpPost("Load/{id}")]
-        [Authorize(Roles = "Admin")]
+        [HttpGet("Load/{id}")]
+        [Authorize(Roles = "Admin, Commercial, Agent, Gerant")]
         public async Task<ActionResult<Agence>> GetAgenceById(int id)
         {
             var agence = await _agenceService.GetByIdAsync(id);

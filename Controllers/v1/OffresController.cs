@@ -37,12 +37,14 @@ namespace AutomotiveApi.Controllers.v1
             var offres = await _offreservice.GetOffresAgence(idAgence);
             return Ok(offres);
         }
+
         [HttpGet("public/offres")] // Route for public users
         [AllowAnonymous]
         public async Task<ActionResult<IEnumerable<Offre>>> GetAgencesForPublic()
         {
             return Ok(await _offreservice.GetAllAsync());
         }
+
         [HttpPost("public/offres/Load/{id}")]
         [AllowAnonymous]
         public async Task<ActionResult<Offre>> GetOffreByIdPublic(int id)
@@ -55,7 +57,7 @@ namespace AutomotiveApi.Controllers.v1
         //</summary>
 
         [HttpPost("Insert")]
-        [Authorize(Roles = "Admin")]
+        [Authorize(Roles = "Admin, Commercial, Gerant")]
         public async Task<ActionResult<Offre>> AddOffre(OffreDto request)
         {
             var offre = _mapper.Map<Offre>(request);
@@ -64,7 +66,7 @@ namespace AutomotiveApi.Controllers.v1
         }
 
         [HttpPost("Load/{id}")]
-        [Authorize(Roles = "Admin")]
+        [Authorize(Roles = "Admin, Commercial, Gerant")]
         public async Task<ActionResult<Offre>> GetOffreById(int id)
         {
             var offre = await _offreservice.GetByIdAsync(id);
@@ -72,7 +74,7 @@ namespace AutomotiveApi.Controllers.v1
         }
 
         [HttpDelete("Delete/{id}")]
-        [Authorize(Roles = "Admin")]
+        [Authorize(Roles = "Admin, Commercial, Gerant")]
         public async Task<ActionResult> DeleteOffre(int id)
         {
             await _offreservice.DeleteAsync(id);
@@ -80,7 +82,7 @@ namespace AutomotiveApi.Controllers.v1
         }
 
         [HttpPut("Update/{id}")]
-        [Authorize(Roles = "Admin")]
+        [Authorize(Roles = "Admin, Commercial, Gerant")]
         public async Task<ActionResult<Offre>> UpdateOffre(int id, OffreDto request)
         {
             var offre = await _offreservice.GetByIdAsync(id);
@@ -97,6 +99,5 @@ namespace AutomotiveApi.Controllers.v1
             var updatedOffre = await _offreservice.UpdateAsync(offre);
             return Ok(updatedOffre);
         }
-        
     }
 }

@@ -33,7 +33,7 @@ namespace AutomotiveApi.Services.Gestion
                 LastName = c.Client.LastName,
                 Tel = c.Client.Tel,
                 PermisRecto = c.Client.PermisRecto,
-                PermisVerso = c.Client.PermisVerso,
+                PermisVerso = c.Client.PermisVerso
             }));
             return listClients.DistinctBy(c => new { c.FirstName, c.LastName, c.Email });
         }
