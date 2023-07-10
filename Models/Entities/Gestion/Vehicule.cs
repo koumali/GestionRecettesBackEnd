@@ -24,8 +24,10 @@ namespace AutomotiveApi.Models.Entities.Gestion
         public string Moteur { get; set; }
         public int IdAgence { get; set; }
         public int IdModele { get; set; }
-        [ForeignKey("IdAgence")] public virtual Agence Agence { get; set; }
-        [ForeignKey("IdModele")] public virtual Modele Modele { get; set; }
+        // [ForeignKey("IdAgence")] 
+        public virtual Agence Agence { get; set; }
+        // [ForeignKey("IdModele")] 
+        public virtual Modele Modele { get; set; }
 
         public virtual ICollection<Reservation> Reservation { get; set; }
         public virtual ICollection<Offre> Offre { get; set; }

@@ -16,8 +16,10 @@ namespace AutomotiveApi.Models.Entities.Param
         [JsonIgnore] public string Password { get; set; }
         public bool? IsActive { get; set; }
         public int IdRole { get; set; }
-        [ForeignKey("IdRole")] public virtual Role Role { get; set; }
+        // [ForeignKey("IdRole")] 
+        public virtual Role Role { get; set; }
         public int? IdAgence { get; set; }
-        [ForeignKey("IdAgence")] public virtual Agence Agence { get; set; }
+        // [ForeignKey("IdAgence")] 
+        public virtual Agence Agence { get; set; }
     }
 }
