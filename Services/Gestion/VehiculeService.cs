@@ -14,9 +14,34 @@ namespace AutomotiveApi.Services.Gestion
             _context = context;
         }
 
+        public new async Task<Vehicule> CreateAsync(Vehicule entity)
+        {
+            await _context.Vehicules.AddAsync(entity);
+            await _context.SaveChangesAsync();
+            return await _context.Vehicules
+                .Include(v => v.Agence)
+                .Include(v => v.Modele)
+                .ThenInclude(m => m.Marque)
+                .Where(v => v.Id == entity.Id)
+                .FirstOrDefaultAsync();
+        }
+
+        public new async Task<Vehicule> UpdateAsync(Vehicule entity)
+        {
+             _context.Vehicules.Update(entity);
+            await _context.SaveChangesAsync();
+            return await _context.Vehicules
+                .Include(v => v.Agence)
+                .Include(v => v.Modele)
+                .ThenInclude(m => m.Marque)
+                .Where(v => v.Id == entity.Id)
+                .FirstOrDefaultAsync();
+        }
+
         public new async Task<IEnumerable<Vehicule>> GetAllAsync()
         {
             return await _context.Vehicules
+                .Where(t => t.DeletedAt == null)
                 .Include(v => v.Agence)
                 .Include(v => v.Modele)
                 .ThenInclude(m => m.Marque)
@@ -51,6 +76,7 @@ namespace AutomotiveApi.Services.Gestion
         public async Task<IEnumerable<Vehicule>> GetVehiculesAgence(int idAgence)
         {
             return await _context.Vehicules
+                .Where(t => t.DeletedAt == null)
                 .Where(v => v.IdAgence == idAgence)
                 .Include(v => v.Agence)
                 .Include(v => v.Modele)

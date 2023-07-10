@@ -22,6 +22,7 @@ namespace AutomotiveApi.Services.Gestion
         public async Task<IEnumerable<Marque>> GetMarquesAgence(int idAgence)
         {
             var listVehicules = await _context.Vehicules
+                .Where(t => t.DeletedAt == null)
                 .Include(m => m.Modele)
                 .ThenInclude(m => m.Marque)
                 .Where(v => v.IdAgence == idAgence)

@@ -13,10 +13,18 @@ namespace AutomotiveApi.Services.Gestion
             _context = context;
         }
 
+        public new async Task<Offre> CreateAsync(Offre entity)
+        {
+            await _context.Offres.AddAsync(entity);
+            await _context.SaveChangesAsync();
+            return await _context.Offres.Include(o => o.Vehicule)
+                .FirstOrDefaultAsync(o => o.Id == entity.Id);
+        }
 
         public async Task<IEnumerable<Offre>> GetOffresAgence(int idAgence)
         {
             return await _context.Offres
+                .Where(t => t.DeletedAt == null)
                 .Include(o => o.Vehicule)
                 .Where(o => o.Vehicule.Agence.Id == idAgence)
                 .ToListAsync();

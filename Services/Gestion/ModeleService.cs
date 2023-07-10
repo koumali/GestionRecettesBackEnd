@@ -14,9 +14,19 @@ namespace AutomotiveApi.Services.Gestion
             _context = context;
         }
 
+        public new async Task<Modele> CreateAsync(Modele entity)
+        {
+            await _context.Modeles.AddAsync(entity);
+            await _context.SaveChangesAsync();
+            return await _context.Modeles
+                .Include(m => m.Marque)
+                .FirstOrDefaultAsync(m => m.Id == entity.Id);
+        }
+
         public new async Task<IEnumerable<Modele>> GetAllAsync()
         {
             return await _context.Modeles
+                .Where(t => t.DeletedAt == null)
                 .Include(o => o.Marque)
                 .ToListAsync();
         }
@@ -24,6 +34,7 @@ namespace AutomotiveApi.Services.Gestion
         public async Task<IEnumerable<Modele>> GetModelesAgence(int idAgence)
         {
             var listVehicules = await _context.Vehicules
+                .Where(t => t.DeletedAt == null)
                 .Include(m => m.Modele)
                 .ThenInclude(o => o.Marque)
                 .Where(v => v.IdAgence == idAgence)

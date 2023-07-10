@@ -38,8 +38,8 @@ namespace AutomotiveApi.Controllers.v1
         }
 
         [HttpPost("Load/{id}")]
-        [Authorize(Roles = "Admin")]
-        public async Task<ActionResult<Vehicule>> GetRoleById(int id)
+        [Authorize(Roles = "Admin, Commercial, Agent, Gerant")]
+        public async Task<ActionResult<Vehicule>> GetVehiculeById(int id)
         {
             var vehicule = await _vehiculeService.GetByIdAsync(id);
             return Ok(vehicule);
@@ -49,7 +49,7 @@ namespace AutomotiveApi.Controllers.v1
         //</summary>
 
         [HttpPost("Insert")]
-        [Authorize(Roles = "Admin")]
+        [Authorize(Roles = "Admin, Commercial, Agent, Gerant")]
         public async Task<ActionResult<Vehicule>> AddVehicule(VehiculeDto request)
         {
             var vehicule = _mapper.Map<Vehicule>(request);
@@ -58,7 +58,7 @@ namespace AutomotiveApi.Controllers.v1
         }
 
         [HttpDelete("Delete/{id}")]
-        [Authorize(Roles = "Admin")]
+        [Authorize(Roles = "Admin, Commercial, Agent, Gerant")]
         public async Task<ActionResult> DeleteVehicule(int id)
         {
             await _vehiculeService.DeleteAsync(id);
@@ -66,7 +66,7 @@ namespace AutomotiveApi.Controllers.v1
         }
 
         [HttpPut("Update/{id}")]
-        [Authorize(Roles = "Admin")]
+        [Authorize(Roles = "Admin, Commercial, Agent, Gerant")]
         public async Task<ActionResult<Vehicule>> UpdateVehicule(int id, VehiculeDto request)
         {
             var vehicule = await _vehiculeService.GetByIdAsync(id);
