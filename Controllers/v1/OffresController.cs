@@ -21,22 +21,30 @@ namespace AutomotiveApi.Controllers.v1
             _mapper = mapper;
         }
 
-        [HttpGet]       
+        [HttpGet]
+        [Authorize(Roles = "Admin, Commercial, Gerant")]
         public async Task<ActionResult<IEnumerable<Offre>>> GetOffres()
         {
             var offres = await _offreservice.GetAllAsync();
             return Ok(offres);
         }
 
+        [HttpGet("public")]
+        public async Task<ActionResult<IEnumerable<Offre>>> GetPublicOffres()
+        {
+            var offres = await _offreservice.GetPublicOffres();
+            return Ok(offres);
+        }
 
-       [HttpGet("agence/{idAgence}")]
+
+        [HttpGet("agence/{idAgence}")]
         [Authorize(Roles = "Commercial, Gerant")]
         public async Task<ActionResult<IEnumerable<Offre>>> GetOffresAgence(int idAgence)
         {
             var offres = await _offreservice.GetOffresAgence(idAgence);
             return Ok(offres);
         }
-       
+
         //<summary>
         //Add Offre
         //</summary>
@@ -50,7 +58,7 @@ namespace AutomotiveApi.Controllers.v1
             return Ok(addedOffre);
         }
 
-        [HttpGet("{id}")]        
+        [HttpGet("{id}")]
         public async Task<ActionResult<Offre>> GetOffreById(int id)
         {
             var offre = await _offreservice.GetByIdAsync(id);
@@ -79,6 +87,7 @@ namespace AutomotiveApi.Controllers.v1
             offre.DateDebut = request.DateDebut;
             offre.DateFin = request.DateFin;
             offre.Prix = request.Prix;
+            offre.isPublic = request.isPublic;
             offre.Id = id;
             var updatedOffre = await _offreservice.UpdateAsync(offre);
             return Ok(updatedOffre);

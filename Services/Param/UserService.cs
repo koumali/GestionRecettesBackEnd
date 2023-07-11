@@ -123,6 +123,8 @@ namespace AutomotiveApi.Services.Param
                 userExists.IdRole = user.IdRole;
                 userExists.IdAgence = user.IdAgence;
                 userExists.UpdatedAt = DateTime.Now;
+                userExists.IsActive = user.IsActive;
+                
                 await _context.SaveChangesAsync();
                 return userExists;
             }

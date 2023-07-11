@@ -9,6 +9,8 @@ namespace AutomotiveApi.Models.Entities.Gestion
         public DateTime DateDebut { get; set; }
         public DateTime DateFin { get; set; }
         public double Prix { get; set; }
+        public bool isPublic { get; set; }
+        
         // [ForeignKey("IdVehicule")]
         public virtual Vehicule Vehicule { get; set; }
     }

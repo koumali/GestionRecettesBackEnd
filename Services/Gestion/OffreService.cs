@@ -48,5 +48,15 @@ namespace AutomotiveApi.Services.Gestion
                                           .ToListAsync();
 
         }
+
+        public async Task<IEnumerable<Offre>> GetPublicOffres()
+        {
+            return await _context.Offres
+                .Where(o => o.DeletedAt == null && o.isPublic)
+                .Include(o => o.Vehicule)
+                .ToListAsync();
+                
+                
+        }        
     }
 }
