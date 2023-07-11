@@ -35,7 +35,12 @@ namespace AutomotiveApi.Controllers.v1
             var offres = await _offreservice.GetPublicOffres();
             return Ok(offres);
         }
-
+        [HttpGet("public/{id}")]
+        public async Task<ActionResult<Offre>> GetPublicOffreById(int id)
+        {
+            var offre = await _offreservice.GetPublicByIdAsync(id);
+            return Ok(offre);
+        }
 
         [HttpGet("agence/{idAgence}")]
         [Authorize(Roles = "Commercial, Gerant")]

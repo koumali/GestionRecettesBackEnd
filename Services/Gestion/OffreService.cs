@@ -30,22 +30,23 @@ namespace AutomotiveApi.Services.Gestion
                 .ToListAsync();
         }
 
-         public new async Task<Offre?> GetByIdAsync(int id)
-         {
-             return await _context.Offres.Where(u => u.Id == id)
-                                        .Include(o=>o.Vehicule.Agence)
-                                        .Include(o => o.Vehicule.Modele)
-                                            .ThenInclude(m => m.Marque)
-                                        .FirstOrDefaultAsync(); ;
-         }
-        
-        
+        public new async Task<Offre?> GetByIdAsync(int id)
+        {
+            return await _context.Offres.Where(u => u.Id == id)
+                                       .Include(o => o.Vehicule.Agence)
+                                       .Include(o => o.Vehicule.Modele)
+                                           .ThenInclude(m => m.Marque)
+                                       .FirstOrDefaultAsync(); ;
+        }
+
+
         public new async Task<IEnumerable<Offre>> GetAllAsync()
-         {
-             return await _context.Offres.Include(o => o.Vehicule.Agence)
-                                          .Include(o => o.Vehicule.Modele)
-                                              .ThenInclude(m => m.Marque)
-                                          .ToListAsync();
+        {
+            return await _context.Offres.Where(o => o.DeletedAt == null)
+                                        .Include(o => o.Vehicule.Agence)
+                                        .Include(o => o.Vehicule.Modele)
+                                             .ThenInclude(m => m.Marque)
+                                         .ToListAsync();
 
         }
 
@@ -53,10 +54,19 @@ namespace AutomotiveApi.Services.Gestion
         {
             return await _context.Offres
                 .Where(o => o.DeletedAt == null && o.isPublic)
-                .Include(o => o.Vehicule)
-                .ToListAsync();
-                
-                
-        }        
+                .Include(o => o.Vehicule.Agence)
+                             .Include(o => o.Vehicule.Modele)
+                                              .ThenInclude(m => m.Marque)
+                                          .ToListAsync();
+        }
+
+        public async Task<Offre?> GetPublicByIdAsync(int id)
+        {
+            return await _context.Offres.Where(u => u.Id == id && u.DeletedAt == null && u.isPublic)
+                                       .Include(o => o.Vehicule.Agence)
+                                       .Include(o => o.Vehicule.Modele)
+                                           .ThenInclude(m => m.Marque)
+                                       .FirstOrDefaultAsync(); ;
+        }
     }
 }
