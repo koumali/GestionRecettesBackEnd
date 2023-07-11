@@ -37,7 +37,7 @@ namespace AutomotiveApi.Controllers.v1
             var agence = _mapper.Map<Agence>(request);
 
             var addedAgence = await _agenceService.CreateAsync(agence);
-            return Ok(addedAgence);
+            return CreatedAtAction(nameof(GetAgenceById), new { id = addedAgence.Id }, addedAgence);
         }
 
         [HttpGet("{id}")]
