@@ -42,8 +42,7 @@ namespace AutomotiveApi.Services.Gestion
 
         public new async Task<IEnumerable<Offre>> GetAllAsync()
         {
-            return await _context.Offres.Where(o => o.DeletedAt == null)
-                                        .Include(o => o.Vehicule.Agence)
+            return await _context.Offres.Include(o => o.Vehicule.Agence)
                                         .Include(o => o.Vehicule.Modele)
                                              .ThenInclude(m => m.Marque)
                                          .ToListAsync();

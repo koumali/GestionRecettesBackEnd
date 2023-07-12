@@ -31,7 +31,7 @@ namespace AutomotiveApi.DAL
         public virtual DbSet<Log_journal> log_journal { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-        {            
+        {
         }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -41,7 +41,7 @@ namespace AutomotiveApi.DAL
                 new Role { Id = 2, Name = "Gerant" },
                 new Role { Id = 3, Name = "Agent" },
                 new Role { Id = 4, Name = "Client" },
-                new Role { Id = 5, Name = "Commercial" }     
+                new Role { Id = 5, Name = "Commercial" }
             );
 
 
@@ -126,8 +126,22 @@ namespace AutomotiveApi.DAL
             modelBuilder.Entity<Modele>().HasData(DataSeeder.seedModele().Generate(10));
 
             modelBuilder.Entity<User>().HasData(DataSeeder.seedUser().Generate(10));
-            
 
+
+            // filter deleted entities
+            
+            modelBuilder.Entity<Agence>().HasQueryFilter(a => a.DeletedAt == null);
+            modelBuilder.Entity<Marque>().HasQueryFilter(a => a.DeletedAt == null);
+            modelBuilder.Entity<Modele>().HasQueryFilter(a => a.DeletedAt == null);
+            modelBuilder.Entity<User>().HasQueryFilter(a => a.DeletedAt == null);
+            modelBuilder.Entity<Role>().HasQueryFilter(a => a.DeletedAt == null);
+            modelBuilder.Entity<Offre>().HasQueryFilter(a => a.DeletedAt == null);
+            modelBuilder.Entity<Vehicule>().HasQueryFilter(a => a.DeletedAt == null);
+            modelBuilder.Entity<Reservation>().HasQueryFilter(a => a.DeletedAt == null);
+            modelBuilder.Entity<Contrat>().HasQueryFilter(a => a.DeletedAt == null);
+            modelBuilder.Entity<Client>().HasQueryFilter(a => a.DeletedAt == null);
+            modelBuilder.Entity<Log_journal>().HasQueryFilter(a => a.DeletedAt == null);            
+            
 
 
             OnModelCreatingPartial(modelBuilder);
