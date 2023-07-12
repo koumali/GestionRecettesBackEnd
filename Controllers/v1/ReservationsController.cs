@@ -36,9 +36,6 @@ namespace AutomotiveApi.Controllers.v1
             var reservations = await _reservationService.GetReservationsAgence(idAgence);
             return Ok(reservations);
         }
-        //<summary>
-        //Add Reservation
-        //</summary>
 
         [HttpPost]
         [Authorize(Roles = "Admin, Commercial, Gerant")]

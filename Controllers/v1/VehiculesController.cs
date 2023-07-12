@@ -44,9 +44,6 @@ namespace AutomotiveApi.Controllers.v1
             var vehicule = await _vehiculeService.GetByIdAsync(id);
             return Ok(vehicule);
         }
-        //<summary>
-        //Add Vehicule
-        //</summary>
 
         [HttpPost]
         [Authorize(Roles = "Admin, Commercial, Agent, Gerant")]

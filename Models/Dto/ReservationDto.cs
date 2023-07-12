@@ -1,5 +1,3 @@
-using System.ComponentModel.DataAnnotations;
-
 namespace AutomotiveApi.Models.Dto
 {
     public class ReservationDto

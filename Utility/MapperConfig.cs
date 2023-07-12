@@ -11,6 +11,7 @@ namespace AutomotiveApi.Utility
         {
             CreateMap<User, UserDto>().ReverseMap();
             CreateMap<User, UserUpdateDto>().ReverseMap();
+            CreateMap<Reservation, ReservationDto>().ReverseMap();
             CreateMap<Vehicule, VehiculeDto>().ReverseMap();
             CreateMap<Client, ClientDto>().ReverseMap();
             CreateMap<Marque, MarqueDto>().ReverseMap();
