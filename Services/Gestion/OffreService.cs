@@ -23,8 +23,7 @@ namespace AutomotiveApi.Services.Gestion
 
         public async Task<IEnumerable<Offre>> GetOffresAgence(int idAgence)
         {
-            return await _context.Offres
-                .Where(t => t.DeletedAt == null)
+            return await _context.Offres           
                 .Include(o => o.Vehicule)
                 .Where(o => o.Vehicule.Agence.Id == idAgence)
                 .ToListAsync();
@@ -52,7 +51,7 @@ namespace AutomotiveApi.Services.Gestion
         public async Task<IEnumerable<Offre>> GetPublicOffres()
         {
             return await _context.Offres
-                .Where(o => o.DeletedAt == null && o.isPublic)
+                .Where(o => o.isPublic)
                 .Include(o => o.Vehicule.Agence)
                              .Include(o => o.Vehicule.Modele)
                                               .ThenInclude(m => m.Marque)
@@ -61,7 +60,7 @@ namespace AutomotiveApi.Services.Gestion
 
         public async Task<Offre?> GetPublicByIdAsync(int id)
         {
-            return await _context.Offres.Where(u => u.Id == id && u.DeletedAt == null && u.isPublic)
+            return await _context.Offres.Where(u => u.Id == id  && u.isPublic)
                                        .Include(o => o.Vehicule.Agence)
                                        .Include(o => o.Vehicule.Modele)
                                            .ThenInclude(m => m.Marque)

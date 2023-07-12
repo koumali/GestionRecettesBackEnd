@@ -54,7 +54,7 @@ namespace AutomotiveApi.Services.Param
 
         public new async Task<IEnumerable<User>> GetAllAsync()
         {
-            var users = await _context.Users.Where(u => u.DeletedAt == null).Include(u => u.Role).Include(u => u.Agence).Select
+            var users = await _context.Users.Include(u => u.Role).Include(u => u.Agence).Select
             (
                 u => new User
                 {

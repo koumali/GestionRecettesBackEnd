@@ -40,8 +40,7 @@ namespace AutomotiveApi.Services.Gestion
 
         public new async Task<IEnumerable<Vehicule>> GetAllAsync()
         {
-            return await _context.Vehicules
-                .Where(t => t.DeletedAt == null)
+            return await _context.Vehicules              
                 .Include(v => v.Agence)
                 .Include(v => v.Modele)
                 .ThenInclude(m => m.Marque)
@@ -75,8 +74,7 @@ namespace AutomotiveApi.Services.Gestion
 
         public async Task<IEnumerable<Vehicule>> GetVehiculesAgence(int idAgence)
         {
-            return await _context.Vehicules
-                .Where(t => t.DeletedAt == null)
+            return await _context.Vehicules             
                 .Where(v => v.IdAgence == idAgence)
                 .Include(v => v.Agence)
                 .Include(v => v.Modele)

@@ -16,8 +16,7 @@ namespace AutomotiveApi.Services.Gestion
 
         public new async Task<IEnumerable<Reservation>> GetAllAsync()
         {
-            var reservations = await _context.Reservations
-                .Where(t => t.DeletedAt == null)
+            var reservations = await _context.Reservations             
                 .Include(r => r.Vehicule)
                 .ToListAsync();
             return reservations;
@@ -25,8 +24,7 @@ namespace AutomotiveApi.Services.Gestion
 
         public async Task<IEnumerable<Reservation>> GetReservationsAgence(int idAgence)
         {
-            return await _context.Reservations
-                .Where(t => t.DeletedAt == null)
+            return await _context.Reservations              
                 .Include(r => r.Vehicule)
                 .Where(r => r.Vehicule.Agence.Id == idAgence)
                 .ToListAsync();

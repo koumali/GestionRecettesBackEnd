@@ -16,7 +16,7 @@ public class GenericDataService<T> : IGenericData<T> where T : ModelBase, new()
 
     public async Task<IEnumerable<T>> GetAllAsync()
     {
-        return await _db.Set<T>().Where(t => t.DeletedAt == null).ToListAsync();
+        return await _db.Set<T>().ToListAsync();
     }
 
     public async Task<T?> GetByIdAsync(int id)
