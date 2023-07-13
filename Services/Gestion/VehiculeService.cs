@@ -16,6 +16,7 @@ namespace AutomotiveApi.Services.Gestion
 
         public new async Task<Vehicule> CreateAsync(Vehicule entity)
         {
+
             await _context.Vehicules.AddAsync(entity);
             await _context.SaveChangesAsync();
             return await _context.Vehicules
@@ -28,7 +29,8 @@ namespace AutomotiveApi.Services.Gestion
 
         public new async Task<Vehicule> UpdateAsync(Vehicule entity)
         {
-             _context.Vehicules.Update(entity);
+            
+            _context.Vehicules.Update(entity);
             await _context.SaveChangesAsync();
             return await _context.Vehicules
                 .Include(v => v.Agence)
@@ -40,7 +42,7 @@ namespace AutomotiveApi.Services.Gestion
 
         public new async Task<IEnumerable<Vehicule>> GetAllAsync()
         {
-            return await _context.Vehicules              
+            return await _context.Vehicules
                 .Include(v => v.Agence)
                 .Include(v => v.Modele)
                 .ThenInclude(m => m.Marque)
@@ -58,9 +60,9 @@ namespace AutomotiveApi.Services.Gestion
                     Airbag = v.Airbag,
                     Image = v.Image,
                     Gearbox = v.Gearbox,
-                    Moteur = v.Moteur,                    
+                    Moteur = v.Moteur,
                     IdAgence = v.IdAgence,
-                    IdModele = v.IdModele,                                          
+                    IdModele = v.IdModele,
                     Modele = new Modele
                     {
 
@@ -74,12 +76,13 @@ namespace AutomotiveApi.Services.Gestion
 
         public async Task<IEnumerable<Vehicule>> GetVehiculesAgence(int idAgence)
         {
-            return await _context.Vehicules             
+            return await _context.Vehicules
                 .Where(v => v.IdAgence == idAgence)
                 .Include(v => v.Agence)
                 .Include(v => v.Modele)
                 .ThenInclude(m => m.Marque)
                 .ToListAsync();
         }
+
     }
 }
