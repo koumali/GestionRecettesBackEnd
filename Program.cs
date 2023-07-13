@@ -116,6 +116,7 @@ builder.Services.AddScoped<IOffre, OffreService>();
 builder.Services.AddScoped<IReservation, ReservationService>();
 builder.Services.AddScoped<ILogJournal, LogJournalService>();
 builder.Services.AddScoped<IContrat, ContratService>();
+builder.Services.AddScoped<IFileHelper, FileHelper>();
 
 var mappingConfig = new MapperConfiguration(mc => { mc.AddProfile(new MapperConfig()); });
 
@@ -136,6 +137,9 @@ if (app.Environment.IsDevelopment())
 
 
 app.UseHttpsRedirection();
+
+//serve files 
+app.UseStaticFiles();
 
 app.UseCors();
 

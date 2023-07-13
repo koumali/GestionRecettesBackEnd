@@ -1,11 +1,10 @@
-using System.ComponentModel.DataAnnotations;
+using AutomotiveApi.Utility.Validators;
 
 namespace AutomotiveApi.Models.Dto
 {
     public class ClientDto
     {
-        [Required]
-        [MaxLength(50)]
+        public int Id { get; set; }
         public string FirstName { get; set; }
         public string LastName { get; set; }
         public string Tel { get; set; }
@@ -14,7 +13,12 @@ namespace AutomotiveApi.Models.Dto
         public string ZipCode { get; set; }
         public string Adresse { get; set; }
         public string Adresse2 { get; set; }
-        public string PermisRecto { get; set; }
-        public string PermisVerso { get; set; }
+        [AllowedExtensions(new string[] { ".jpg", ".png", ".jpeg" })]
+        [MaxFileSize(1 * 1024 * 1024)]
+        public IFormFile? PermisRecto { get; set; }
+
+        [AllowedExtensions(new string[] { ".jpg", ".png", ".jpeg" })]
+        [MaxFileSize(1 * 1024 * 1024)]
+        public IFormFile? PermisVerso { get; set; }
     }
 }

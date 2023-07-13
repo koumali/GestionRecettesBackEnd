@@ -2,6 +2,7 @@
 using AutomotiveApi.Models.Dto;
 using AutomotiveApi.Models.Entities.Gestion;
 using AutomotiveApi.Services.Gestion.Interfaces;
+using AutomotiveApi.Utility;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -13,12 +14,14 @@ namespace AutomotiveApi.Controllers.v1
     {
         private readonly IMapper _mapper;
         private readonly IVehicule _vehiculeService;
+        private readonly IFileHelper _fileHelper;
 
 
-        public VehiculesController(IVehicule vehiculeService, IMapper mapper)
+        public VehiculesController(IVehicule vehiculeService, IMapper mapper, IFileHelper fileHelper)
         {
             _vehiculeService = vehiculeService;
             _mapper = mapper;
+            _fileHelper = fileHelper;
         }
 
         [HttpGet]
@@ -29,7 +32,7 @@ namespace AutomotiveApi.Controllers.v1
             return Ok(vehicules);
         }
 
-       [HttpGet("agence/{idAgence}")]
+        [HttpGet("agence/{idAgence}")]
         [Authorize(Roles = "Commercial, Agent, Gerant")]
         public async Task<ActionResult<IEnumerable<Vehicule>>> GetVehiculesAgence(int idAgence)
         {
@@ -50,9 +53,13 @@ namespace AutomotiveApi.Controllers.v1
 
         [HttpPost]
         [Authorize(Roles = "Admin, Commercial, Agent, Gerant")]
-        public async Task<ActionResult<Vehicule>> AddVehicule(VehiculeDto request)
+        public async Task<ActionResult<Vehicule>> AddVehicule([FromForm] VehiculeDto request)
         {
             var vehicule = _mapper.Map<Vehicule>(request);
+            if (request.Image != null)
+            {
+                vehicule.Image = await _fileHelper.UploadImage(request.Image, "vehicules");
+            }
             var addedVehicule = await _vehiculeService.CreateAsync(vehicule);
             return Ok(addedVehicule);
         }
@@ -67,13 +74,18 @@ namespace AutomotiveApi.Controllers.v1
 
         [HttpPut("{id}")]
         [Authorize(Roles = "Admin, Commercial, Agent, Gerant")]
-        public async Task<ActionResult<Vehicule>> UpdateVehicule(int id, VehiculeDto request)
+        public async Task<ActionResult<Vehicule>> UpdateVehicule(int id,[FromForm] VehiculeDto request)
         {
-            var vehicule = await _vehiculeService.GetByIdAsync(id);
-            if (vehicule == null)
+            if (id != request.Id)
             {
-                return NotFound();
+                return BadRequest(new { errors = "Id incoherent" });
             }
+            var vehicule = await _vehiculeService.GetByIdAsync(id);            
+
+            if (request.Image != null)
+            {
+                vehicule.Image = await _fileHelper.UploadImage(request.Image, "vehicules");
+            }                    
 
             vehicule.Name = request.Name;
             vehicule.Matricule = request.Matricule;
@@ -83,11 +95,12 @@ namespace AutomotiveApi.Controllers.v1
             vehicule.Km = request.Km;
             vehicule.Climat = request.Climat;
             vehicule.Airbag = request.Airbag;
-            vehicule.Image = request.Image;
             vehicule.Gearbox = request.Gearbox;
             vehicule.Moteur = request.Moteur;
             vehicule.IdAgence = request.IdAgence;
-            vehicule.IdModele = request.IdModele;
+            vehicule.IdModele = request.IdModele;            
+
+
             var updatedVehicule = await _vehiculeService.UpdateAsync(vehicule);
             return Ok(updatedVehicule);
         }

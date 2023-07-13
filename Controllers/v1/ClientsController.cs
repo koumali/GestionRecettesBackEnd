@@ -2,6 +2,7 @@ using AutoMapper;
 using AutomotiveApi.Models.Dto;
 using AutomotiveApi.Models.Entities.Gestion;
 using AutomotiveApi.Services.Gestion.Interfaces;
+using AutomotiveApi.Utility;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -13,12 +14,14 @@ namespace AutomotiveApi.Controllers.v1
     {
         private readonly IMapper _mapper;
         private readonly IClient _clientService;
+        private readonly IFileHelper _fileHelper;
 
 
-        public ClientsController(IClient clientService, IMapper mapper)
+        public ClientsController(IClient clientService, IMapper mapper, IFileHelper fileHelper)
         {
             _clientService = clientService;
             _mapper = mapper;
+            _fileHelper = fileHelper;
         }
 
         [HttpGet]
@@ -44,9 +47,18 @@ namespace AutomotiveApi.Controllers.v1
 
         [HttpPost]
         [Authorize(Roles = "Admin, Commercial, Gerant")]
-        public async Task<ActionResult<Client>> AddClient(ClientDto request)
+        public async Task<ActionResult<Client>> AddClient([FromForm] ClientDto request)
         {
             var client = _mapper.Map<Client>(request);
+            if (request.PermisRecto != null && request.PermisVerso != null)
+            {
+                client.PermisRecto = await _fileHelper.UploadImage(request.PermisRecto, "Permis");
+                client.PermisVerso = await _fileHelper.UploadImage(request.PermisVerso, "Permis");
+            }
+            else
+            {
+                return BadRequest(new { errors = "PermisRecto and PermisVerso are required" });
+            }
 
             var addedClient = await _clientService.CreateAsync(client);
             return Ok(addedClient);
@@ -70,12 +82,22 @@ namespace AutomotiveApi.Controllers.v1
 
         [HttpPut("{id}")]
         [Authorize(Roles = "Admin, Gerant, Commercial")]
-        public async Task<ActionResult<Client>> UpdateClient(int id, ClientDto request)
+        public async Task<ActionResult<Client>> UpdateClient(int id, [FromForm] ClientDto request)
         {
-            var client = await _clientService.GetByIdAsync(id);
-            if (client == null)
+            if (id != request.Id)
             {
-                return NotFound();
+                return BadRequest();
+            }
+
+            var client = await _clientService.GetByIdAsync(id);
+
+            if (request.PermisRecto != null)
+            {
+                client.PermisRecto = await _fileHelper.UploadImage(request.PermisRecto, "Permis");
+            }
+            if (request.PermisVerso != null)
+            {
+                client.PermisVerso = await _fileHelper.UploadImage(request.PermisVerso, "Permis");
             }
 
             client.FirstName = request.FirstName;
@@ -86,8 +108,7 @@ namespace AutomotiveApi.Controllers.v1
             client.ZipCode = request.ZipCode;
             client.Adresse = request.Adresse;
             client.Adresse2 = request.Adresse2;
-            client.PermisRecto = request.PermisRecto;
-            client.PermisVerso = request.PermisVerso;
+
             var updatedClient = await _clientService.UpdateAsync(client);
             return Ok(updatedClient);
         }
