@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using AutomotiveApi.Models.Dto;
 using AutomotiveApi.Models.Entities.Gestion;
+using AutomotiveApi.Services.Attributes;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using AutomotiveApi.Services.Gestion.Interfaces;
@@ -31,6 +32,7 @@ namespace AutomotiveApi.Controllers.v1
         
        [HttpGet("agence/{idAgence}")]
         [Authorize(Roles = "Commercial, Agent, Gerant")]
+       [ValidatIdAgence("idAgence")]
         public async Task<ActionResult<IEnumerable<Marque>>> GetMarquesAgence(int idAgence)
         {
             var marques = await _marqueService.GetMarquesAgence(idAgence);

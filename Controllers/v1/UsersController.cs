@@ -1,6 +1,8 @@
 using AutoMapper;
 using AutomotiveApi.Models.Dto;
 using AutomotiveApi.Models.Entities.Param;
+using AutomotiveApi.Services.Attributes;
+using AutomotiveApi.Services.Jwt;
 using AutomotiveApi.Services.Param;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -13,12 +15,13 @@ namespace AutomotiveApi.Controllers.v1
     {
         private readonly IUser _userService;
         private readonly IMapper _mapper;
+        public static IJwt _jwt;
 
-
-        public UsersController(IUser userService, IMapper mapper)
+        public UsersController(IUser userService, IMapper mapper, IJwt jwt)
         {
             _userService = userService;
             _mapper = mapper;
+            _jwt = jwt;
         }
 
 
@@ -32,6 +35,7 @@ namespace AutomotiveApi.Controllers.v1
 
         [HttpGet("agence/{idAgence}")]
         [Authorize(Roles = "Gerant")]
+        [ValidatIdAgence("idAgence")]
         public async Task<ActionResult<IEnumerable<User>>> GetUsersAgence(int idAgence)
         {
             var users = await _userService.GetUsersAgence(idAgence);

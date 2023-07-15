@@ -1,5 +1,6 @@
 using AutomotiveApi.Models.Dto;
 using AutomotiveApi.Models.Entities.Param;
+using AutomotiveApi.Services.Attributes;
 using AutomotiveApi.Services.Param;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -25,9 +26,10 @@ namespace AutomotiveApi.Controllers.v1
             var roles = await _roleService.GetAllAsync();
             return Ok(roles);
         }
-        
+
         [HttpGet("agence/{idAgence}")]
         [Authorize(Roles = "Gerant")]
+        [ValidatIdAgence("idAgence")]
         public async Task<ActionResult<IEnumerable<Role>>> GetRolesAgence(int idAgence)
         {
             var roles = await _roleService.GetRolesAgence(idAgence);

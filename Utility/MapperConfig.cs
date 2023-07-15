@@ -17,10 +17,8 @@ namespace AutomotiveApi.Utility
             CreateMap<Marque, MarqueDto>().ReverseMap();
             CreateMap<Modele, ModeleDto>().ReverseMap();
             CreateMap<Agence, AgenceDto>().ReverseMap();
-            CreateMap<Offre, OffreDto>().ReverseMap();            
+            CreateMap<Offre, OffreDto>().ReverseMap();
             CreateMap<Contrat, ContratDto>().ReverseMap();
-
-
         }
     }
 }

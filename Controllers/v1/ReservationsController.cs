@@ -1,6 +1,7 @@
 using AutoMapper;
 using AutomotiveApi.Models.Dto;
 using AutomotiveApi.Models.Entities.Gestion;
+using AutomotiveApi.Services.Attributes;
 using AutomotiveApi.Services.Gestion.Interfaces;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -48,6 +49,7 @@ namespace AutomotiveApi.Controllers.v1
 
         [HttpGet("{id}")]
         [Authorize(Roles = "Admin, Commercial, Gerant")]
+        [ValidatIdAgence("idAgence")]
         public async Task<ActionResult<Reservation>> GetReservationById(int id)
         {
             var reservation = await _reservationService.GetByIdAsync(id);

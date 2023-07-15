@@ -7,5 +7,6 @@ namespace AutomotiveApi.Services.Jwt
         int getUserId();
         string getRole();
         string generateToken(User user);
+        int getIdAgence();
     }
 }

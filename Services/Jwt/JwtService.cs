@@ -40,10 +40,8 @@ namespace AutomotiveApi.Services.Jwt
                 new Claim("id", user.Id.ToString()),
                 new Claim("email", user.Email),
                 new Claim("fullname", user.FirstName + " " + user.LastName),
-                new Claim(ClaimTypes.Role, user.Role.Name)
-
-
-                // new Claim(ClaimTypes.Role, user.Role.name)
+                new Claim(ClaimTypes.Role, user.Role.Name),
+                new Claim("idAgence", user.IdAgence.ToString() ?? "0")
             };
 
 
@@ -61,6 +59,12 @@ namespace AutomotiveApi.Services.Jwt
 
             var jwtToken = new JwtSecurityTokenHandler().WriteToken(token);
             return jwtToken;
+        }
+
+        public int getIdAgence()
+        {
+            var idAgence = int.Parse(_httpContextAccessor.HttpContext?.User.FindFirst("idAgence")?.Value ?? "0");
+            return idAgence;
         }
     }
 }

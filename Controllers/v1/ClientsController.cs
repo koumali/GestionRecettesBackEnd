@@ -1,6 +1,7 @@
 using AutoMapper;
 using AutomotiveApi.Models.Dto;
 using AutomotiveApi.Models.Entities.Gestion;
+using AutomotiveApi.Services.Attributes;
 using AutomotiveApi.Services.Gestion.Interfaces;
 using AutomotiveApi.Utility;
 using Microsoft.AspNetCore.Authorization;
@@ -35,6 +36,7 @@ namespace AutomotiveApi.Controllers.v1
         // get clients of a specific agence
         [HttpGet("agence/{idAgence}")]
         [Authorize(Roles = "Commercial, Gerant")]
+        [ValidatIdAgence("idAgence")]
         public async Task<ActionResult<IEnumerable<Client>>> GetClientsAgence(int idAgence)
         {
             var clients = await _clientService.GetClientsAgence(idAgence);
