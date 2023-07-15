@@ -16,7 +16,6 @@ namespace AutomotiveApi.Services.Gestion
 
         public new async Task<Vehicule> CreateAsync(Vehicule entity)
         {
-
             await _context.Vehicules.AddAsync(entity);
             await _context.SaveChangesAsync();
             return await _context.Vehicules
@@ -29,7 +28,6 @@ namespace AutomotiveApi.Services.Gestion
 
         public new async Task<Vehicule> UpdateAsync(Vehicule entity)
         {
-            
             _context.Vehicules.Update(entity);
             await _context.SaveChangesAsync();
             return await _context.Vehicules
@@ -65,7 +63,6 @@ namespace AutomotiveApi.Services.Gestion
                     IdModele = v.IdModele,
                     Modele = new Modele
                     {
-
                         Id = v.Modele.Id,
                         Name = v.Modele.Name,
                         Marque = v.Modele.Marque,
@@ -84,5 +81,25 @@ namespace AutomotiveApi.Services.Gestion
                 .ToListAsync();
         }
 
+        // get vehicules by marque
+        public async Task<IEnumerable<Vehicule>> GetVehiculesByMarque(string name)
+        {
+            return await _context.Vehicules
+                .Where(v => v.Modele.Marque.Name == name)
+                .ToListAsync();
+        }
+
+        // get top reserved vehicules
+        public async Task<IEnumerable<Vehicule>> GetTopReservedVehicules(int number)
+        {
+            var topReservation = await _context.Reservations
+                .Include(r => r.Vehicule)
+                .GroupBy(r => r.IdVehicule)
+                .Take(number).ToListAsync();
+
+            return topReservation.Select(res => res.Select(r => r.Vehicule)
+                    .FirstOrDefault()).Where(vehicule => vehicule != null)
+                .ToList();
+        }
     }
 }
