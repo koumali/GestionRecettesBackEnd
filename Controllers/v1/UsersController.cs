@@ -61,7 +61,7 @@ namespace AutomotiveApi.Controllers.v1
             try
             {
                 var newUser = await _userService.CreateAsync(user);
-                return Ok(newUser);
+                return CreatedAtAction(nameof(GetUserById), new { id = newUser.Id }, newUser);
             }
             catch (Exception ex)
             {
