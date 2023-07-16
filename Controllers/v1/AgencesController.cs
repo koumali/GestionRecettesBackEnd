@@ -40,6 +40,15 @@ namespace AutomotiveApi.Controllers.v1
             return CreatedAtAction(nameof(GetAgenceById), new { id = addedAgence.Id }, addedAgence);
         }
 
+        [HttpPost("client")]
+        public async Task<ActionResult<Agence>> AddClientAgence(AgenceClientDto request)
+        {
+            var agence = _mapper.Map<Agence>(request);
+
+            var addedAgence = await _agenceService.CreateAsync(agence);
+            return CreatedAtAction(nameof(GetAgenceById), new { id = addedAgence.Id }, addedAgence);
+        }
+
         [HttpGet("{id}")]
         [Authorize(Roles = "Admin, Commercial, Agent, Gerant")]
         public async Task<ActionResult<Agence>> GetAgenceById(int id)

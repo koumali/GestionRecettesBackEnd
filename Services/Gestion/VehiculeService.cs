@@ -85,21 +85,28 @@ namespace AutomotiveApi.Services.Gestion
         public async Task<IEnumerable<Vehicule>> GetVehiculesByMarque(string name)
         {
             return await _context.Vehicules
+                .Include(v => v.Modele)
+                .ThenInclude(m => m.Marque)
                 .Where(v => v.Modele.Marque.Name == name)
                 .ToListAsync();
         }
 
         // get top reserved vehicules
-        public async Task<IEnumerable<Vehicule>> GetTopReservedVehicules(int number)
+        public IEnumerable<Vehicule> GetTopReservedVehicules(int number)
         {
-            var topReservation = await _context.Reservations
+            var topReservation = _context.Reservations
                 .Include(r => r.Vehicule)
-                .GroupBy(r => r.IdVehicule)
-                .Take(number).ToListAsync();
+                .ThenInclude(v => v.Modele)
+                .ThenInclude(m => m.Marque)
+                .GroupBy(r => r.IdVehicule);
 
-            return topReservation.Select(res => res.Select(r => r.Vehicule)
-                    .FirstOrDefault()).Where(vehicule => vehicule != null)
-                .ToList();
+            var topVehicules = new List<Vehicule>();
+            foreach (var vehi in topReservation)
+            {
+                topVehicules.Add(vehi.Select(r => r.Vehicule).First());
+            }
+
+            return topVehicules;
         }
     }
 }

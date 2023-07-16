@@ -25,6 +25,18 @@ namespace AutomotiveApi.Controllers.v1
             _fileHelper = fileHelper;
         }
 
+        [HttpGet("marque/{name}")]
+        public async Task<ActionResult<IEnumerable<Vehicule>>> GetVehiculesByMarque(string name)
+        {
+            return Ok(await _vehiculeService.GetVehiculesByMarque(name));
+        }
+
+        [HttpGet("reserved/{number}")]
+        public ActionResult<IEnumerable<Vehicule>> GetTopReservedVehicules(int number)
+        {
+            return Ok(_vehiculeService.GetTopReservedVehicules(number));
+        }
+
         [HttpGet]
         [Authorize(Roles = "Admin")]
         public async Task<ActionResult<IEnumerable<Vehicule>>> GetVehicules()
@@ -59,6 +71,7 @@ namespace AutomotiveApi.Controllers.v1
             {
                 vehicule.Image = await _fileHelper.UploadImage(request.Image, "vehicules");
             }
+
             var addedVehicule = await _vehiculeService.CreateAsync(vehicule);
             return Ok(addedVehicule);
         }
@@ -73,18 +86,19 @@ namespace AutomotiveApi.Controllers.v1
 
         [HttpPut("{id}")]
         [Authorize(Roles = "Admin, Commercial, Agent, Gerant")]
-        public async Task<ActionResult<Vehicule>> UpdateVehicule(int id,[FromForm] VehiculeDto request)
+        public async Task<ActionResult<Vehicule>> UpdateVehicule(int id, [FromForm] VehiculeDto request)
         {
             if (id != request.Id)
             {
                 return BadRequest(new { errors = "Id incoherent" });
             }
-            var vehicule = await _vehiculeService.GetByIdAsync(id);            
+
+            var vehicule = await _vehiculeService.GetByIdAsync(id);
 
             if (request.Image != null)
             {
                 vehicule.Image = await _fileHelper.UploadImage(request.Image, "vehicules");
-            }                    
+            }
 
             vehicule.Name = request.Name;
             vehicule.Matricule = request.Matricule;
@@ -97,7 +111,7 @@ namespace AutomotiveApi.Controllers.v1
             vehicule.Gearbox = request.Gearbox;
             vehicule.Moteur = request.Moteur;
             vehicule.IdAgence = request.IdAgence;
-            vehicule.IdModele = request.IdModele;            
+            vehicule.IdModele = request.IdModele;
 
 
             var updatedVehicule = await _vehiculeService.UpdateAsync(vehicule);
