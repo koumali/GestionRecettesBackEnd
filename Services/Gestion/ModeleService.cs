@@ -14,8 +14,16 @@ namespace AutomotiveApi.Services.Gestion
             _context = context;
         }
 
+        public new async Task<Modele> GetByIdAsync(int id)
+        {
+            return await _context.Modeles
+                .Include(m => m.Marque)
+                .FirstOrDefaultAsync(m => m.Id == id);
+        }
+
         public new async Task<Modele> CreateAsync(Modele entity)
         {
+            
             await _context.Modeles.AddAsync(entity);
             await _context.SaveChangesAsync();
             return await _context.Modeles

@@ -58,6 +58,7 @@ namespace AutomotiveApi.DAL
             var modeles = new Faker<Modele>()
             .RuleFor(x => x.Id, f => id++).RuleFor(x => x.Name, f => f.Vehicle.Model())
             .RuleFor(x => x.IdMarque, f => f.Random.Int(1, 10))
+            .RuleFor(x => x.Image, f => f.Image.PicsumUrl())
             .RuleFor(x => x.CreatedAt, f => f.Date.Past());
 
             return modeles;

@@ -5,6 +5,7 @@ using AutomotiveApi.Services.Attributes;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using AutomotiveApi.Services.Gestion.Interfaces;
+using AutomotiveApi.Utility;
 
 namespace AutomotiveApi.Controllers.v1
 {
@@ -14,12 +15,16 @@ namespace AutomotiveApi.Controllers.v1
     {
         private readonly IMapper _mapper;
         private readonly IModele _modeleService;
+        private readonly IMarque _marqueService;
+        private readonly IFileHelper _fileHelper;
 
 
-        public ModelesController(IModele modeleService, IMapper mapper)
+        public ModelesController(IModele modeleService, IMapper mapper, IFileHelper fileHelper, IMarque marqueService)
         {
             _modeleService = modeleService;
+            _marqueService = marqueService;
             _mapper = mapper;
+            _fileHelper = fileHelper;
         }
 
         [HttpGet]
@@ -52,9 +57,23 @@ namespace AutomotiveApi.Controllers.v1
 
         [HttpPost]
         [Authorize(Roles = "Admin, Commercial, Agent, Gerant")]
-        public async Task<ActionResult<Modele>> AddModele(ModeleDto request)
+        public async Task<ActionResult<Modele>> AddModele([FromForm] ModeleDto request)
         {
+
+
             var modele = _mapper.Map<Modele>(request);
+
+            if (request.Image != null)
+            {
+                var marque = await _marqueService.GetByIdAsync(request.IdMarque);
+                string folder = marque.Name + "/" + request.Name ?? "";
+                modele.Image = await _fileHelper.UploadImage(request.Image, folder);
+            }
+            else
+            {
+                return BadRequest(new { errors = "Image is required" });
+            }
+            
             var addedModele = await _modeleService.CreateAsync(modele);
             return Ok(addedModele);
         }
@@ -69,9 +88,20 @@ namespace AutomotiveApi.Controllers.v1
 
         [HttpPut("{id}")]
         [Authorize(Roles = "Admin, Commercial, Agent, Gerant")]
-        public async Task<ActionResult<Modele>> UpdateModele(int id, ModeleDto request)
+        public async Task<ActionResult<Modele>> UpdateModele(int id, [FromForm] ModeleDto request)
         {
+            if (id != request.Id)
+            {
+                return BadRequest(new { errors = "Id in body doesn't match Id in URI" });
+            }
+
             var modele = await _modeleService.GetByIdAsync(id);
+            if (request.Image != null)
+            {
+                string folder = modele.Marque.Name + "/" + request.Name ?? "";
+                modele.Image = await _fileHelper.UploadImage(request.Image, folder);
+            }
+
             if (modele == null)
             {
                 return NotFound();

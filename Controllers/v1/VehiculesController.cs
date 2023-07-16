@@ -15,14 +15,12 @@ namespace AutomotiveApi.Controllers.v1
     {
         private readonly IMapper _mapper;
         private readonly IVehicule _vehiculeService;
-        private readonly IFileHelper _fileHelper;
 
-
-        public VehiculesController(IVehicule vehiculeService, IMapper mapper, IFileHelper fileHelper)
+        public VehiculesController(IVehicule vehiculeService, IMapper mapper)
         {
             _vehiculeService = vehiculeService;
             _mapper = mapper;
-            _fileHelper = fileHelper;
+
         }
 
         [HttpGet]
@@ -52,13 +50,9 @@ namespace AutomotiveApi.Controllers.v1
 
         [HttpPost]
         [Authorize(Roles = "Admin, Commercial, Agent, Gerant")]
-        public async Task<ActionResult<Vehicule>> AddVehicule([FromForm] VehiculeDto request)
+        public async Task<ActionResult<Vehicule>> AddVehicule(VehiculeDto request)
         {
-            var vehicule = _mapper.Map<Vehicule>(request);
-            if (request.Image != null)
-            {
-                vehicule.Image = await _fileHelper.UploadImage(request.Image, "vehicules");
-            }
+            var vehicule = _mapper.Map<Vehicule>(request);          
             var addedVehicule = await _vehiculeService.CreateAsync(vehicule);
             return Ok(addedVehicule);
         }
@@ -73,18 +67,13 @@ namespace AutomotiveApi.Controllers.v1
 
         [HttpPut("{id}")]
         [Authorize(Roles = "Admin, Commercial, Agent, Gerant")]
-        public async Task<ActionResult<Vehicule>> UpdateVehicule(int id,[FromForm] VehiculeDto request)
+        public async Task<ActionResult<Vehicule>> UpdateVehicule(int id,VehiculeDto request)
         {
             if (id != request.Id)
             {
                 return BadRequest(new { errors = "Id incoherent" });
             }
-            var vehicule = await _vehiculeService.GetByIdAsync(id);            
-
-            if (request.Image != null)
-            {
-                vehicule.Image = await _fileHelper.UploadImage(request.Image, "vehicules");
-            }                    
+            var vehicule = await _vehiculeService.GetByIdAsync(id);                              
 
             vehicule.Name = request.Name;
             vehicule.Matricule = request.Matricule;
