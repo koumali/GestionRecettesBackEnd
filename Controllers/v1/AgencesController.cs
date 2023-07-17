@@ -4,6 +4,7 @@ using AutomotiveApi.Models.Entities.Gestion;
 using AutomotiveApi.Services.Gestion.Interfaces;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using IMailService = AutomotiveApi.Services.Mail.IMailService;
 
 namespace AutomotiveApi.Controllers.v1
 {
@@ -13,11 +14,13 @@ namespace AutomotiveApi.Controllers.v1
     {
         private readonly IMapper _mapper;
         private readonly IAgence _agenceService;
+        private readonly IMailService _mailService;
 
-        public AgencesController(IAgence agenceService, IMapper mapper)
+        public AgencesController(IAgence agenceService, IMapper mapper, IMailService mailService)
         {
             _agenceService = agenceService;
             _mapper = mapper;
+            _mailService = mailService;
         }
 
         [HttpGet]
@@ -35,8 +38,8 @@ namespace AutomotiveApi.Controllers.v1
         public async Task<ActionResult<Agence>> AddAgence(AgenceDto request)
         {
             var agence = _mapper.Map<Agence>(request);
-
             var addedAgence = await _agenceService.CreateAsync(agence);
+
             return CreatedAtAction(nameof(GetAgenceById), new { id = addedAgence.Id }, addedAgence);
         }
 
@@ -46,6 +49,7 @@ namespace AutomotiveApi.Controllers.v1
             var agence = _mapper.Map<Agence>(request);
 
             var addedAgence = await _agenceService.CreateAsync(agence);
+            _mailService.SendEmail(request);
             return CreatedAtAction(nameof(GetAgenceById), new { id = addedAgence.Id }, addedAgence);
         }
 

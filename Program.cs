@@ -10,6 +10,7 @@ using AutomotiveApi.Services.Auth;
 using AutomotiveApi.Services.Gestion;
 using AutomotiveApi.Services.Gestion.Interfaces;
 using AutomotiveApi.Services.Jwt;
+using AutomotiveApi.Services.Mail;
 using AutomotiveApi.Services.Param;
 using AutomotiveApi.Utility;
 using AutomotiveApi.Utility.Middlwares;
@@ -117,6 +118,7 @@ builder.Services.AddScoped<IReservation, ReservationService>();
 builder.Services.AddScoped<ILogJournal, LogJournalService>();
 builder.Services.AddScoped<IContrat, ContratService>();
 builder.Services.AddScoped<IFileHelper, FileHelper>();
+builder.Services.AddScoped<IMailService, MailService>();
 
 var mappingConfig = new MapperConfiguration(mc => { mc.AddProfile(new MapperConfig()); });
 
