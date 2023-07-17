@@ -31,9 +31,9 @@ namespace AutomotiveApi.Controllers.v1
         }
 
         [HttpGet("public")]
-        public async Task<ActionResult<IEnumerable<Offre>>> GetPublicOffres()
+        public async Task<ActionResult<IEnumerable<Offre>>> GetPublicOffres(string name,string startDate, string endDate)
         {
-            var offres = await _offreservice.GetPublicOffres();
+            var offres = await _offreservice.GetPublicOffres(name,DateTime.Parse(startDate) ,DateTime.Parse(endDate));
             return Ok(offres);
         }
         [HttpGet("public/{id}")]

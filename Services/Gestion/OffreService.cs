@@ -1,4 +1,5 @@
 using AutomotiveApi.DAL;
+using AutomotiveApi.Models.Dto;
 using AutomotiveApi.Models.Entities.Gestion;
 using AutomotiveApi.Services.Gestion.Interfaces;
 using Microsoft.EntityFrameworkCore;
@@ -48,10 +49,12 @@ namespace AutomotiveApi.Services.Gestion
 
         }
 
-        public async Task<IEnumerable<Offre>> GetPublicOffres()
+        public async Task<IEnumerable<Offre>> GetPublicOffres(string name, DateTime datedebut, DateTime datefin)
         {
+            Console.WriteLine(datedebut);
             return await _context.Offres
-                .Where(o => o.isPublic)
+                .Where(o => o.isPublic &  o.DateDebut <= datedebut & o.DateFin >= datefin )
+                //.Where(o => o.Vehicule.Agence.City == name) a inplmenter &
                 .Include(o => o.Vehicule.Agence)
                              .Include(o => o.Vehicule.Modele)
                                               .ThenInclude(m => m.Marque)
