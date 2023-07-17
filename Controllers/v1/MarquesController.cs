@@ -23,7 +23,7 @@ namespace AutomotiveApi.Controllers.v1
         }
 
         [HttpGet]
-        [Authorize(Roles = "Admin, Commercial, Agent, Gerant")]
+        // [Authorize(Roles = "Admin, Commercial, Agent, Gerant")]
         public async Task<ActionResult<IEnumerable<Marque>>> GetMarques()
         {
             var marques = await _marqueService.GetAllAsync();
