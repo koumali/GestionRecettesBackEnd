@@ -51,19 +51,15 @@ namespace AutomotiveApi.Controllers.v1
         [Authorize(Roles = "Admin, Commercial, Gerant")]
         public async Task<ActionResult<Client>> AddClient([FromForm] ClientDto request)
         {
-            var client = _mapper.Map<Client>(request);
-            if (request.PermisRecto != null && request.PermisVerso != null)
+            try
             {
-                client.PermisRecto = await _fileHelper.UploadImage(request.PermisRecto, "Permis");
-                client.PermisVerso = await _fileHelper.UploadImage(request.PermisVerso, "Permis");
+                var addedClient = await _clientService.AddAsync(request);
+                return Ok(addedClient);
             }
-            else
+            catch (Exception ex)
             {
-                return BadRequest(new { errors = "PermisRecto and PermisVerso are required" });
+                return BadRequest(new { errors = ex.Message });
             }
-
-            var addedClient = await _clientService.CreateAsync(client);
-            return Ok(addedClient);
         }
 
         [HttpGet("{id}")]
