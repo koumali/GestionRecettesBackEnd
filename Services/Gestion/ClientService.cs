@@ -1,18 +1,27 @@
+using AutoMapper;
 using AutomotiveApi.DAL;
+using AutomotiveApi.Models.Dto;
 using AutomotiveApi.Models.Entities.Gestion;
 using AutomotiveApi.Services.Gestion.Interfaces;
+using AutomotiveApi.Utility;
 using Microsoft.EntityFrameworkCore;
+using Newtonsoft.Json;
 
 namespace AutomotiveApi.Services.Gestion
 {
     public class ClientService : GenericDataService<Client>, IClient
     {
         private readonly AppDbContext _context;
+        private readonly IFileHelper _fileHelper;
+        private readonly IMapper _mapper;
 
-        public ClientService(AppDbContext context) : base(context)
+        public ClientService(AppDbContext context, IFileHelper fileHelper, IMapper mapper) : base(context)
         {
             _context = context;
+            _fileHelper = fileHelper;
+            _mapper = mapper;
         }
+
 
         public async Task<IEnumerable<Client>> GetClientsAgence(int id)
         {
@@ -37,5 +46,24 @@ namespace AutomotiveApi.Services.Gestion
             }));
             return listClients.DistinctBy(c => new { c.FirstName, c.LastName, c.Email });
         }
+
+        
+        public async Task<Client> AddAsync(ClientDto client)
+        {
+            Console.WriteLine("CreateAsync");
+            // Console log serialize object
+            Console.WriteLine(JsonConvert.SerializeObject(client));            
+            
+            Client newClient = _mapper.Map<Client>(client);
+
+            if (client.PermisRecto != null && client.PermisVerso != null)
+            {
+                newClient.PermisRecto = await _fileHelper.UploadImage(client.PermisRecto, "Permis");
+                newClient.PermisVerso = await _fileHelper.UploadImage(client.PermisVerso, "Permis");
+            }
+            
+            return await base.CreateAsync(newClient);            
+        }
+
     }
 }

@@ -14,12 +14,16 @@ namespace AutomotiveApi.Controllers.v1
     {
         private readonly IReservation _reservationService;
         private readonly IMapper _mapper;
+        private readonly IClient _clientService;
+        private readonly IContrat _contratService;
 
 
-        public ReservationsController(IReservation reservationService, IMapper mapper)
+        public ReservationsController(IReservation reservationService, IMapper mapper, IClient clientService, IContrat contratService)
         {
             _reservationService = reservationService;
             _mapper = mapper;
+            _clientService = clientService;
+            _contratService = contratService;
         }
 
         [HttpGet]
@@ -45,6 +49,53 @@ namespace AutomotiveApi.Controllers.v1
             var reservation = _mapper.Map<Reservation>(request);
             var addedReservation = await _reservationService.CreateAsync(reservation);
             return Ok(addedReservation);
+        }
+
+        [HttpPost("public")]
+        public async Task<ActionResult<Reservation>> AddReservationPublic([FromForm] FullReservationDto request)
+        {
+            Reservation newReservation = new Reservation
+            {
+                DateDepart = request.DateDepart,
+                DateRetour = request.DateRetour,
+                IdVehicule = request.IdVehicule
+            };
+
+            Reservation createdRes = await _reservationService.CreateAsync(newReservation);
+
+            ClientDto client = request.Conducteurs.First();
+            Client createdClient = await _clientService.AddAsync(client);
+
+            ClientDto conducteur = request.Conducteurs.Last();
+            Client createdConducteur = await _clientService.AddAsync(conducteur);
+
+            Contrat newContrat1 = new Contrat
+            {
+                IdClient = createdClient.Id,
+                IdReservation = createdRes.Id,
+                IsConducteur = false
+            };
+
+
+            Contrat newContrat2 = new Contrat
+            {
+                IdClient = createdConducteur.Id,
+                IdReservation = createdRes.Id,
+                IsConducteur = true
+            };
+
+            try
+            {
+                await _contratService.CreateAsync(newContrat1);
+                await _contratService.CreateAsync(newContrat2);
+            }
+            catch (Exception e)
+            {             
+             return BadRequest(new {errors = e.Message});
+            }
+
+            return CreatedAtAction(nameof(GetReservationById), new {id = createdRes.Id}, createdRes);
+
         }
 
         [HttpGet("{id}")]
