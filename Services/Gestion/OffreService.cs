@@ -1,5 +1,4 @@
 using AutomotiveApi.DAL;
-using AutomotiveApi.Models.Dto;
 using AutomotiveApi.Models.Entities.Gestion;
 using AutomotiveApi.Services.Gestion.Interfaces;
 using Microsoft.EntityFrameworkCore;
@@ -53,8 +52,7 @@ namespace AutomotiveApi.Services.Gestion
         {
             Console.WriteLine(datedebut);
             return await _context.Offres
-                .Where(o => o.isPublic &&  o.DateDebut <= datedebut && datefin <= o.DateFin)
-                //.Where(o => o.Vehicule.Agence.City == name) a inplmenter &
+                .Where(o => o.isPublic &&  o.DateDebut <= datedebut && datefin <= o.DateFin && o.Vehicule.Agence.City == name)
                 .Include(o => o.Vehicule.Agence)
                              .Include(o => o.Vehicule.Modele)
                                               .ThenInclude(m => m.Marque)

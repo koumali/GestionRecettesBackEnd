@@ -29,6 +29,11 @@ namespace AutomotiveApi.Controllers.v1
         {
             return Ok(await _agenceService.GetAllAsync());
         }
+        [HttpGet("Villes")]
+        public async Task<ActionResult<IEnumerable<string>>> GetAgencesVilles()
+        {
+            return Ok(await _agenceService.GetAllVilleAsync());
+        }
         //<summary>
         //Add Agence
         //</summary>
