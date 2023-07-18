@@ -53,7 +53,7 @@ namespace AutomotiveApi.Services.Gestion
         {
             Console.WriteLine(datedebut);
             return await _context.Offres
-                .Where(o => o.isPublic &&  o.DateDebut >= datedebut && o.DateFin >= datefin )
+                .Where(o => o.isPublic &&  o.DateDebut <= datedebut && datefin <= o.DateFin)
                 //.Where(o => o.Vehicule.Agence.City == name) a inplmenter &
                 .Include(o => o.Vehicule.Agence)
                              .Include(o => o.Vehicule.Modele)
