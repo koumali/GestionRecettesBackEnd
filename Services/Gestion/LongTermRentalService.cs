@@ -5,18 +5,18 @@ using Microsoft.EntityFrameworkCore;
 
 namespace AutomotiveApi.Services.Gestion
 {
-    
-    public class AgenceService : GenericDataService<Agence>, IAgence
+    public class LongTermRentalService : GenericDataService<LongTermRental>, ILongTermRental
     {
         private readonly AppDbContext _context;
-        public AgenceService(AppDbContext context) : base(context)
+
+        public LongTermRentalService(AppDbContext context) : base(context)
         {
             _context = context;
         }
 
-        public async Task<IEnumerable<string?>> GetAllVilleAsync()
+        public new async Task<IEnumerable<LongTermRental>> GetAllAsync()
         {
-            return await _context.Agences.Select(a => a.City).Distinct().ToListAsync();
+            return await _context.long_term_rentals.ToListAsync();
         }
     }
 }

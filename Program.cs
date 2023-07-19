@@ -117,6 +117,7 @@ builder.Services.AddScoped<IOffre, OffreService>();
 builder.Services.AddScoped<IReservation, ReservationService>();
 builder.Services.AddScoped<ILogJournal, LogJournalService>();
 builder.Services.AddScoped<IContrat, ContratService>();
+builder.Services.AddScoped<ILongTermRental, LongTermRentalService>();
 builder.Services.AddScoped<IFileHelper, FileHelper>();
 builder.Services.AddScoped<IMailService, MailService>();
 

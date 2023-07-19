@@ -11,8 +11,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace AutomotiveApi.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20230711154938_added_ispublic_column")]
-    partial class added_ispublic_column
+    [Migration("20230719164127_longtimeReservation")]
+    partial class longtimeReservation
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -33,7 +33,6 @@ namespace AutomotiveApi.Migrations
                         .HasColumnType("longtext");
 
                     b.Property<string>("City")
-                        .IsRequired()
                         .HasColumnType("longtext");
 
                     b.Property<DateTime>("CreatedAt")
@@ -46,10 +45,13 @@ namespace AutomotiveApi.Migrations
                         .IsRequired()
                         .HasColumnType("longtext");
 
-                    b.Property<double>("Latitude")
+                    b.Property<bool>("IsVerified")
+                        .HasColumnType("tinyint(1)");
+
+                    b.Property<double?>("Latitude")
                         .HasColumnType("double");
 
-                    b.Property<double>("Longitude")
+                    b.Property<double?>("Longitude")
                         .HasColumnType("double");
 
                     b.Property<string>("Name")
@@ -64,7 +66,6 @@ namespace AutomotiveApi.Migrations
                         .HasColumnType("datetime(6)");
 
                     b.Property<string>("ZipCode")
-                        .IsRequired()
                         .HasColumnType("longtext");
 
                     b.HasKey("Id");
@@ -75,132 +76,142 @@ namespace AutomotiveApi.Migrations
                         new
                         {
                             Id = 1,
-                            Address = "42357 Adams Way",
-                            City = "Chelseafort",
-                            CreatedAt = new DateTime(2022, 9, 25, 1, 19, 23, 680, DateTimeKind.Local).AddTicks(6227),
-                            Email = "Georgianna.Wisoky6@gmail.com",
-                            Latitude = -41.988599999999998,
-                            Longitude = -27.675000000000001,
-                            Name = "Principal Group Assistant",
-                            Tel = "314-819-6083",
-                            ZipCode = "84552"
+                            Address = "25444 Fay Branch",
+                            City = "Elizachester",
+                            CreatedAt = new DateTime(2022, 8, 27, 9, 25, 1, 654, DateTimeKind.Local).AddTicks(4410),
+                            Email = "Aurelia.Wisozk@hotmail.com",
+                            IsVerified = false,
+                            Latitude = -55.760300000000001,
+                            Longitude = 29.863099999999999,
+                            Name = "Senior Usability Engineer",
+                            Tel = "679.929.1547",
+                            ZipCode = "50997"
                         },
                         new
                         {
                             Id = 2,
-                            Address = "9640 Trantow Meadow",
-                            City = "Konopelskifurt",
-                            CreatedAt = new DateTime(2022, 8, 13, 8, 47, 54, 724, DateTimeKind.Local).AddTicks(8293),
-                            Email = "Tianna86@hotmail.com",
-                            Latitude = -54.637700000000002,
-                            Longitude = 64.6203,
-                            Name = "Forward Factors Strategist",
-                            Tel = "1-738-284-9963 x5442",
-                            ZipCode = "74382"
+                            Address = "20666 Dicki Lights",
+                            City = "Bogantown",
+                            CreatedAt = new DateTime(2022, 9, 25, 16, 49, 18, 623, DateTimeKind.Local).AddTicks(1404),
+                            Email = "Kurtis_OHara@hotmail.com",
+                            IsVerified = false,
+                            Latitude = 22.901299999999999,
+                            Longitude = 177.05680000000001,
+                            Name = "National Optimization Designer",
+                            Tel = "(769) 938-7457 x251",
+                            ZipCode = "57782"
                         },
                         new
                         {
                             Id = 3,
-                            Address = "3564 Chester Plain",
-                            City = "East Albertfurt",
-                            CreatedAt = new DateTime(2023, 3, 18, 18, 4, 12, 5, DateTimeKind.Local).AddTicks(9139),
-                            Email = "Bertrand.Gutmann63@hotmail.com",
-                            Latitude = 77.494900000000001,
-                            Longitude = -19.206199999999999,
-                            Name = "International Creative Specialist",
-                            Tel = "(545) 898-7688",
-                            ZipCode = "73125"
+                            Address = "5945 Frederic Rest",
+                            City = "Port Mariafurt",
+                            CreatedAt = new DateTime(2023, 1, 16, 1, 0, 49, 713, DateTimeKind.Local).AddTicks(2664),
+                            Email = "Norris_Schiller69@yahoo.com",
+                            IsVerified = false,
+                            Latitude = -12.9749,
+                            Longitude = -106.277,
+                            Name = "Central Applications Officer",
+                            Tel = "352.839.4837",
+                            ZipCode = "51916-9450"
                         },
                         new
                         {
                             Id = 4,
-                            Address = "28597 Turcotte Fall",
-                            City = "New Braxtonport",
-                            CreatedAt = new DateTime(2023, 4, 16, 3, 53, 19, 976, DateTimeKind.Local).AddTicks(2191),
-                            Email = "Ramona.Pacocha@gmail.com",
-                            Latitude = 88.236400000000003,
-                            Longitude = -156.1352,
-                            Name = "Chief Identity Assistant",
-                            Tel = "(927) 527-3006",
-                            ZipCode = "50730-9532"
+                            Address = "81434 Kennith Track",
+                            City = "Port Terrencemouth",
+                            CreatedAt = new DateTime(2022, 11, 17, 5, 55, 26, 721, DateTimeKind.Local).AddTicks(2571),
+                            Email = "Nia82@hotmail.com",
+                            IsVerified = false,
+                            Latitude = 21.6648,
+                            Longitude = 84.4392,
+                            Name = "Forward Paradigm Director",
+                            Tel = "865.779.9934 x425",
+                            ZipCode = "64261"
                         },
                         new
                         {
                             Id = 5,
-                            Address = "80098 Olson Village",
-                            City = "Port Sheridanbury",
-                            CreatedAt = new DateTime(2022, 8, 31, 1, 22, 28, 65, DateTimeKind.Local).AddTicks(5047),
-                            Email = "Adelbert_Gerlach66@hotmail.com",
-                            Latitude = 77.659099999999995,
-                            Longitude = -34.9773,
-                            Name = "Regional Data Analyst",
-                            Tel = "355.453.7251",
-                            ZipCode = "48280-9645"
+                            Address = "27271 Stehr Island",
+                            City = "Sporerland",
+                            CreatedAt = new DateTime(2023, 5, 12, 13, 56, 51, 656, DateTimeKind.Local).AddTicks(9757),
+                            Email = "Thad.Lakin47@hotmail.com",
+                            IsVerified = false,
+                            Latitude = -74.077299999999994,
+                            Longitude = 83.936999999999998,
+                            Name = "Senior Program Specialist",
+                            Tel = "754-449-8481 x81848",
+                            ZipCode = "14492-2546"
                         },
                         new
                         {
                             Id = 6,
-                            Address = "1024 Vandervort Union",
-                            City = "East Hudson",
-                            CreatedAt = new DateTime(2023, 4, 17, 9, 6, 12, 291, DateTimeKind.Local).AddTicks(6323),
-                            Email = "Ignacio1@hotmail.com",
-                            Latitude = -8.6000999999999994,
-                            Longitude = -155.7364,
-                            Name = "Internal Accounts Strategist",
-                            Tel = "730-460-6455",
-                            ZipCode = "80626-5256"
+                            Address = "415 Ratke Squares",
+                            City = "New Tierra",
+                            CreatedAt = new DateTime(2023, 4, 14, 17, 50, 17, 668, DateTimeKind.Local).AddTicks(6213),
+                            Email = "Amani_Dooley@yahoo.com",
+                            IsVerified = false,
+                            Latitude = -11.2212,
+                            Longitude = 104.7272,
+                            Name = "Global Program Consultant",
+                            Tel = "474-829-0478 x897",
+                            ZipCode = "43834-3285"
                         },
                         new
                         {
                             Id = 7,
-                            Address = "24076 Wilderman Mission",
-                            City = "Rosenbaummouth",
-                            CreatedAt = new DateTime(2023, 1, 3, 18, 51, 56, 722, DateTimeKind.Local).AddTicks(2245),
-                            Email = "Lenore20@gmail.com",
-                            Latitude = -37.361499999999999,
-                            Longitude = -148.0334,
-                            Name = "Internal Data Developer",
-                            Tel = "1-221-997-6310 x3215",
-                            ZipCode = "38389-6916"
+                            Address = "872 Ocie Forges",
+                            City = "North Elisaton",
+                            CreatedAt = new DateTime(2023, 2, 22, 4, 19, 4, 62, DateTimeKind.Local).AddTicks(1372),
+                            Email = "Ramona95@yahoo.com",
+                            IsVerified = false,
+                            Latitude = -48.526200000000003,
+                            Longitude = 172.899,
+                            Name = "Senior Accountability Analyst",
+                            Tel = "(366) 730-0601",
+                            ZipCode = "09196"
                         },
                         new
                         {
                             Id = 8,
-                            Address = "582 Schumm Flat",
-                            City = "Hackettburgh",
-                            CreatedAt = new DateTime(2023, 5, 29, 1, 15, 0, 976, DateTimeKind.Local).AddTicks(5533),
-                            Email = "Colleen_McClure47@yahoo.com",
-                            Latitude = -89.906099999999995,
-                            Longitude = -10.010899999999999,
-                            Name = "Central Brand Orchestrator",
-                            Tel = "(481) 636-0398 x9194",
-                            ZipCode = "72350"
+                            Address = "41763 Lauryn Bypass",
+                            City = "Christiansenshire",
+                            CreatedAt = new DateTime(2022, 11, 18, 1, 16, 51, 392, DateTimeKind.Local).AddTicks(674),
+                            Email = "Broderick.Mann@yahoo.com",
+                            IsVerified = false,
+                            Latitude = 18.828199999999999,
+                            Longitude = 17.020299999999999,
+                            Name = "Dynamic Integration Executive",
+                            Tel = "(982) 658-7116 x55455",
+                            ZipCode = "98818-9897"
                         },
                         new
                         {
                             Id = 9,
-                            Address = "166 Fausto Via",
-                            City = "Port Horacestad",
-                            CreatedAt = new DateTime(2022, 9, 8, 15, 19, 25, 134, DateTimeKind.Local).AddTicks(3806),
-                            Email = "Crawford38@yahoo.com",
-                            Latitude = 54.662300000000002,
-                            Longitude = -57.753500000000003,
-                            Name = "Senior Brand Supervisor",
-                            Tel = "454-325-1666 x0253",
-                            ZipCode = "97108"
+                            Address = "768 Rodrigo Pine",
+                            City = "East Emil",
+                            CreatedAt = new DateTime(2022, 9, 25, 12, 42, 53, 521, DateTimeKind.Local).AddTicks(8047),
+                            Email = "Georgianna.OConnell51@yahoo.com",
+                            IsVerified = false,
+                            Latitude = -55.349899999999998,
+                            Longitude = 105.9289,
+                            Name = "Investor Factors Developer",
+                            Tel = "(518) 384-2569",
+                            ZipCode = "03797-8792"
                         },
                         new
                         {
                             Id = 10,
-                            Address = "889 Afton Ways",
-                            City = "South Aryanna",
-                            CreatedAt = new DateTime(2022, 7, 11, 20, 54, 24, 361, DateTimeKind.Local).AddTicks(6700),
-                            Email = "Cleve.Fay@yahoo.com",
-                            Latitude = 54.5471,
-                            Longitude = 90.205100000000002,
-                            Name = "Principal Optimization Consultant",
-                            Tel = "(316) 964-7358 x1228",
-                            ZipCode = "98453-3417"
+                            Address = "448 VonRueden Parkway",
+                            City = "New Anabelle",
+                            CreatedAt = new DateTime(2022, 12, 7, 15, 56, 42, 776, DateTimeKind.Local).AddTicks(7062),
+                            Email = "Ray87@yahoo.com",
+                            IsVerified = false,
+                            Latitude = -26.860700000000001,
+                            Longitude = -161.87450000000001,
+                            Name = "Regional Marketing Technician",
+                            Tel = "1-413-637-2288",
+                            ZipCode = "53313"
                         });
                 });
 
@@ -211,11 +222,9 @@ namespace AutomotiveApi.Migrations
                         .HasColumnType("int");
 
                     b.Property<string>("Adresse")
-                        .IsRequired()
                         .HasColumnType("longtext");
 
                     b.Property<string>("Adresse2")
-                        .IsRequired()
                         .HasColumnType("longtext");
 
                     b.Property<DateTime>("CreatedAt")
@@ -225,7 +234,6 @@ namespace AutomotiveApi.Migrations
                         .HasColumnType("datetime(6)");
 
                     b.Property<string>("Email")
-                        .IsRequired()
                         .HasColumnType("longtext");
 
                     b.Property<string>("FirstName")
@@ -237,11 +245,9 @@ namespace AutomotiveApi.Migrations
                         .HasColumnType("longtext");
 
                     b.Property<string>("PermisRecto")
-                        .IsRequired()
                         .HasColumnType("longtext");
 
                     b.Property<string>("PermisVerso")
-                        .IsRequired()
                         .HasColumnType("longtext");
 
                     b.Property<string>("Tel")
@@ -256,7 +262,6 @@ namespace AutomotiveApi.Migrations
                         .HasColumnType("longtext");
 
                     b.Property<string>("ZipCode")
-                        .IsRequired()
                         .HasColumnType("longtext");
 
                     b.HasKey("Id");
@@ -282,6 +287,9 @@ namespace AutomotiveApi.Migrations
                     b.Property<int>("IdReservation")
                         .HasColumnType("int");
 
+                    b.Property<bool>("IsConducteur")
+                        .HasColumnType("tinyint(1)");
+
                     b.Property<DateTime?>("UpdatedAt")
                         .HasColumnType("datetime(6)");
 
@@ -292,6 +300,216 @@ namespace AutomotiveApi.Migrations
                     b.HasIndex("IdReservation");
 
                     b.ToTable("Contrats");
+                });
+
+            modelBuilder.Entity("AutomotiveApi.Models.Entities.Gestion.LongTermRental", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime(6)");
+
+                    b.Property<DateTime?>("DeletedAt")
+                        .HasColumnType("datetime(6)");
+
+                    b.Property<DateTime?>("UpdatedAt")
+                        .HasColumnType("datetime(6)");
+
+                    b.Property<string>("description")
+                        .IsRequired()
+                        .HasColumnType("longtext");
+
+                    b.Property<int>("duree")
+                        .HasColumnType("int");
+
+                    b.Property<string>("email")
+                        .IsRequired()
+                        .HasColumnType("longtext");
+
+                    b.Property<string>("entreprise")
+                        .IsRequired()
+                        .HasColumnType("longtext");
+
+                    b.Property<string>("nom")
+                        .IsRequired()
+                        .HasColumnType("longtext");
+
+                    b.Property<string>("phone")
+                        .IsRequired()
+                        .HasColumnType("longtext");
+
+                    b.Property<string>("prenom")
+                        .IsRequired()
+                        .HasColumnType("longtext");
+
+                    b.Property<int>("type_vehicule")
+                        .HasColumnType("int");
+
+                    b.Property<string>("ville")
+                        .IsRequired()
+                        .HasColumnType("longtext");
+
+                    b.Property<string>("zip")
+                        .IsRequired()
+                        .HasColumnType("longtext");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("long_term_rentals");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            CreatedAt = new DateTime(2023, 4, 17, 5, 14, 9, 227, DateTimeKind.Local).AddTicks(2345),
+                            description = "White",
+                            duree = 2,
+                            email = "Otis.Prosacco57@hotmail.com",
+                            entreprise = "Blanda - Walter",
+                            nom = "Nels",
+                            phone = "(590) 818-5604",
+                            prenom = "Pagac",
+                            type_vehicule = 1,
+                            ville = "Lake Jesusburgh",
+                            zip = "58928"
+                        },
+                        new
+                        {
+                            Id = 2,
+                            CreatedAt = new DateTime(2022, 9, 8, 21, 2, 17, 988, DateTimeKind.Local).AddTicks(2657),
+                            description = "Harber",
+                            duree = 3,
+                            email = "Buddy_Williamson@yahoo.com",
+                            entreprise = "Toy - Roob",
+                            nom = "Tremaine",
+                            phone = "468-562-0871",
+                            prenom = "VonRueden",
+                            type_vehicule = 1,
+                            ville = "Titomouth",
+                            zip = "06262-9958"
+                        },
+                        new
+                        {
+                            Id = 3,
+                            CreatedAt = new DateTime(2022, 10, 10, 20, 22, 58, 796, DateTimeKind.Local).AddTicks(8670),
+                            description = "Sawayn",
+                            duree = 4,
+                            email = "Richie_Bayer@gmail.com",
+                            entreprise = "O'Keefe and Sons",
+                            nom = "Frederick",
+                            phone = "933-233-3901 x6126",
+                            prenom = "Wolff",
+                            type_vehicule = 1,
+                            ville = "Port Jaydetown",
+                            zip = "74010-2732"
+                        },
+                        new
+                        {
+                            Id = 4,
+                            CreatedAt = new DateTime(2022, 7, 24, 20, 10, 36, 154, DateTimeKind.Local).AddTicks(7717),
+                            description = "Dooley",
+                            duree = 5,
+                            email = "Neha49@hotmail.com",
+                            entreprise = "Witting, Stroman and Mueller",
+                            nom = "Ivory",
+                            phone = "(934) 516-1672",
+                            prenom = "Witting",
+                            type_vehicule = 1,
+                            ville = "Dickensburgh",
+                            zip = "60364"
+                        },
+                        new
+                        {
+                            Id = 5,
+                            CreatedAt = new DateTime(2022, 9, 6, 1, 10, 21, 79, DateTimeKind.Local).AddTicks(9695),
+                            description = "Schamberger",
+                            duree = 6,
+                            email = "Monroe49@hotmail.com",
+                            entreprise = "Hartmann - Grady",
+                            nom = "Maxwell",
+                            phone = "211-247-9966",
+                            prenom = "Koch",
+                            type_vehicule = 1,
+                            ville = "New Maggiemouth",
+                            zip = "94305"
+                        },
+                        new
+                        {
+                            Id = 6,
+                            CreatedAt = new DateTime(2023, 6, 20, 19, 26, 6, 844, DateTimeKind.Local).AddTicks(7219),
+                            description = "Bechtelar",
+                            duree = 7,
+                            email = "Haley94@hotmail.com",
+                            entreprise = "Gaylord and Sons",
+                            nom = "Haley",
+                            phone = "551.418.4030 x73881",
+                            prenom = "Murray",
+                            type_vehicule = 1,
+                            ville = "West Hipolitotown",
+                            zip = "06311-4891"
+                        },
+                        new
+                        {
+                            Id = 7,
+                            CreatedAt = new DateTime(2023, 7, 19, 5, 0, 40, 189, DateTimeKind.Local).AddTicks(9770),
+                            description = "Wintheiser",
+                            duree = 8,
+                            email = "Daniella.Ruecker@yahoo.com",
+                            entreprise = "McGlynn, Kerluke and Satterfield",
+                            nom = "Halie",
+                            phone = "919-995-1789",
+                            prenom = "Keebler",
+                            type_vehicule = 1,
+                            ville = "Claymouth",
+                            zip = "08507"
+                        },
+                        new
+                        {
+                            Id = 8,
+                            CreatedAt = new DateTime(2023, 4, 19, 17, 1, 38, 660, DateTimeKind.Local).AddTicks(8534),
+                            description = "Rutherford",
+                            duree = 9,
+                            email = "Nicolas_Stoltenberg@hotmail.com",
+                            entreprise = "Reynolds - Swaniawski",
+                            nom = "Ubaldo",
+                            phone = "418.311.7533",
+                            prenom = "Mayert",
+                            type_vehicule = 1,
+                            ville = "Bartonhaven",
+                            zip = "06074"
+                        },
+                        new
+                        {
+                            Id = 9,
+                            CreatedAt = new DateTime(2023, 6, 25, 13, 11, 43, 656, DateTimeKind.Local).AddTicks(2182),
+                            description = "Cole",
+                            duree = 10,
+                            email = "Raul34@gmail.com",
+                            entreprise = "Hodkiewicz - Hyatt",
+                            nom = "Malcolm",
+                            phone = "649-404-1676",
+                            prenom = "Hirthe",
+                            type_vehicule = 1,
+                            ville = "East Carolanne",
+                            zip = "78112-9669"
+                        },
+                        new
+                        {
+                            Id = 10,
+                            CreatedAt = new DateTime(2023, 3, 13, 6, 0, 36, 510, DateTimeKind.Local).AddTicks(5366),
+                            description = "Kessler",
+                            duree = 11,
+                            email = "Floy_Christiansen@gmail.com",
+                            entreprise = "Legros - Blick",
+                            nom = "Maci",
+                            phone = "539.755.9221",
+                            prenom = "Schmitt",
+                            type_vehicule = 1,
+                            ville = "Maeganbury",
+                            zip = "13609-5128"
+                        });
                 });
 
             modelBuilder.Entity("AutomotiveApi.Models.Entities.Gestion.Marque", b =>
@@ -321,62 +539,62 @@ namespace AutomotiveApi.Migrations
                         new
                         {
                             Id = 1,
-                            CreatedAt = new DateTime(2023, 5, 1, 15, 56, 29, 139, DateTimeKind.Local).AddTicks(2967),
-                            Name = "Honda"
+                            CreatedAt = new DateTime(2023, 1, 2, 4, 52, 3, 913, DateTimeKind.Local).AddTicks(3290),
+                            Name = "Mini"
                         },
                         new
                         {
                             Id = 2,
-                            CreatedAt = new DateTime(2022, 10, 17, 12, 45, 56, 861, DateTimeKind.Local).AddTicks(4707),
-                            Name = "Dodge"
+                            CreatedAt = new DateTime(2022, 11, 2, 4, 32, 7, 67, DateTimeKind.Local).AddTicks(4145),
+                            Name = "BMW"
                         },
                         new
                         {
                             Id = 3,
-                            CreatedAt = new DateTime(2023, 6, 15, 0, 17, 20, 932, DateTimeKind.Local).AddTicks(9197),
-                            Name = "Cadillac"
+                            CreatedAt = new DateTime(2023, 1, 4, 14, 52, 16, 518, DateTimeKind.Local).AddTicks(939),
+                            Name = "Ferrari"
                         },
                         new
                         {
                             Id = 4,
-                            CreatedAt = new DateTime(2022, 10, 19, 17, 28, 0, 42, DateTimeKind.Local).AddTicks(3467),
-                            Name = "Mercedes Benz"
+                            CreatedAt = new DateTime(2023, 3, 19, 21, 36, 43, 833, DateTimeKind.Local).AddTicks(4951),
+                            Name = "Jaguar"
                         },
                         new
                         {
                             Id = 5,
-                            CreatedAt = new DateTime(2022, 9, 14, 11, 38, 56, 902, DateTimeKind.Local).AddTicks(6594),
-                            Name = "Mazda"
+                            CreatedAt = new DateTime(2022, 10, 19, 12, 10, 11, 98, DateTimeKind.Local).AddTicks(6732),
+                            Name = "Polestar"
                         },
                         new
                         {
                             Id = 6,
-                            CreatedAt = new DateTime(2023, 6, 23, 3, 0, 51, 370, DateTimeKind.Local).AddTicks(6959),
-                            Name = "Volvo"
+                            CreatedAt = new DateTime(2023, 6, 11, 8, 38, 22, 530, DateTimeKind.Local).AddTicks(6043),
+                            Name = "Ford"
                         },
                         new
                         {
                             Id = 7,
-                            CreatedAt = new DateTime(2023, 3, 23, 22, 36, 55, 965, DateTimeKind.Local).AddTicks(4061),
-                            Name = "Dodge"
+                            CreatedAt = new DateTime(2023, 1, 10, 13, 50, 59, 904, DateTimeKind.Local).AddTicks(5284),
+                            Name = "Hyundai"
                         },
                         new
                         {
                             Id = 8,
-                            CreatedAt = new DateTime(2022, 8, 15, 12, 50, 28, 78, DateTimeKind.Local).AddTicks(606),
-                            Name = "Smart"
+                            CreatedAt = new DateTime(2023, 2, 14, 5, 50, 46, 847, DateTimeKind.Local).AddTicks(7774),
+                            Name = "Mercedes Benz"
                         },
                         new
                         {
                             Id = 9,
-                            CreatedAt = new DateTime(2022, 12, 19, 6, 44, 41, 2, DateTimeKind.Local).AddTicks(9135),
-                            Name = "Lamborghini"
+                            CreatedAt = new DateTime(2022, 11, 24, 5, 58, 30, 584, DateTimeKind.Local).AddTicks(2601),
+                            Name = "Kia"
                         },
                         new
                         {
                             Id = 10,
-                            CreatedAt = new DateTime(2022, 11, 21, 3, 59, 47, 541, DateTimeKind.Local).AddTicks(1803),
-                            Name = "Ford"
+                            CreatedAt = new DateTime(2023, 1, 4, 7, 37, 45, 998, DateTimeKind.Local).AddTicks(3370),
+                            Name = "Smart"
                         });
                 });
 
@@ -395,6 +613,10 @@ namespace AutomotiveApi.Migrations
                     b.Property<int>("IdMarque")
                         .HasColumnType("int");
 
+                    b.Property<string>("Image")
+                        .IsRequired()
+                        .HasColumnType("longtext");
+
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasColumnType("longtext");
@@ -412,72 +634,82 @@ namespace AutomotiveApi.Migrations
                         new
                         {
                             Id = 1,
-                            CreatedAt = new DateTime(2022, 12, 9, 1, 48, 21, 374, DateTimeKind.Local).AddTicks(4461),
-                            IdMarque = 3,
-                            Name = "CTS"
+                            CreatedAt = new DateTime(2022, 9, 24, 6, 54, 57, 33, DateTimeKind.Local).AddTicks(1712),
+                            IdMarque = 9,
+                            Image = "https://picsum.photos/640/480/?image=889",
+                            Name = "Challenger"
                         },
                         new
                         {
                             Id = 2,
-                            CreatedAt = new DateTime(2023, 4, 25, 15, 53, 50, 75, DateTimeKind.Local).AddTicks(2200),
-                            IdMarque = 10,
-                            Name = "CTS"
+                            CreatedAt = new DateTime(2023, 5, 9, 11, 4, 50, 862, DateTimeKind.Local).AddTicks(2687),
+                            IdMarque = 3,
+                            Image = "https://picsum.photos/640/480/?image=575",
+                            Name = "Model T"
                         },
                         new
                         {
                             Id = 3,
-                            CreatedAt = new DateTime(2023, 2, 22, 9, 35, 43, 565, DateTimeKind.Local).AddTicks(528),
-                            IdMarque = 9,
-                            Name = "Beetle"
-                        },
-                        new
-                        {
-                            Id = 4,
-                            CreatedAt = new DateTime(2023, 1, 25, 22, 36, 33, 233, DateTimeKind.Local).AddTicks(8708),
-                            IdMarque = 9,
-                            Name = "Element"
-                        },
-                        new
-                        {
-                            Id = 5,
-                            CreatedAt = new DateTime(2023, 1, 23, 2, 27, 47, 180, DateTimeKind.Local).AddTicks(5589),
-                            IdMarque = 3,
-                            Name = "Civic"
-                        },
-                        new
-                        {
-                            Id = 6,
-                            CreatedAt = new DateTime(2023, 6, 1, 15, 47, 19, 256, DateTimeKind.Local).AddTicks(2390),
-                            IdMarque = 3,
+                            CreatedAt = new DateTime(2022, 8, 17, 19, 57, 55, 183, DateTimeKind.Local).AddTicks(9951),
+                            IdMarque = 1,
+                            Image = "https://picsum.photos/640/480/?image=349",
                             Name = "Focus"
                         },
                         new
                         {
+                            Id = 4,
+                            CreatedAt = new DateTime(2023, 1, 3, 1, 18, 19, 215, DateTimeKind.Local).AddTicks(3173),
+                            IdMarque = 6,
+                            Image = "https://picsum.photos/640/480/?image=364",
+                            Name = "XC90"
+                        },
+                        new
+                        {
+                            Id = 5,
+                            CreatedAt = new DateTime(2022, 9, 26, 15, 4, 13, 243, DateTimeKind.Local).AddTicks(9727),
+                            IdMarque = 8,
+                            Image = "https://picsum.photos/640/480/?image=587",
+                            Name = "Mustang"
+                        },
+                        new
+                        {
+                            Id = 6,
+                            CreatedAt = new DateTime(2022, 9, 10, 5, 4, 52, 200, DateTimeKind.Local).AddTicks(7034),
+                            IdMarque = 9,
+                            Image = "https://picsum.photos/640/480/?image=372",
+                            Name = "Grand Cherokee"
+                        },
+                        new
+                        {
                             Id = 7,
-                            CreatedAt = new DateTime(2023, 2, 5, 8, 42, 21, 648, DateTimeKind.Local).AddTicks(3186),
-                            IdMarque = 4,
-                            Name = "A4"
+                            CreatedAt = new DateTime(2022, 10, 22, 5, 22, 30, 501, DateTimeKind.Local).AddTicks(7361),
+                            IdMarque = 10,
+                            Image = "https://picsum.photos/640/480/?image=870",
+                            Name = "Focus"
                         },
                         new
                         {
                             Id = 8,
-                            CreatedAt = new DateTime(2023, 7, 5, 10, 14, 50, 495, DateTimeKind.Local).AddTicks(3637),
-                            IdMarque = 1,
-                            Name = "Spyder"
+                            CreatedAt = new DateTime(2022, 10, 23, 7, 20, 48, 448, DateTimeKind.Local).AddTicks(453),
+                            IdMarque = 5,
+                            Image = "https://picsum.photos/640/480/?image=151",
+                            Name = "Fortwo"
                         },
                         new
                         {
                             Id = 9,
-                            CreatedAt = new DateTime(2023, 6, 20, 14, 35, 31, 72, DateTimeKind.Local).AddTicks(6777),
-                            IdMarque = 2,
-                            Name = "CX-9"
+                            CreatedAt = new DateTime(2023, 6, 5, 19, 45, 2, 257, DateTimeKind.Local).AddTicks(3610),
+                            IdMarque = 8,
+                            Image = "https://picsum.photos/640/480/?image=19",
+                            Name = "Sentra"
                         },
                         new
                         {
                             Id = 10,
-                            CreatedAt = new DateTime(2023, 2, 15, 22, 18, 59, 332, DateTimeKind.Local).AddTicks(5806),
-                            IdMarque = 9,
-                            Name = "Aventador"
+                            CreatedAt = new DateTime(2022, 9, 25, 19, 17, 46, 95, DateTimeKind.Local).AddTicks(9092),
+                            IdMarque = 2,
+                            Image = "https://picsum.photos/640/480/?image=188",
+                            Name = "Colorado"
                         });
                 });
 
@@ -576,10 +808,6 @@ namespace AutomotiveApi.Migrations
 
                     b.Property<int>("IdModele")
                         .HasColumnType("int");
-
-                    b.Property<string>("Image")
-                        .IsRequired()
-                        .HasColumnType("longtext");
 
                     b.Property<int>("Km")
                         .HasColumnType("int");
@@ -757,122 +985,122 @@ namespace AutomotiveApi.Migrations
                         new
                         {
                             Id = 1,
-                            CreatedAt = new DateTime(2023, 3, 29, 10, 56, 34, 585, DateTimeKind.Local).AddTicks(1686),
-                            Email = "Nash_Kling52@hotmail.com",
-                            FirstName = "Chaz",
-                            IdAgence = 9,
+                            CreatedAt = new DateTime(2023, 5, 3, 14, 21, 50, 722, DateTimeKind.Local).AddTicks(3246),
+                            Email = "Merle_Nitzsche@yahoo.com",
+                            FirstName = "Francesca",
+                            IdAgence = 10,
                             IdRole = 1,
-                            IsActive = true,
-                            LastName = "Feest",
-                            Password = "$2a$11$Fy1TVJB.BGkjRN1GWPsaX.9BqhfQT5Q53K0iQYOHRKbo1yR9h450m"
+                            IsActive = false,
+                            LastName = "Kuhlman",
+                            Password = "$2a$11$lYJ51LGmWiLOTOA5EV6xYu2yEpAGtoaZYa46IoGrfB84cBW5KVZlG"
                         },
                         new
                         {
                             Id = 2,
-                            CreatedAt = new DateTime(2023, 6, 14, 17, 10, 25, 267, DateTimeKind.Local).AddTicks(490),
-                            Email = "Casper.Will@yahoo.com",
-                            FirstName = "Jeffrey",
-                            IdAgence = 8,
-                            IdRole = 2,
-                            IsActive = false,
-                            LastName = "Schuster",
-                            Password = "$2a$11$g6Gmc6TZ2Y1LMVhrYeJ4QeqJ92xwSGaLPLgU.tlTgxSRY76e4MZoi"
+                            CreatedAt = new DateTime(2022, 11, 22, 14, 15, 29, 456, DateTimeKind.Local).AddTicks(5675),
+                            Email = "Eliane.Beer@gmail.com",
+                            FirstName = "Leonard",
+                            IdAgence = 7,
+                            IdRole = 3,
+                            IsActive = true,
+                            LastName = "Treutel",
+                            Password = "$2a$11$uMBJwhYaK3YBX.g7t2tZsOlWOF/2ATGSuy2lsLPMv4cX0n7fa60Eu"
                         },
                         new
                         {
                             Id = 3,
-                            CreatedAt = new DateTime(2023, 4, 19, 2, 33, 16, 913, DateTimeKind.Local).AddTicks(4135),
-                            Email = "Oswald_Treutel65@hotmail.com",
-                            FirstName = "Marilou",
+                            CreatedAt = new DateTime(2022, 11, 2, 22, 26, 31, 452, DateTimeKind.Local).AddTicks(6812),
+                            Email = "Maudie.Corwin19@gmail.com",
+                            FirstName = "Terry",
                             IdAgence = 9,
                             IdRole = 1,
-                            IsActive = true,
-                            LastName = "Nader",
-                            Password = "$2a$11$S.oUOLowbRREDmP4q9Q0O.xoCjjXtf2I5YbeWfA3d/zY6TOSNPesu"
+                            IsActive = false,
+                            LastName = "Erdman",
+                            Password = "$2a$11$FGfbcy6nVSmYiDKcafuUlOi5Oqk8qLNaG3YK7aIFey1eN3MFNuocu"
                         },
                         new
                         {
                             Id = 4,
-                            CreatedAt = new DateTime(2023, 2, 17, 22, 5, 52, 145, DateTimeKind.Local).AddTicks(5260),
-                            Email = "Verner_Murazik56@hotmail.com",
-                            FirstName = "Richmond",
-                            IdAgence = 1,
+                            CreatedAt = new DateTime(2023, 2, 1, 1, 23, 8, 801, DateTimeKind.Local).AddTicks(1438),
+                            Email = "Sabrina_Murray87@gmail.com",
+                            FirstName = "Cydney",
+                            IdAgence = 7,
                             IdRole = 3,
-                            IsActive = false,
-                            LastName = "Bogisich",
-                            Password = "$2a$11$mnWr6CeoJNsljdWn2sbb0.XtJ2SrF278YGOzwgLUhwI0yjpNXx4zi"
+                            IsActive = true,
+                            LastName = "Schuster",
+                            Password = "$2a$11$d7BekGMIu3LJAuZ1TY.JDOwz/2HK6ubCH3sUpwanFmednYSOwvG3e"
                         },
                         new
                         {
                             Id = 5,
-                            CreatedAt = new DateTime(2023, 7, 3, 18, 23, 8, 158, DateTimeKind.Local).AddTicks(3083),
-                            Email = "Milton.Bradtke2@yahoo.com",
-                            FirstName = "Dayna",
-                            IdAgence = 9,
-                            IdRole = 1,
-                            IsActive = false,
-                            LastName = "Quigley",
-                            Password = "$2a$11$EoCqGAlFig90z.oUsy4X9eeFL6g.zZmIQs0Rnn/mbfZr0gnWTaVhW"
+                            CreatedAt = new DateTime(2023, 5, 2, 9, 16, 23, 439, DateTimeKind.Local).AddTicks(9114),
+                            Email = "Jarrett91@yahoo.com",
+                            FirstName = "Dallin",
+                            IdAgence = 4,
+                            IdRole = 2,
+                            IsActive = true,
+                            LastName = "Rutherford",
+                            Password = "$2a$11$4aOhxaHVccKtjfuN8d0Sb.swJNFM4gAxQkJ2wTRusdcSrVB0x.iKu"
                         },
                         new
                         {
                             Id = 6,
-                            CreatedAt = new DateTime(2023, 2, 21, 3, 40, 53, 55, DateTimeKind.Local).AddTicks(5560),
-                            Email = "Annetta_Donnelly@hotmail.com",
-                            FirstName = "Isabell",
-                            IdAgence = 5,
-                            IdRole = 2,
+                            CreatedAt = new DateTime(2022, 10, 29, 11, 17, 43, 742, DateTimeKind.Local).AddTicks(3711),
+                            Email = "Flavie_Erdman@yahoo.com",
+                            FirstName = "Ariel",
+                            IdAgence = 8,
+                            IdRole = 4,
                             IsActive = false,
-                            LastName = "Hegmann",
-                            Password = "$2a$11$OSNDtsB.2fxzm.B0MkafWuyKchIk2dD7QEHlliQB1HMn0pBz99Pfy"
+                            LastName = "Klocko",
+                            Password = "$2a$11$WhUNSxpngBclRn/VlN82Murp/PEnvfA/RgdOJ/O9kMVQ./wlKFwsW"
                         },
                         new
                         {
                             Id = 7,
-                            CreatedAt = new DateTime(2022, 8, 19, 7, 57, 40, 374, DateTimeKind.Local).AddTicks(8950),
-                            Email = "Elna_Crist99@gmail.com",
-                            FirstName = "Alva",
-                            IdAgence = 8,
-                            IdRole = 4,
+                            CreatedAt = new DateTime(2022, 12, 11, 10, 43, 10, 552, DateTimeKind.Local).AddTicks(389),
+                            Email = "Clementine95@hotmail.com",
+                            FirstName = "Bianka",
+                            IdAgence = 1,
+                            IdRole = 3,
                             IsActive = true,
-                            LastName = "Windler",
-                            Password = "$2a$11$elaZSQQ.LUNGI4tHITvx.usdqsoYMQ7LnOnK4YOkFB5dKV2ijIkGS"
+                            LastName = "Weber",
+                            Password = "$2a$11$zn/bgJJFFtxuiFQvWwVJier70S63.1hmx47.RTVWbhxxoYkac4D3W"
                         },
                         new
                         {
                             Id = 8,
-                            CreatedAt = new DateTime(2023, 1, 1, 3, 3, 23, 841, DateTimeKind.Local).AddTicks(9832),
-                            Email = "Esperanza83@yahoo.com",
-                            FirstName = "Sam",
-                            IdAgence = 10,
-                            IdRole = 4,
+                            CreatedAt = new DateTime(2023, 5, 29, 22, 22, 16, 502, DateTimeKind.Local).AddTicks(3017),
+                            Email = "Laverne.Flatley@hotmail.com",
+                            FirstName = "Keanu",
+                            IdAgence = 9,
+                            IdRole = 1,
                             IsActive = true,
-                            LastName = "Farrell",
-                            Password = "$2a$11$hPy9t5tby2RxRLwVYR.rSuexGWqwmzllqX/B7XsotTMRwhbv8lMym"
+                            LastName = "Emmerich",
+                            Password = "$2a$11$jkA9zmuLHlv2.JeP4hJbHOSCk7VchYCeSAmrGS5NC6qef1H8Foymq"
                         },
                         new
                         {
                             Id = 9,
-                            CreatedAt = new DateTime(2022, 10, 4, 0, 42, 47, 105, DateTimeKind.Local).AddTicks(6377),
-                            Email = "Amir.Abernathy14@hotmail.com",
-                            FirstName = "Rod",
-                            IdAgence = 1,
-                            IdRole = 4,
+                            CreatedAt = new DateTime(2023, 1, 21, 13, 2, 12, 957, DateTimeKind.Local).AddTicks(7921),
+                            Email = "Juston.Bartell87@hotmail.com",
+                            FirstName = "Elaina",
+                            IdAgence = 3,
+                            IdRole = 3,
                             IsActive = true,
-                            LastName = "Krajcik",
-                            Password = "$2a$11$t.Elvv4ANg0rSJAQ/ohGa.RwLsj8.FkwI/KbiYOoWm/1oJoSyZjNu"
+                            LastName = "Lueilwitz",
+                            Password = "$2a$11$r9T.NX78MQiSkUh1Ozkj2uEbJUeYcLBq7xmWDctPlw7Xx790Jpqyi"
                         },
                         new
                         {
                             Id = 10,
-                            CreatedAt = new DateTime(2023, 6, 23, 13, 13, 5, 419, DateTimeKind.Local).AddTicks(1999),
-                            Email = "Crawford_Schuppe@gmail.com",
-                            FirstName = "Camille",
+                            CreatedAt = new DateTime(2023, 3, 17, 16, 47, 37, 71, DateTimeKind.Local).AddTicks(914),
+                            Email = "Colten52@yahoo.com",
+                            FirstName = "Ahmed",
                             IdAgence = 4,
-                            IdRole = 1,
-                            IsActive = false,
-                            LastName = "Wisozk",
-                            Password = "$2a$11$29jyucECiIFiLhcul2ycJO/WjnCwwhCS6mPHYHxijB5M2sn1nGvnu"
+                            IdRole = 3,
+                            IsActive = true,
+                            LastName = "Cremin",
+                            Password = "$2a$11$urH8f8wQmF9U8wGu1zyKTOr9qRKk4XLEQlCV7Oj3/ZoT4NrhW7beu"
                         });
                 });
 

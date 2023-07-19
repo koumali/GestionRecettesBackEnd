@@ -1,8 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using AutomotiveApi.Models.Entities.Gestion;
 using AutomotiveApi.Models.Entities.Param;
-using Bogus;
-
 
 namespace AutomotiveApi.DAL
 {
@@ -29,6 +27,7 @@ namespace AutomotiveApi.DAL
         public virtual DbSet<Reservation> Reservations { get; set; }
         public virtual DbSet<Contrat> Contrats { get; set; }
         public virtual DbSet<Log_journal> log_journal { get; set; }
+        public virtual DbSet<LongTermRental> long_term_rentals { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
@@ -116,12 +115,11 @@ namespace AutomotiveApi.DAL
                     .HasConstraintName("FK_Offre_id_vehicule");
             });
 
-            modelBuilder
-        .Entity<Agence>()
-        .HasData(DataSeeder.seedAgence().Generate(10));
+            modelBuilder.Entity<Agence>().HasData(DataSeeder.seedAgence().Generate(10));
 
-            modelBuilder.Entity<Marque>()
-        .HasData(DataSeeder.seedMarque().Generate(10));
+            modelBuilder.Entity<LongTermRental>().HasData(DataSeeder.seedLongTermRental().Generate(10));
+
+            modelBuilder.Entity<Marque>().HasData(DataSeeder.seedMarque().Generate(10));
 
             modelBuilder.Entity<Modele>().HasData(DataSeeder.seedModele().Generate(10));
 
@@ -141,6 +139,7 @@ namespace AutomotiveApi.DAL
             modelBuilder.Entity<Contrat>().HasQueryFilter(a => a.DeletedAt == null);
             modelBuilder.Entity<Client>().HasQueryFilter(a => a.DeletedAt == null);
             modelBuilder.Entity<Log_journal>().HasQueryFilter(a => a.DeletedAt == null);            
+            modelBuilder.Entity<LongTermRental>().HasQueryFilter(a => a.DeletedAt == null);            
             
 
 

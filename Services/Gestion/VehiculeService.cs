@@ -91,7 +91,7 @@ namespace AutomotiveApi.Services.Gestion
         }
 
         // get top reserved vehicules
-        public IEnumerable<Vehicule> GetTopReservedVehicules(int number)
+        /*public IEnumerable<Vehicule> GetTopReservedVehicules(int number)
         {
             var topReservation = _context.Reservations
                 .Include(r => r.Vehicule)
@@ -104,6 +104,29 @@ namespace AutomotiveApi.Services.Gestion
             {
                 topVehicules.Add(vehi.Select(r => r.Vehicule).First());
             }
+
+            return topVehicules;
+        }*/
+        public IEnumerable<Vehicule> GetTopReservedVehicules(int number)
+        {
+            var topReservation = _context.Reservations
+                .Include(r => r.Vehicule)
+                .ThenInclude(v => v.Modele)
+                .ThenInclude(m => m.Marque)
+                .GroupBy(r => r.IdVehicule);
+
+            var topVehicules = new List<Vehicule>();
+            foreach (var group in topReservation)
+            {
+                var reservations = group.Select(r => r.Vehicule).ToList();
+                topVehicules.AddRange(reservations);
+            }
+
+            // Now, you have a list of reservations for all vehicles, you might want to sort them
+            // based on some criteria (e.g., the number of reservations), and return only the top ones.
+            // For example, to get the top 'number' of reserved vehicles, you can do the following:
+
+            // topVehicules = topVehicules.OrderByDescending(v => v.Reservations.Count).Take(number).ToList();
 
             return topVehicules;
         }
