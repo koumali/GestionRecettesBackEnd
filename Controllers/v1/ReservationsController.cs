@@ -86,7 +86,7 @@ namespace AutomotiveApi.Controllers.v1
                 DateDepart = request.DateDepart,
                 DateRetour = request.DateRetour,
                 IdVehicule = request.IdVehicule,
-                Status = request.Status,
+                Status = ReservationStatus.Pending.ToString(),
                 NumeroReservation = numeroReservation
             };
 
