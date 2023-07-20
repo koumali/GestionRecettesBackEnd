@@ -47,13 +47,18 @@ namespace AutomotiveApi.Services.Gestion
             return listClients.DistinctBy(c => new { c.FirstName, c.LastName, c.Email });
         }
 
-        
+        public async Task<Client?> GetClientByEmail(string email)
+        {
+            return await _context.Clients.Where(c => c.Email == email).FirstOrDefaultAsync();
+        }
+
+
         public async Task<Client> AddAsync(ClientDto client)
         {
             Console.WriteLine("CreateAsync");
             // Console log serialize object
-            Console.WriteLine(JsonConvert.SerializeObject(client));            
-            
+            Console.WriteLine(JsonConvert.SerializeObject(client));
+
             Client newClient = _mapper.Map<Client>(client);
 
             if (client.PermisRecto != null && client.PermisVerso != null)
@@ -61,9 +66,8 @@ namespace AutomotiveApi.Services.Gestion
                 newClient.PermisRecto = await _fileHelper.UploadImage(client.PermisRecto, "Permis");
                 newClient.PermisVerso = await _fileHelper.UploadImage(client.PermisVerso, "Permis");
             }
-            
-            return await base.CreateAsync(newClient);            
-        }
 
+            return await base.CreateAsync(newClient);
+        }
     }
 }

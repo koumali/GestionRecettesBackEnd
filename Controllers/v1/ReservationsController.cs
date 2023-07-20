@@ -16,14 +16,17 @@ namespace AutomotiveApi.Controllers.v1
         private readonly IMapper _mapper;
         private readonly IClient _clientService;
         private readonly IContrat _contratService;
+        private readonly IClient _client;
 
 
-        public ReservationsController(IReservation reservationService, IMapper mapper, IClient clientService, IContrat contratService)
+        public ReservationsController(IReservation reservationService, IMapper mapper, IClient clientService,
+            IContrat contratService, IClient client)
         {
             _reservationService = reservationService;
             _mapper = mapper;
             _clientService = clientService;
             _contratService = contratService;
+            _client = client;
         }
 
         [HttpGet]
@@ -51,25 +54,37 @@ namespace AutomotiveApi.Controllers.v1
             return Ok(addedReservation);
         }
 
+        [HttpGet("maReservation")]
+        public async Task<ActionResult<Reservation>> GererMaReservation(string numero, string email)
+        {
+            // verify client
+            var client = await _client.GetClientByEmail(email);
+            if (client is null) return BadRequest(new { error = "Client not found" });
+            // verify reservation
+            var reservation = await _reservationService.GererMaReservation(numero, email);
+            if (reservation is null) return BadRequest(new { error = "Reservation not found" });
+            return reservation;
+        }
+
         [HttpPost("public")]
         public async Task<ActionResult<Reservation>> AddReservationPublic([FromForm] FullReservationDto request)
         {
-            Reservation newReservation = new Reservation
+            var newReservation = new Reservation
             {
                 DateDepart = request.DateDepart,
                 DateRetour = request.DateRetour,
                 IdVehicule = request.IdVehicule
             };
 
-            Reservation createdRes = await _reservationService.CreateAsync(newReservation);
+            var createdRes = await _reservationService.CreateAsync(newReservation);
 
-            ClientDto client = request.Conducteurs.First();
-            Client createdClient = await _clientService.AddAsync(client);
+            var client = request.Conducteurs.First();
+            var createdClient = await _clientService.AddAsync(client);
 
-            ClientDto conducteur = request.Conducteurs.Last();
-            Client createdConducteur = await _clientService.AddAsync(conducteur);
+            var conducteur = request.Conducteurs.Last();
+            var createdConducteur = await _clientService.AddAsync(conducteur);
 
-            Contrat newContrat1 = new Contrat
+            var newContrat1 = new Contrat
             {
                 IdClient = createdClient.Id,
                 IdReservation = createdRes.Id,
@@ -77,7 +92,7 @@ namespace AutomotiveApi.Controllers.v1
             };
 
 
-            Contrat newContrat2 = new Contrat
+            var newContrat2 = new Contrat
             {
                 IdClient = createdConducteur.Id,
                 IdReservation = createdRes.Id,
@@ -90,12 +105,11 @@ namespace AutomotiveApi.Controllers.v1
                 await _contratService.CreateAsync(newContrat2);
             }
             catch (Exception e)
-            {             
-             return BadRequest(new {errors = e.Message});
+            {
+                return BadRequest(new { errors = e.Message });
             }
 
-            return CreatedAtAction(nameof(GetReservationById), new {id = createdRes.Id}, createdRes);
-
+            return CreatedAtAction(nameof(GetReservationById), new { id = createdRes.Id }, createdRes);
         }
 
         [HttpGet("{id}")]

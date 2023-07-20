@@ -14,6 +14,8 @@ namespace AutomotiveApi.Models.Entities.Gestion
         public DateTime DateRetour { get; set; }
         public int IdVehicule { get; set; }
         // [ForeignKey("IdVehicule")]
+        public string NumeroReservation { get; set; }
+        public string Status { get; set; }
         public virtual Vehicule Vehicule { get; set; }
         public virtual ICollection<Contrat> Contrats { get; set; }
     }

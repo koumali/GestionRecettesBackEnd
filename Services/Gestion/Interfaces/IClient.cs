@@ -7,6 +7,8 @@ namespace AutomotiveApi.Services.Gestion.Interfaces
     {
         Task<Client> AddAsync(ClientDto client);
         Task<IEnumerable<Client>> GetClientsAgence(int id);
+
+        Task<Client?> GetClientByEmail(string email);
         // Client? findById(int id);
         // Client? add(Client client);
         // void delete(int id);

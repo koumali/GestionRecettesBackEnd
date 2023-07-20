@@ -23,6 +23,8 @@ namespace AutomotiveApi.Models.Entities.Gestion
         public string Moteur { get; set; }
         public int IdAgence { get; set; }
         public int IdModele { get; set; }
+
+        public string Type { get; set; }
         // [ForeignKey("IdAgence")] 
         public virtual Agence Agence { get; set; }
         // [ForeignKey("IdModele")] 
