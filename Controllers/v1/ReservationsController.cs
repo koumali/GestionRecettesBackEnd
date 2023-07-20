@@ -3,6 +3,7 @@ using AutomotiveApi.Models.Dto;
 using AutomotiveApi.Models.Entities.Gestion;
 using AutomotiveApi.Services.Attributes;
 using AutomotiveApi.Services.Gestion.Interfaces;
+using AutomotiveApi.Utility;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -69,11 +70,15 @@ namespace AutomotiveApi.Controllers.v1
         [HttpPost("public")]
         public async Task<ActionResult<Reservation>> AddReservationPublic([FromForm] FullReservationDto request)
         {
+            // generate number of reservation
+            var numeroReservation = ReservationNumberGenerator.GenerateReservationNumber();
             var newReservation = new Reservation
             {
                 DateDepart = request.DateDepart,
                 DateRetour = request.DateRetour,
-                IdVehicule = request.IdVehicule
+                IdVehicule = request.IdVehicule,
+                Status = ReservationStatus.Pending.ToString(),
+                NumeroReservation = numeroReservation
             };
 
             var createdRes = await _reservationService.CreateAsync(newReservation);
