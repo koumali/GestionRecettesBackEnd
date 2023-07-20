@@ -50,8 +50,17 @@ namespace AutomotiveApi.Controllers.v1
         [Authorize(Roles = "Admin, Commercial, Gerant")]
         public async Task<ActionResult<Reservation>> AddReservation(ReservationDto request)
         {
-            var reservation = _mapper.Map<Reservation>(request);
-            var addedReservation = await _reservationService.CreateAsync(reservation);
+            // generate number of reservation
+            var numeroReservation = ReservationNumberGenerator.GenerateReservationNumber();
+            var newReservation = new Reservation
+            {
+                DateDepart = request.DateDepart,
+                DateRetour = request.DateRetour,
+                IdVehicule = request.IdVehicule,
+                Status = request.Status,
+                NumeroReservation = numeroReservation
+            };
+            var addedReservation = await _reservationService.CreateAsync(newReservation);
             return Ok(addedReservation);
         }
 
@@ -77,7 +86,7 @@ namespace AutomotiveApi.Controllers.v1
                 DateDepart = request.DateDepart,
                 DateRetour = request.DateRetour,
                 IdVehicule = request.IdVehicule,
-                Status = ReservationStatus.Pending.ToString(),
+                Status = request.Status,
                 NumeroReservation = numeroReservation
             };
 
@@ -147,6 +156,7 @@ namespace AutomotiveApi.Controllers.v1
             reservation.IdVehicule = request.IdVehicule;
             reservation.DateDepart = request.DateDepart;
             reservation.DateRetour = request.DateRetour;
+            reservation.Status = request.Status;
             var updatedReservation = await _reservationService.UpdateAsync(reservation);
             return Ok(updatedReservation);
         }

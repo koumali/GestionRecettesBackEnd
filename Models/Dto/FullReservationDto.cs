@@ -6,6 +6,7 @@ namespace AutomotiveApi.Models.Dto
         public DateTime DateDepart { get; set; }
         public DateTime DateRetour { get; set; }
         public int IdVehicule { get; set; }
+        public string Status { get; set; }
 
         // array of clientdto
         public ICollection<ClientDto> Conducteurs { get; set; }

@@ -99,6 +99,7 @@ namespace AutomotiveApi.Controllers.v1
             vehicule.Moteur = request.Moteur;
             vehicule.IdAgence = request.IdAgence;
             vehicule.IdModele = request.IdModele;
+            vehicule.Type = request.Type;
 
 
             var updatedVehicule = await _vehiculeService.UpdateAsync(vehicule);

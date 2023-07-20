@@ -15,5 +15,6 @@ namespace AutomotiveApi.Models.Dto
         public string Moteur { get; set; }
         public int IdAgence { get; set; }        
         public int IdModele { get; set; }        
+        public string Type { get; set; }        
     }
 }
