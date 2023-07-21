@@ -14,19 +14,13 @@ namespace AutomotiveApi.Services.Param
             _context = context;
         }
 
-        public async Task<IEnumerable<Role>> GetRolesAgence(int idAgence)
+        public async Task<IEnumerable<Role>> GetRolesAgence()
         {
-            var listUers = await _context.Users
-                .Include(u => u.Role)
-                .Where(u => u.IdAgence == idAgence && u.IdAgence != null)
+            var listRoles = await _context.Roles
+                .Where(u => u.Id != 0 && u.Name.ToLower() != "admin")
+                .Distinct()
                 .ToListAsync();
-            var listRoles = new List<Role>();
-            listUers.ForEach(u => listRoles.Add(new Role
-            {
-                Id = u.Role.Id,
-                Name = u.Role.Name
-            }));
-            return listRoles.DistinctBy(r => r.Name);
+            return listRoles;
         }
     }
 }
