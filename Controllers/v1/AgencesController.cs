@@ -97,6 +97,7 @@ namespace AutomotiveApi.Controllers.v1
             agence.ZipCode = request.ZipCode;
             agence.Latitude = request.Latitude;
             agence.Longitude = request.Longitude;
+            agence.IsVerified = request.IsVerified;
 
             var updatedAgence = await _agenceService.UpdateAsync(agence);
             return Ok(updatedAgence);
