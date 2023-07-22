@@ -25,10 +25,18 @@ namespace AutomotiveApi.Controllers.v1
 
         [HttpGet]
         [Authorize(Roles = "Admin")]
-        public async Task<ActionResult<IEnumerable<Agence>>> GetAgences()
+        public async Task<ActionResult<IEnumerable<Agence>>> GetVerifiedAgences()
         {
             return Ok(await _agenceService.GetAllAsync());
         }
+        
+        [HttpGet("notVerified")]
+        [Authorize(Roles = "Admin")]
+        public async Task<ActionResult<IEnumerable<Agence>>> GetNotVerifiedAgences()
+        {
+            return Ok(await _agenceService.GetAllNotVerifiedAsync());
+        }
+        
         [HttpGet("Villes")]
         public async Task<ActionResult<IEnumerable<string>>> GetAgencesVilles()
         {
