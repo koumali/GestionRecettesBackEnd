@@ -59,8 +59,6 @@ namespace AutomotiveApi.Controllers.v1
         [Authorize(Roles = "Admin, Commercial, Agent, Gerant")]
         public async Task<ActionResult<Modele>> AddModele([FromForm] ModeleDto request)
         {
-
-
             var modele = _mapper.Map<Modele>(request);
 
             if (request.Image != null)

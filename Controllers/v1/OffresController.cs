@@ -35,7 +35,7 @@ namespace AutomotiveApi.Controllers.v1
         {
             var date1 = (new DateTime(1970, 1, 1)).AddMilliseconds(double.Parse(startDate));
             var date2 = (new DateTime(1970, 1, 1)).AddMilliseconds(double.Parse(endDate));
-            var offres = await _offreservice.GetPublicOffres(name, datedebut: date1, datefin:date2);
+            var offres = await _offreservice.GetPublicOffres(name, datedebut: date2, datefin:date1);
             
             return Ok(offres);
         }
