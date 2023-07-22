@@ -1,6 +1,8 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using AutomotiveApi.Models.Entities.Gestion;
 using AutomotiveApi.Models.Entities.Param;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 
 namespace AutomotiveApi.DAL
 {
@@ -42,6 +44,39 @@ namespace AutomotiveApi.DAL
                 new Role { Id = 4, Name = "Client" },
                 new Role { Id = 5, Name = "Commercial" }
             );
+
+            // load a json file
+            string filePath = "DAL/Marque-Modeles-imgs.json"; // Replace with the actual file path
+
+            // Check if the file exists
+            if (File.Exists(filePath))
+            {
+                string jsonContent = File.ReadAllText(filePath);
+
+                JArray jsonArray = JArray.Parse(jsonContent);
+
+                foreach (JObject item in jsonArray)
+                {
+                    Marque marque = new Marque();
+                    marque.Id = (int)item.GetValue("id");
+                    marque.Name = (string)item.GetValue("name");
+
+                    foreach (JObject modele in item.GetValue("modeles"))
+                    {
+                        Modele m = new Modele();
+                        m.Id = (int)modele.GetValue("id");
+                        m.Name = (string)modele.GetValue("name");
+                        m.IdMarque = marque.Id;
+                        m.Image = (string)modele.GetValue("images");
+
+                        modelBuilder.Entity<Modele>().HasData(m);
+                    }
+                    modelBuilder.Entity<Marque>().HasData(marque);
+                }
+            }
+
+
+
 
 
             modelBuilder.Entity<User>(entity =>
@@ -119,15 +154,11 @@ namespace AutomotiveApi.DAL
 
             modelBuilder.Entity<LongTermRental>().HasData(DataSeeder.seedLongTermRental().Generate(10));
 
-            modelBuilder.Entity<Marque>().HasData(DataSeeder.seedMarque().Generate(10));
-
-            modelBuilder.Entity<Modele>().HasData(DataSeeder.seedModele().Generate(10));
-
             modelBuilder.Entity<User>().HasData(DataSeeder.seedUser().Generate(10));
 
 
             // filter deleted entities
-            
+
             modelBuilder.Entity<Agence>().HasQueryFilter(a => a.DeletedAt == null);
             modelBuilder.Entity<Marque>().HasQueryFilter(a => a.DeletedAt == null);
             modelBuilder.Entity<Modele>().HasQueryFilter(a => a.DeletedAt == null);
@@ -138,9 +169,9 @@ namespace AutomotiveApi.DAL
             modelBuilder.Entity<Reservation>().HasQueryFilter(a => a.DeletedAt == null);
             modelBuilder.Entity<Contrat>().HasQueryFilter(a => a.DeletedAt == null);
             modelBuilder.Entity<Client>().HasQueryFilter(a => a.DeletedAt == null);
-            modelBuilder.Entity<Log_journal>().HasQueryFilter(a => a.DeletedAt == null);            
-            modelBuilder.Entity<LongTermRental>().HasQueryFilter(a => a.DeletedAt == null);            
-            
+            modelBuilder.Entity<Log_journal>().HasQueryFilter(a => a.DeletedAt == null);
+            modelBuilder.Entity<LongTermRental>().HasQueryFilter(a => a.DeletedAt == null);
+
 
 
             OnModelCreatingPartial(modelBuilder);
