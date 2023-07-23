@@ -4,7 +4,6 @@ namespace AutomotiveApi.Services.Gestion.Interfaces
 {
     public interface ILongTermRental : IGenericData<LongTermRental>
     {
-        
         // LongTermRental? findById(int id);
         // LongTermRental? add(LongTermRental LongTermRental);
         // void delete(int id);

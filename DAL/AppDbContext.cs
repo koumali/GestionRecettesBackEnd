@@ -30,6 +30,7 @@ namespace AutomotiveApi.DAL
         public virtual DbSet<Contrat> Contrats { get; set; }
         public virtual DbSet<Log_journal> log_journal { get; set; }
         public virtual DbSet<LongTermRental> long_term_rentals { get; set; }
+        public virtual DbSet<LLDResponse> lld_responses { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
@@ -110,6 +111,14 @@ namespace AutomotiveApi.DAL
                     .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("FK_Modeles_id_marque");
             });
+            modelBuilder.Entity<LLDResponse>(entity =>
+            {
+                entity.HasOne(d => d.LongTermRental)
+                    .WithMany(p => p.LLDResponses)
+                    .HasForeignKey(d => d.idLongTermRental)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK_Modeles_id_LongTermRental");
+            });
 
             modelBuilder.Entity<Contrat>(entity =>
             {
@@ -171,7 +180,7 @@ namespace AutomotiveApi.DAL
             modelBuilder.Entity<Client>().HasQueryFilter(a => a.DeletedAt == null);
             modelBuilder.Entity<Log_journal>().HasQueryFilter(a => a.DeletedAt == null);
             modelBuilder.Entity<LongTermRental>().HasQueryFilter(a => a.DeletedAt == null);
-
+            modelBuilder.Entity<LLDResponse>().HasQueryFilter(a => a.DeletedAt == null);
 
 
             OnModelCreatingPartial(modelBuilder);

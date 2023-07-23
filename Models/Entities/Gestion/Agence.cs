@@ -1,6 +1,4 @@
-﻿using System.ComponentModel.DataAnnotations;
-using System.Diagnostics.CodeAnalysis;
-using AutomotiveApi.Models.Entities.Core;
+﻿using AutomotiveApi.Models.Entities.Core;
 using AutomotiveApi.Models.Entities.Param;
 
 namespace AutomotiveApi.Models.Entities.Gestion

@@ -1,6 +1,4 @@
-﻿using System.ComponentModel.DataAnnotations.Schema;
-using AutomotiveApi.Models.Entities.Core;
-using Microsoft.IdentityModel.Tokens;
+﻿using AutomotiveApi.Models.Entities.Core;
 
 namespace AutomotiveApi.Models.Entities.Gestion
 {
@@ -16,5 +14,6 @@ namespace AutomotiveApi.Models.Entities.Gestion
         public int duree { get; set; }
         public int type_vehicule { get; set; }
         public string description { get; set; }
+        public virtual ICollection<LLDResponse> LLDResponses { get; set; }
     }
 }
