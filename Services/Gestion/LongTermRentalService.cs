@@ -16,7 +16,7 @@ namespace AutomotiveApi.Services.Gestion
 
         public new async Task<IEnumerable<LongTermRental>> GetAllAsync()
         {
-            return await _context.long_term_rentals.ToListAsync();
+            return await _context.long_term_rentals.Include(l=>l.LLDResponses).ToListAsync();
         }
     }
 }

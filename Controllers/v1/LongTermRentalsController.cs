@@ -22,7 +22,7 @@ namespace AutomotiveApi.Controllers.v1
         }
 
         [HttpGet]
-        [Authorize(Roles = "Admin")]
+        [Authorize(Roles = "Admin, Gerant")]
         public async Task<ActionResult<IEnumerable<LongTermRental>>> GetLongTermRentals()
         {
             var longTermRentals = await _longTermRentalService.GetAllAsync();
@@ -37,7 +37,7 @@ namespace AutomotiveApi.Controllers.v1
             var longTermRental = await _longTermRentalService.GetByIdAsync(id);
             return Ok(longTermRental);
         }
-
+        
         [HttpPost]
         public async Task<ActionResult<LongTermRental>> AddLongTermRental(LongTermRentalDto request)
         {

@@ -14,7 +14,7 @@ using AutomotiveApi.Services.Mail;
 using AutomotiveApi.Services.Param;
 using AutomotiveApi.Utility;
 using AutomotiveApi.Utility.Middlwares;
-
+using AutomotiveApi.Models.Entities.Gestion;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -118,6 +118,7 @@ builder.Services.AddScoped<IReservation, ReservationService>();
 builder.Services.AddScoped<ILogJournal, LogJournalService>();
 builder.Services.AddScoped<IContrat, ContratService>();
 builder.Services.AddScoped<ILongTermRental, LongTermRentalService>();
+builder.Services.AddScoped<ILLDResponse, LLDResponsesService>();
 builder.Services.AddScoped<IFileHelper, FileHelper>();
 builder.Services.AddScoped<IMailService, MailService>();
 

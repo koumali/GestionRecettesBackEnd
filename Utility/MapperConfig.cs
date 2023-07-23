@@ -21,6 +21,7 @@ namespace AutomotiveApi.Utility
             CreateMap<Offre, OffreDto>().ReverseMap();
             CreateMap<Contrat, ContratDto>().ReverseMap();
             CreateMap<LongTermRental, LongTermRentalDto>().ReverseMap();
+            CreateMap<LLDResponse, LLDResponseDto>().ReverseMap();
         }
     }
 }

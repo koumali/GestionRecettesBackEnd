@@ -55,10 +55,6 @@ namespace AutomotiveApi.Controllers.v1
             return Ok(offres);
         }
 
-        //<summary>
-        //Add Offre
-        //</summary>
-
         [HttpPost]
         [Authorize(Roles = "Admin, Commercial, Gerant")]
         public async Task<ActionResult<Offre>> AddOffre(OffreDto request)
