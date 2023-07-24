@@ -22,5 +22,6 @@ namespace AutomotiveApi.Models.Entities.Gestion
         public bool IsVerified { get; set; }
         public ICollection<Vehicule> Vehicules { get; set; }
         public ICollection<User> Users { get; set; }
+        public ICollection<LLDResponse> LLDResponses { get; set; }
     }
 }

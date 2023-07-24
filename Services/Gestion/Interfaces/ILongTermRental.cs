@@ -4,7 +4,10 @@ namespace AutomotiveApi.Services.Gestion.Interfaces
 {
     public interface ILongTermRental : IGenericData<LongTermRental>
     {
-        // LongTermRental? findById(int id);
+        Task<LongTermRental?> GererMaReservation(string numero, string email);
+        Task<LongTermRental> GetByIdAsync(int id);
+        Task<IEnumerable<LongTermRental>> GetAllAsync();
+        Task<LongTermRental> UpdateAsync(LongTermRental entity);
         // LongTermRental? add(LongTermRental LongTermRental);
         // void delete(int id);
         // LongTermRental? update(LongTermRental LongTermRental);

@@ -4,6 +4,9 @@ using AutomotiveApi.Models.Entities.Gestion;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using AutomotiveApi.Services.Gestion.Interfaces;
+using AutomotiveApi.Services.Gestion;
+using MySqlX.XDevAPI;
+using AutomotiveApi.Utility;
 
 namespace AutomotiveApi.Controllers.v1
 {
@@ -28,8 +31,15 @@ namespace AutomotiveApi.Controllers.v1
             var longTermRentals = await _longTermRentalService.GetAllAsync();
             return Ok(longTermRentals);
         }
-       
 
+        [HttpGet("maReservation")]
+        public async Task<ActionResult<LongTermRental>> GererMaReservation(string numero, string email)
+        {
+            // verify reservation
+            var reservation = await _longTermRentalService.GererMaReservation(numero, email);
+            if (reservation is null) return BadRequest(new { error = "Reservation not found" });
+            return reservation;
+        }
         [HttpGet("{id}")]
         [Authorize(Roles = "Admin")]
         public async Task<ActionResult<LongTermRental>> GetLongTermRentalById(int id)
@@ -42,6 +52,9 @@ namespace AutomotiveApi.Controllers.v1
         public async Task<ActionResult<LongTermRental>> AddLongTermRental(LongTermRentalDto request)
         {
             var longTermRental = _mapper.Map<LongTermRental>(request);
+            var numeroReservation = ReservationNumberGenerator.GenerateReservationNumber();
+            longTermRental.status = ReservationStatus.Pending.ToString();
+            longTermRental.NumeroReservation = numeroReservation;
             var addedLongTermRental = await _longTermRentalService.CreateAsync(longTermRental);
             return Ok(addedLongTermRental);
         }
@@ -55,26 +68,15 @@ namespace AutomotiveApi.Controllers.v1
         }
 
         [HttpPut("{id}")]
-        [Authorize(Roles = "Admin")]
-        public async Task<ActionResult<LongTermRental>> UpdateLongTermRental(int id, LongTermRentalDto request)
+        public async Task<ActionResult<LongTermRental>> UpdateLongTermRental(int id, UpdateLongTermRentalModelDto request)
         {
             var longTermRental = await _longTermRentalService.GetByIdAsync(id);
             if (longTermRental == null)
             {
                 return NotFound();
             }
-
-            // Update the LongTermRental properties
-            longTermRental.prenom = request.prenom;
-            longTermRental.nom = request.nom;
-            longTermRental.phone = request.phone;
-            longTermRental.zip = request.zip;
-            longTermRental.email = request.email;
-            longTermRental.type_vehicule = request.type_vehicule;
-            longTermRental.duree = request.duree;
-            longTermRental.entreprise = request.entreprise;
-            longTermRental.ville = request.ville;
-            longTermRental.description = request.description;
+            longTermRental.idAgence = request.IdAgence;
+            longTermRental.status = ReservationStatus.Confirmed.ToString();
 
             var updatedLongTermRental = await _longTermRentalService.UpdateAsync(longTermRental);
             return Ok(updatedLongTermRental);
