@@ -2,6 +2,8 @@ using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
 using AutomotiveApi.Models.Entities.Param;
+using AutomotiveApi.Services.Attributes;
+using AutomotiveApi.Services.Param;
 using Microsoft.IdentityModel.Tokens;
 
 namespace AutomotiveApi.Services.Jwt
@@ -10,12 +12,14 @@ namespace AutomotiveApi.Services.Jwt
     {
         private readonly IHttpContextAccessor _httpContextAccessor;
         private readonly IConfiguration _configuration;
+        private readonly IPermissionService _permissionService;
 
 
-        public JwtService(IHttpContextAccessor httpContextAccessor, IConfiguration configuration)
+        public JwtService(IHttpContextAccessor httpContextAccessor, IConfiguration configuration, IPermissionService permissionService)
         {
             _httpContextAccessor = httpContextAccessor;
             _configuration = configuration;
+            _permissionService = permissionService;
         }
 
         public int getUserId()
@@ -44,6 +48,11 @@ namespace AutomotiveApi.Services.Jwt
                 new Claim("idAgence", user.IdAgence.ToString() ?? "0")
             };
 
+            var permissions = _permissionService.GetPermissionsAsync(user.Id);
+            foreach (var permission in permissions)
+            {
+                claims.Add(new ("permissions", permission));
+            }
 
             var expirationTime = _configuration.GetValue<int>("Jwt:DurationInMinutes");
             var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration["Jwt:Key"]) ??

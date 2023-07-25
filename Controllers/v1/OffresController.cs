@@ -3,6 +3,7 @@ using AutomotiveApi.Models.Dto;
 using AutomotiveApi.Models.Entities.Gestion;
 using AutomotiveApi.Services.Attributes;
 using AutomotiveApi.Services.Gestion.Interfaces;
+using AutomotiveApi.Utility;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -22,13 +23,13 @@ namespace AutomotiveApi.Controllers.v1
             _mapper = mapper;
         }
 
-        [HttpGet]
-        [Authorize(Roles = "Admin, Commercial, Gerant")]
-        public async Task<ActionResult<IEnumerable<Offre>>> GetOffres()
-        {
-            var offres = await _offreservice.GetAllAsync();
-            return Ok(offres);
-        }
+        // [HttpGet]
+        // // [Authorize(Roles = "Admin, Commercial, Gerant")]
+        // public async Task<ActionResult<IEnumerable<Offre>>> GetOffres()
+        // {
+        //     var offres = await _offreservice.GetAllAsync();
+        //     return Ok(offres);
+        // }
 
         [HttpGet("public")]
         public async Task<ActionResult<IEnumerable<Offre>>> GetPublicOffres(string name,string startDate, string endDate)
@@ -39,6 +40,7 @@ namespace AutomotiveApi.Controllers.v1
             
             return Ok(offres);
         }
+        
         [HttpGet("public/{id}")]
         public async Task<ActionResult<Offre>> GetPublicOffreById(int id)
         {
@@ -47,7 +49,7 @@ namespace AutomotiveApi.Controllers.v1
         }
 
         [HttpGet("agence/{idAgence}")]
-        [Authorize(Roles = "Commercial, Gerant")]
+        [HasPermission(Permission.AgencySecondLevelPermission)]
         [ValidatIdAgence("idAgence")]
         public async Task<ActionResult<IEnumerable<Offre>>> GetOffresAgence(int idAgence)
         {
@@ -60,7 +62,7 @@ namespace AutomotiveApi.Controllers.v1
         //</summary>
 
         [HttpPost]
-        [Authorize(Roles = "Admin, Commercial, Gerant")]
+        [HasPermission(Permission.AgencySecondLevelPermission)]
         public async Task<ActionResult<Offre>> AddOffre(OffreDto request)
         {
             var offre = _mapper.Map<Offre>(request);
@@ -76,7 +78,7 @@ namespace AutomotiveApi.Controllers.v1
         }
 
         [HttpDelete("{id}")]
-        [Authorize(Roles = "Admin, Commercial, Gerant")]
+        [HasPermission(Permission.AgencySecondLevelPermission)]
         public async Task<ActionResult> DeleteOffre(int id)
         {
             await _offreservice.DeleteAsync(id);
@@ -84,7 +86,7 @@ namespace AutomotiveApi.Controllers.v1
         }
 
         [HttpPut("{id}")]
-        [Authorize(Roles = "Admin, Commercial, Gerant")]
+        [HasPermission(Permission.AgencySecondLevelPermission)]
         public async Task<ActionResult<Offre>> UpdateOffre(int id, OffreDto request)
         {
             var offre = await _offreservice.GetByIdAsync(id);

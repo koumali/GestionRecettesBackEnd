@@ -1,7 +1,9 @@
 ﻿using AutoMapper;
 using AutomotiveApi.Models.Dto;
 using AutomotiveApi.Models.Entities.Gestion;
+using AutomotiveApi.Services.Attributes;
 using AutomotiveApi.Services.Gestion.Interfaces;
+using AutomotiveApi.Utility;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using IMailService = AutomotiveApi.Services.Mail.IMailService;
@@ -24,14 +26,16 @@ namespace AutomotiveApi.Controllers.v1
         }
 
         [HttpGet]
-        [Authorize(Roles = "Admin")]
+        // [Authorize(Roles = "Admin")]
+        [HasPermission(Permission.PlatformTopLevelPermission)]
         public async Task<ActionResult<IEnumerable<Agence>>> GetVerifiedAgences()
         {
             return Ok(await _agenceService.GetAllAsync());
         }
         
         [HttpGet("notVerified")]
-        [Authorize(Roles = "Admin")]
+        // [Authorize(Roles = "Admin")]
+        [HasPermission(Permission.PlatformTopLevelPermission)]
         public async Task<ActionResult<IEnumerable<Agence>>> GetNotVerifiedAgences()
         {
             return Ok(await _agenceService.GetAllNotVerifiedAsync());
@@ -47,7 +51,7 @@ namespace AutomotiveApi.Controllers.v1
         //</summary>
 
         [HttpPost]
-        [Authorize(Roles = "Admin")]
+        // [Authorize(Roles = "Admin")]
         public async Task<ActionResult<Agence>> AddAgence(AgenceDto request)
         {
             var agence = _mapper.Map<Agence>(request);
@@ -75,7 +79,7 @@ namespace AutomotiveApi.Controllers.v1
         }
 
         [HttpDelete("{id}")]
-        [Authorize(Roles = "Admin")]
+        // [Authorize(Roles = "Admin")]
         public async Task<ActionResult> DeleteAgence(int id)
         {
             await _agenceService.DeleteAsync(id);
@@ -83,7 +87,7 @@ namespace AutomotiveApi.Controllers.v1
         }
 
         [HttpPut("{id}")]
-        [Authorize(Roles = "Admin")]
+        // [Authorize(Roles = "Admin")]
         public async Task<ActionResult<Agence>> UpdateAgence(int id, AgenceDto request)
         {
             var agence = await _agenceService.GetByIdAsync(id);
