@@ -23,7 +23,7 @@ namespace AutomotiveApi.DAL
             return agences;
         }
 
-        public static Faker<Client> seedClient(AppDbContext context)
+        public static Faker<Client> seedClient()
         {
             var id = 1;
             var clients = new Faker<Client>()
@@ -42,19 +42,10 @@ namespace AutomotiveApi.DAL
             return clients;
         }
 
-        public static Faker<Marque> seedMarque()
-        {
-            var id = 1;
-            var marques = new Faker<Marque>()
-            .RuleFor(x => x.Id, f => id++).RuleFor(x => x.Name, f => f.Vehicle.Manufacturer())
-            .RuleFor(x => x.CreatedAt, f => f.Date.Past());
-
-            return marques;
-        }
         public static Faker<LongTermRental> seedLongTermRental()
         {
             var id = 1;
-            var marques = new Faker<LongTermRental>()
+            var lld = new Faker<LongTermRental>()
             .RuleFor(x => x.Id, f => id++)
             .RuleFor(x => x.nom, f => f.Name.FirstName())
             .RuleFor(x => x.email, f => f.Internet.Email())
@@ -68,20 +59,85 @@ namespace AutomotiveApi.DAL
             .RuleFor(x => x.type_vehicule, id)
             .RuleFor(x => x.CreatedAt, f => f.Date.Past());
 
-            return marques;
+            return lld;
         }
 
-        public static Faker<Modele> seedModele()
+        // seed vehicules
+
+        public static Faker<Vehicule> seedVehicule()
         {
+
+
+            // modeles ids from json file
+            int[] modelesIds = { 10324, 113, 64, 10847, 57, 32, 10040, 897, 10740, 10230 };
             var id = 1;
-            var modeles = new Faker<Modele>()
-            .RuleFor(x => x.Id, f => id++).RuleFor(x => x.Name, f => f.Vehicle.Model())
-            .RuleFor(x => x.IdMarque, f => f.Random.Int(1, 10))
-            .RuleFor(x => x.Image, f => f.Image.PicsumUrl())
+            var vehicules = new Faker<Vehicule>()
+            .RuleFor(x => x.Id, f => id++)
+            .RuleFor(x => x.IdModele, f => f.PickRandom(modelesIds))
+            .RuleFor(x => x.IdAgence, f => f.Random.Int(1, 10))
+            .RuleFor(x => x.Prix, f => f.Random.Int(1, 10))
+            .RuleFor(x => x.Matricule, f => f.Random.String2(10))
+            .RuleFor(x => x.Km, f => f.Random.Int(1, 10000))
+            .RuleFor(x => x.Moteur, f => f.Random.String2(10))
+            .RuleFor(x => x.Gearbox, f => f.Random.String2(10))
+            .RuleFor(x => x.NbPassager, f => f.Random.Int(1, 10))
+            .RuleFor(x => x.NbPort, f => f.Random.Int(1, 10))
+            .RuleFor(x => x.Name, f => f.Random.String2(10))
+            .RuleFor(x => x.Type, f => f.Random.String2(10))
+            .RuleFor(x => x.Climat, f => f.Random.Bool())
+            .RuleFor(x => x.Airbag, f => f.Random.Bool())
             .RuleFor(x => x.CreatedAt, f => f.Date.Past());
 
-            return modeles;
+            return vehicules;
         }
+
+        // seed offres
+        public static Faker<Offre> seedOffre()
+        {
+            var id = 1;
+            var offres = new Faker<Offre>()
+            .RuleFor(x => x.Id, f => id++)
+            .RuleFor(x => x.IdVehicule, f => f.Random.Int(1, 10))
+            .RuleFor(x => x.Prix, f => f.Random.Int(1, 10))
+            .RuleFor(x => x.DateDebut, f => f.Date.Past())
+            .RuleFor(x => x.DateFin, f => f.Date.Past())
+            .RuleFor(x => x.CreatedAt, f => f.Date.Past());
+
+            return offres;
+        }
+
+
+        public static Faker<Reservation> seedReservation()
+        {
+            var id = 1;
+            string[] status = { "pending", "confirmed", "canceled" };
+            var reservations = new Faker<Reservation>()
+            .RuleFor(x => x.Id, f => id++)
+            .RuleFor(x => x.IdVehicule, f => f.Random.Int(1, 10))
+            .RuleFor(x => x.DateDepart, f => f.Date.Past())
+            .RuleFor(x => x.DateRetour, f => f.Date.Past())
+            .RuleFor(x => x.CreatedAt, f => f.Date.Past())
+            .RuleFor(x => x.NumeroReservation, f => Guid.NewGuid().ToString())
+            .RuleFor(x => x.Status, f => f.PickRandom(status));
+
+            return reservations;
+        }
+
+        // seed contrats
+        public static Faker<Contrat> seedContrat()
+        {
+            var id = 1;
+            var contrats = new Faker<Contrat>()
+            .RuleFor(x => x.Id, f => id++)
+            .RuleFor(x => x.IdReservation, f => f.Random.Int(1, 10))
+            .RuleFor(x => x.IdClient, f => f.Random.Int(1, 10))
+            .RuleFor(x => x.IsConducteur, f => f.Random.Bool());
+
+            return contrats;
+        }
+
+
+
 
         public static Faker<User> seedUser()
         {

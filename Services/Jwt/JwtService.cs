@@ -30,6 +30,18 @@ namespace AutomotiveApi.Services.Jwt
             return role;
         }
 
+        public int getIdAgence()
+        {
+            var idAgence = int.Parse(_httpContextAccessor.HttpContext?.User.FindFirst("idAgence")?.Value ?? "0");
+            return idAgence;
+        }
+
+        public int getClientId()
+        {
+            var clientId = int.Parse(_httpContextAccessor.HttpContext?.User.FindFirst("clientId")?.Value ?? "0");
+            return clientId;
+        }
+
         public string generateToken(User user)
         {
             List<Claim> claims = new List<Claim>
@@ -38,7 +50,7 @@ namespace AutomotiveApi.Services.Jwt
                 new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
                 new Claim(JwtRegisteredClaimNames.Iat, DateTime.UtcNow.ToString()),
                 new Claim("id", user.Id.ToString()),
-                new Claim("email", user.Email),
+                new Claim("clientId", user.clientId.ToString() ?? "0"),
                 new Claim("fullname", user.FirstName + " " + user.LastName),
                 new Claim(ClaimTypes.Role, user.Role.Name),
                 new Claim("idAgence", user.IdAgence.ToString() ?? "0")
@@ -61,10 +73,5 @@ namespace AutomotiveApi.Services.Jwt
             return jwtToken;
         }
 
-        public int getIdAgence()
-        {
-            var idAgence = int.Parse(_httpContextAccessor.HttpContext?.User.FindFirst("idAgence")?.Value ?? "0");
-            return idAgence;
-        }
     }
 }
