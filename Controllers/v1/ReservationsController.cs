@@ -1,8 +1,11 @@
 using AutoMapper;
 using AutomotiveApi.Models.Dto;
 using AutomotiveApi.Models.Entities.Gestion;
+using AutomotiveApi.Models.Entities.Param;
 using AutomotiveApi.Services.Attributes;
 using AutomotiveApi.Services.Gestion.Interfaces;
+using AutomotiveApi.Services.Mail;
+using AutomotiveApi.Services.Param;
 using AutomotiveApi.Utility;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -17,17 +20,18 @@ namespace AutomotiveApi.Controllers.v1
         private readonly IMapper _mapper;
         private readonly IClient _clientService;
         private readonly IContrat _contratService;
-        private readonly IClient _client;
+        private readonly IUser _userService;
+        private readonly IMailService _emailService;
 
-
-        public ReservationsController(IReservation reservationService, IMapper mapper, IClient clientService,
-            IContrat contratService, IClient client)
+        public ReservationsController(IReservation reservationService, IMapper mapper, IClient clientService, IUser userService, IMailService emailService,
+            IContrat contratService)
         {
             _reservationService = reservationService;
             _mapper = mapper;
             _clientService = clientService;
             _contratService = contratService;
-            _client = client;
+            _userService = userService;
+            _emailService = emailService;
         }
 
         [HttpGet]
@@ -68,7 +72,7 @@ namespace AutomotiveApi.Controllers.v1
         public async Task<ActionResult<Reservation>> GererMaReservation(string numero, string email)
         {
             // verify client
-            var client = await _client.GetClientByEmail(email);
+            var client = await _clientService.GetClientByEmail(email);
             if (client is null) return BadRequest(new { error = "Client not found" });
             // verify reservation
             var reservation = await _reservationService.GererMaReservation(numero, email);
@@ -93,35 +97,50 @@ namespace AutomotiveApi.Controllers.v1
             var createdRes = await _reservationService.CreateAsync(newReservation);
 
             var client = request.Conducteurs.First();
-            var createdClient = await _clientService.AddAsync(client);
 
-            var conducteur = request.Conducteurs.Last();
-            var createdConducteur = await _clientService.AddAsync(conducteur);
+            client.Id = client.Id == 0 ? 0 : int.Parse(User.FindFirst("clientId")?.Value ?? "0");
+            Client newClient = client.Id == 0 ? await _clientService.AddAsync(client) : await _clientService.UpdateAsync(client);
+
+            try
+            {
+                MailData mailData = new MailData
+                {
+                    To = client.Email,
+                    Subject = "Votre reservation a été bien enregistrée",
+                    Body = $"Votre reservation a été bien enregistrée, votre numéro de reservation est {createdRes.NumeroReservation}"
+                };
+
+                _emailService.SendFullEmail(mailData);
+            }
+            catch (Exception e)
+            {
+
+            }
 
             var newContrat1 = new Contrat
             {
-                IdClient = createdClient.Id,
+                IdClient = newClient.Id,
                 IdReservation = createdRes.Id,
                 IsConducteur = false
             };
 
 
-            var newContrat2 = new Contrat
-            {
-                IdClient = createdConducteur.Id,
-                IdReservation = createdRes.Id,
-                IsConducteur = true
-            };
 
-            try
+            if (request.Conducteurs.Count > 1)
             {
-                await _contratService.CreateAsync(newContrat1);
+                var conducteur = request.Conducteurs.ElementAt(1);
+                var createdConducteur = await _clientService.AddAsync(conducteur);
+                var newContrat2 = new Contrat
+                {
+                    IdClient = createdConducteur.Id,
+                    IdReservation = createdRes.Id,
+                    IsConducteur = true
+                };
+
                 await _contratService.CreateAsync(newContrat2);
             }
-            catch (Exception e)
-            {
-                return BadRequest(new { errors = e.Message });
-            }
+
+            await _contratService.CreateAsync(newContrat1);
 
             return CreatedAtAction(nameof(GetReservationById), new { id = createdRes.Id }, createdRes);
         }

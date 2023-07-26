@@ -30,6 +30,7 @@ namespace AutomotiveApi.Services.Param
 
         public new async Task<User> CreateAsync(User user)
         {
+                        
             User? userExists = await findByEmail(user.Email);
             if (userExists != null)
             {
@@ -41,9 +42,7 @@ namespace AutomotiveApi.Services.Param
                 user.Password = BCrypt.Net.BCrypt.HashPassword(user.Password);
 
                 await _context.Users.AddAsync(user);
-                await _context.SaveChangesAsync();
-                // return user with role
-                // user.Role = await _context.Roles.FirstOrDefaultAsync(r => r.Id == user.IdRole);
+                await _context.SaveChangesAsync();            
                 return user;
             }
             catch (Exception ex)

@@ -32,4 +32,24 @@ public class MailService : IMailService
         smtp.Send(email);
         smtp.Disconnect(true);
     }
+
+    public bool SendFullEmail(MailData mailData)
+    {
+        var email = new MimeMessage();
+        email.From.Add(MailboxAddress.Parse(_config.GetSection("Mail").Value));
+        email.To.Add(MailboxAddress.Parse(mailData.To));
+        email.Subject = mailData.Subject;
+        email.Body = new TextPart(MimeKit.Text.TextFormat.Html)
+        {
+            Text = mailData.Body
+        };
+
+        using var smtp = new SmtpClient();
+        smtp.Connect(_config.GetSection("Host").Value, int.Parse(_config.GetSection("Port").Value),
+            SecureSocketOptions.StartTls);
+        smtp.Authenticate(_config.GetSection("Mail").Value, _config.GetSection("Password").Value);
+        smtp.Send(email);
+        smtp.Disconnect(true);
+        return true;
+    }
 }

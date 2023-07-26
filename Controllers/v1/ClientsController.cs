@@ -1,8 +1,12 @@
+using System.Security.Claims;
 using AutoMapper;
 using AutomotiveApi.Models.Dto;
 using AutomotiveApi.Models.Entities.Gestion;
+using AutomotiveApi.Models.Entities.Param;
 using AutomotiveApi.Services.Attributes;
 using AutomotiveApi.Services.Gestion.Interfaces;
+using AutomotiveApi.Services.Jwt;
+using AutomotiveApi.Services.Param;
 using AutomotiveApi.Utility;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -18,11 +22,11 @@ namespace AutomotiveApi.Controllers.v1
         private readonly IFileHelper _fileHelper;
 
 
-        public ClientsController(IClient clientService, IMapper mapper, IFileHelper fileHelper)
+        public ClientsController(IClient clientService, IMapper mapper, IFileHelper fileHelper, IJwt jwtService)
         {
             _clientService = clientService;
             _mapper = mapper;
-            _fileHelper = fileHelper;
+            _fileHelper = fileHelper;            
         }
 
         [HttpGet]
@@ -79,36 +83,59 @@ namespace AutomotiveApi.Controllers.v1
         }
 
         [HttpPut("{id}")]
-        [Authorize(Roles = "Admin, Gerant, Commercial")]
+        [Authorize(Roles = "Admin, Gerant, Commercial,Client")]
         public async Task<ActionResult<Client>> UpdateClient(int id, [FromForm] ClientDto request)
         {
+
             if (id != request.Id)
             {
-                return BadRequest();
+                return BadRequest(new { errors = "Invalid Client" });
             }
+            Client? client = await _clientService.UpdateAsync(request)  ;
+            
+            return Ok(client);
 
-            var client = await _clientService.GetByIdAsync(id);
+          
+        }
+        
 
-            if (request.PermisRecto != null)
+        [HttpGet("infos")]
+        [Authorize(Roles = "Client")]
+        public async Task<ActionResult<Client>> GetClientInfos()
+        {
+            int clientId = int.Parse(User.FindFirst("clientId")?.Value ?? "0");
+
+            Client? client = await _clientService.GetByIdAsync(clientId);
+
+            return Ok(client);
+        }
+
+        [HttpPost("register")]
+        public async Task<ActionResult<Client>> RegisterClient(ClientRegisterDto request)
+        {
+            if (request.terms == false)
             {
-                client.PermisRecto = await _fileHelper.UploadImage(request.PermisRecto, "Permis");
+                return BadRequest(new { errors = "You must accept terms and conditions" });
             }
-            if (request.PermisVerso != null)
+            try
             {
-                client.PermisVerso = await _fileHelper.UploadImage(request.PermisVerso, "Permis");
+                return await _clientService.RegisterAsync(request);
             }
+            catch (Exception ex)
+            {
+                return BadRequest(new { errors = ex.Message });
+            }
+        }
 
-            client.FirstName = request.FirstName;
-            client.LastName = request.LastName;
-            client.Tel = request.Tel;
-            client.Email = request.Email;
-            client.Ville = request.Ville;
-            client.ZipCode = request.ZipCode;
-            client.Adresse = request.Adresse;
-            client.Adresse2 = request.Adresse2;
+        [HttpGet("reservations")]
+        [Authorize(Roles = "Client")]
+        public async Task<ActionResult<IEnumerable<Reservation>>> GetClientReservations()
+        {
+            int clientId = int.Parse(User.FindFirst("clientId")?.Value ?? "0");
 
-            var updatedClient = await _clientService.UpdateAsync(client);
-            return Ok(updatedClient);
+            var reservations = await _clientService.GetClientReservations(clientId);
+
+            return Ok(reservations);
         }
     }
 }

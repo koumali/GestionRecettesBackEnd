@@ -3,15 +3,17 @@ using AutomotiveApi.Models.Entities.Gestion;
 
 namespace AutomotiveApi.Services.Gestion.Interfaces
 {
-    public interface IClient :  IGenericData<Client>
+    public interface IClient : IGenericData<Client>
     {
         Task<Client> AddAsync(ClientDto client);
+
+        Task<Client> UpdateAsync(ClientDto client);
+        
         Task<IEnumerable<Client>> GetClientsAgence(int id);
 
         Task<Client?> GetClientByEmail(string email);
-        // Client? findById(int id);
-        // Client? add(Client client);
-        // void delete(int id);
-        // Client? update(Client client);
+
+        Task<Client> RegisterAsync(ClientRegisterDto client);
+        Task<IEnumerable<Reservation>?> GetClientReservations(int id);
     }
 }

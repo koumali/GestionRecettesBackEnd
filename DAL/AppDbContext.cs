@@ -34,6 +34,7 @@ namespace AutomotiveApi.DAL
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
+            optionsBuilder.EnableSensitiveDataLogging();
         }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -90,6 +91,9 @@ namespace AutomotiveApi.DAL
 
                 entity.HasOne(d => d.Role).WithMany(p => p.Users).HasForeignKey(d => d.IdRole)
                     .OnDelete(DeleteBehavior.ClientSetNull).HasConstraintName("FK_Users_id_role");
+
+                entity.HasOne(d => d.Client).WithOne(c => c.User).HasForeignKey<User>(d => d.clientId)
+                    .OnDelete(DeleteBehavior.ClientSetNull).HasConstraintName("FK_Users_id_client");
             });
 
 
@@ -161,7 +165,17 @@ namespace AutomotiveApi.DAL
 
             modelBuilder.Entity<Agence>().HasData(DataSeeder.seedAgence().Generate(10));
 
+            modelBuilder.Entity<Client>().HasData(DataSeeder.seedClient().Generate(10));
+
             modelBuilder.Entity<LongTermRental>().HasData(DataSeeder.seedLongTermRental().Generate(10));
+
+            modelBuilder.Entity<Vehicule>().HasData(DataSeeder.seedVehicule().Generate(10));
+
+            modelBuilder.Entity<Offre>().HasData(DataSeeder.seedOffre().Generate(10));
+
+            modelBuilder.Entity<Reservation>().HasData(DataSeeder.seedReservation().Generate(10));
+
+            modelBuilder.Entity<Contrat>().HasData(DataSeeder.seedContrat().Generate(10));
 
             modelBuilder.Entity<User>().HasData(DataSeeder.seedUser().Generate(10));
 

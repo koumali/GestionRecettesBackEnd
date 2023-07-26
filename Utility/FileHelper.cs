@@ -8,7 +8,7 @@ namespace AutomotiveApi.Utility
         {
             _hostingEnvironment = hostingEnvironment;
         }
-        public async Task<String> UploadImage(IFormFile file, string folder)
+        public async Task<String> UploadImage(IFormFile file, string folder, string name)
         {
             var dbImgPath = "";
             if (file != null && file.Length > 0)
@@ -19,7 +19,8 @@ namespace AutomotiveApi.Utility
                     Directory.CreateDirectory(imgsPath);
                 }
 
-                var fileName = Guid.NewGuid().ToString() + Path.GetExtension(file.FileName);
+                string fileName = name!=null ? name : Guid.NewGuid().ToString() ;
+                fileName += Path.GetExtension(file.FileName);
                 var filePath = Path.Combine(_hostingEnvironment.WebRootPath, folder, fileName);
 
 

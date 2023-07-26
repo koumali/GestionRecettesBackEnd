@@ -140,12 +140,11 @@ if (app.Environment.IsDevelopment())
 }
 
 
+
 app.UseHttpsRedirection();
 
-//serve files 
-app.UseStaticFiles();
-
 app.UseCors();
+
 
 
 app.UseWhen(context => context.Request.Path.StartsWithSegments("/api"),
@@ -155,6 +154,10 @@ app.UseWhen(context => context.Request.Path.StartsWithSegments("/api"),
 app.UseAuthentication();
 
 app.UseAuthorization();
+
+// app.UseMiddleware<FileAccessMiddlware>();
+app.UseStaticFiles();
+
 
 app.MapControllers();
 
