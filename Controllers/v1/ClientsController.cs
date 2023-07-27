@@ -8,6 +8,7 @@ using AutomotiveApi.Services.Gestion.Interfaces;
 using AutomotiveApi.Services.Jwt;
 using AutomotiveApi.Services.Param;
 using AutomotiveApi.Utility;
+using AutomotiveApi.Utility.Exceptions;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
@@ -27,7 +28,7 @@ namespace AutomotiveApi.Controllers.v1
         {
             _clientService = clientService;
             _mapper = mapper;
-            _fileHelper = fileHelper;            
+            _fileHelper = fileHelper;
         }
 
         [HttpGet]
@@ -92,13 +93,13 @@ namespace AutomotiveApi.Controllers.v1
             {
                 return BadRequest(new { errors = "Invalid Client" });
             }
-            Client? client = await _clientService.UpdateAsync(request)  ;
-            
+            Client? client = await _clientService.UpdateAsync(request);
+
             return Ok(client);
 
-          
+
         }
-        
+
 
         [HttpGet("infos")]
         [Authorize(Roles = "Client")]
@@ -122,9 +123,13 @@ namespace AutomotiveApi.Controllers.v1
             {
                 return await _clientService.RegisterAsync(request);
             }
-            catch (Exception ex)
+            catch (EmailException ex)
             {
                 return BadRequest(new { errors = ex.Message });
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new { errors = "Erreur lors de l'ajout du client" });
             }
         }
 
@@ -138,15 +143,8 @@ namespace AutomotiveApi.Controllers.v1
 
             return Ok(reservations);
         }
-        [HttpGet("LLDreservations")]
-        [Authorize(Roles = "Client")]
-        public async Task<ActionResult<IEnumerable<LongTermRental>>> GetClientLLDReservations()
-        {
-            int clientId = int.Parse(User.FindFirst("clientId")?.Value ?? "0");
-            var LLDreservations = await _clientService.GetClientLLDReservations(clientId);
 
-            return Ok(LLDreservations);
-        }
+
         [HttpPost("login")]
         public async Task<ActionResult<ClientLoginResponse>> LoginClient(LoginDto request)
         {
@@ -165,5 +163,15 @@ namespace AutomotiveApi.Controllers.v1
 
 
         }
+        [HttpGet("LLDreservations")]
+        [Authorize(Roles = "Client")]
+        public async Task<ActionResult<IEnumerable<LongTermRental>>> GetClientLLDReservations()
+        {
+            int clientId = int.Parse(User.FindFirst("clientId")?.Value ?? "0");
+            var LLDreservations = await _clientService.GetClientLLDReservations(clientId);
+
+            return Ok(LLDreservations);
+        }
+
     }
 }

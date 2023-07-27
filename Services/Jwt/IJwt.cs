@@ -6,7 +6,7 @@ namespace AutomotiveApi.Services.Jwt
     public interface IJwt
     {
         int getUserId();
-        string getRole();
+        string getRole();        
         string generateToken(User user);
         string generateClientToken(Client client);
         int getIdAgence();

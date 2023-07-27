@@ -148,7 +148,7 @@ app.UseCors();
 
 
 app.UseWhen(context => context.Request.Path.StartsWithSegments("/api"),
-    appBuilder => { appBuilder.UseMiddleware<EmailException>(); });
+    appBuilder => { appBuilder.UseMiddleware<ApiKeyChecker>(); });
 
 
 app.UseAuthentication();

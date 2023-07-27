@@ -96,6 +96,6 @@ namespace AutomotiveApi.Services.Jwt
             return jwtToken;
         }
 
-
+        
     }
 }

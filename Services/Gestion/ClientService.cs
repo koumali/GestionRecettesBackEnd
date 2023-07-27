@@ -31,6 +31,7 @@ namespace AutomotiveApi.Services.Gestion
 
         }
 
+
         public async Task<IEnumerable<Client>> GetClientsAgence(int id)
         {
             var listContrats = await _context.Contrats
@@ -174,13 +175,14 @@ namespace AutomotiveApi.Services.Gestion
         }
         public async Task<IEnumerable<LongTermRental>?> GetClientLLDReservations(int id)
         {
-            var email=await _context.Clients.Where(c=>c.Id==id).Select(c=>c.Email).FirstOrDefaultAsync();
-            if (email == null) {
+            var email = await _context.Clients.Where(c => c.Id == id).Select(c => c.Email).FirstOrDefaultAsync();
+            if (email == null)
+            {
                 return null;
             }
             var reservations = await _context.long_term_rentals.Where(c => c.email == email)
                 .Include(l => l.LLDResponses)
-                .ThenInclude(l=> l.Agence)
+                .ThenInclude(l => l.Agence)
                 .ToListAsync();
             return reservations;
 

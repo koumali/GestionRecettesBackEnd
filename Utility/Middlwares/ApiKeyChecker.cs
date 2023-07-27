@@ -2,12 +2,12 @@ using Microsoft.Extensions.Primitives;
 
 namespace AutomotiveApi.Utility.Middlwares
 {
-    public class EmailException
+    public class ApiKeyChecker
     {
         private readonly RequestDelegate _next;
         private readonly IConfiguration _configuration;
 
-        public EmailException(RequestDelegate next, IConfiguration configuration)
+        public ApiKeyChecker(RequestDelegate next, IConfiguration configuration)
         {
             _next = next;
             _configuration = configuration;

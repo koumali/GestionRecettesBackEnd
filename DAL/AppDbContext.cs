@@ -91,7 +91,10 @@ namespace AutomotiveApi.DAL
                 entity.HasOne(d => d.Role).WithMany(p => p.Users).HasForeignKey(d => d.IdRole)
                     .OnDelete(DeleteBehavior.ClientSetNull).HasConstraintName("FK_Users_id_role");
 
+               
             });
+
+
             modelBuilder.Entity<Reservation>(entity =>
             {
                 entity.HasOne(d => d.Vehicule)
@@ -108,6 +111,7 @@ namespace AutomotiveApi.DAL
                     .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("FK_Reservation_id_modele");
             });
+
 
             modelBuilder.Entity<Modele>(entity =>
             {
