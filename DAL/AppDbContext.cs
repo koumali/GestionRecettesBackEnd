@@ -56,21 +56,20 @@ namespace AutomotiveApi.DAL
                 string jsonContent = File.ReadAllText(filePath);
 
                 JArray jsonArray = JArray.Parse(jsonContent);
-
+                int i=1,j = 1;
                 foreach (JObject item in jsonArray)
                 {
                     Marque marque = new Marque();
-                    marque.Id = (int)item.GetValue("id");
+                    marque.Id = i;i++;
                     marque.Name = (string)item.GetValue("name");
 
                     foreach (JObject modele in item.GetValue("modeles"))
                     {
                         Modele m = new Modele();
-                        m.Id = (int)modele.GetValue("id");
+                        m.Id = j;j++;
                         m.Name = (string)modele.GetValue("name");
                         m.IdMarque = marque.Id;
                         m.Image = (string)modele.GetValue("images");
-
                         modelBuilder.Entity<Modele>().HasData(m);
                     }
                     modelBuilder.Entity<Marque>().HasData(marque);
@@ -122,6 +121,11 @@ namespace AutomotiveApi.DAL
                     .HasForeignKey(d => d.idLongTermRental)
                     .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("FK_Modeles_id_LongTermRental");
+                entity.HasOne(d => d.Agence)
+                    .WithMany(p => p.LLDResponses)
+                    .HasForeignKey(d => d.idAgence)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK_Modeles_id_Agence");
             });
 
             modelBuilder.Entity<Contrat>(entity =>
