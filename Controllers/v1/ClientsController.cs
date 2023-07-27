@@ -4,13 +4,13 @@ using AutomotiveApi.Models.Dto;
 using AutomotiveApi.Models.Entities.Gestion;
 using AutomotiveApi.Models.Entities.Param;
 using AutomotiveApi.Services.Attributes;
-using AutomotiveApi.Services.Gestion;
 using AutomotiveApi.Services.Gestion.Interfaces;
 using AutomotiveApi.Services.Jwt;
 using AutomotiveApi.Services.Param;
 using AutomotiveApi.Utility;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Newtonsoft.Json;
 
 namespace AutomotiveApi.Controllers.v1
 {
@@ -146,6 +146,24 @@ namespace AutomotiveApi.Controllers.v1
             var LLDreservations = await _clientService.GetClientLLDReservations(clientId);
 
             return Ok(LLDreservations);
+        }
+        [HttpPost("login")]
+        public async Task<ActionResult<ClientLoginResponse>> LoginClient(LoginDto request)
+        {
+            string email = request.Email;
+            string password = request.Password;
+
+            Console.WriteLine(JsonConvert.SerializeObject(request));
+
+            ClientLoginResponse response = await _clientService.LoginAsync(email, password);
+            if (response == null)
+            {
+                return BadRequest(new { errors = "Invalid Credentials" });
+            }
+
+            return Ok(response);
+
+
         }
     }
 }

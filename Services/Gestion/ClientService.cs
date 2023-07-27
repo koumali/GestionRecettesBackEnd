@@ -4,8 +4,10 @@ using AutomotiveApi.Models.Dto;
 using AutomotiveApi.Models.Entities.Gestion;
 using AutomotiveApi.Models.Entities.Param;
 using AutomotiveApi.Services.Gestion.Interfaces;
+using AutomotiveApi.Services.Jwt;
 using AutomotiveApi.Services.Param;
 using AutomotiveApi.Utility;
+using AutomotiveApi.Utility.Exceptions;
 using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json;
 
@@ -16,17 +18,18 @@ namespace AutomotiveApi.Services.Gestion
         private readonly AppDbContext _context;
         private readonly IFileHelper _fileHelper;
         private readonly IMapper _mapper;
-        private readonly IUser _userService;
+        private readonly IJwt _jwtService;
 
-        public ClientService(AppDbContext context, IFileHelper fileHelper, IMapper mapper, IUser userService
+        public ClientService(AppDbContext context, IFileHelper fileHelper, IMapper mapper, IJwt jwtService
         ) : base(context)
         {
             _context = context;
             _fileHelper = fileHelper;
             _mapper = mapper;
-            _userService = userService;
-        }
+            _jwtService = jwtService;
 
+
+        }
 
         public async Task<IEnumerable<Client>> GetClientsAgence(int id)
         {
@@ -72,10 +75,11 @@ namespace AutomotiveApi.Services.Gestion
             {
                 newClient.PermisRecto = await _fileHelper.UploadImage(client.PermisRecto, "Permis/" + newClient.Id, "permisRecto");
                 newClient.PermisVerso = await _fileHelper.UploadImage(client.PermisVerso, "Permis/" + newClient.Id, "permisVerso");
+                _context.Clients.Update(newClient);
+                _context.SaveChanges();
             }
 
-            _context.Clients.Update(newClient);
-            _context.SaveChanges();
+
 
             return newClient;
         }
@@ -109,32 +113,18 @@ namespace AutomotiveApi.Services.Gestion
         public async Task<Client> RegisterAsync(ClientRegisterDto client)
         {
             Client newClient = _mapper.Map<Client>(client);
+            newClient.Password = BCrypt.Net.BCrypt.HashPassword(client.Password);
 
             Client? isClient = await GetClientByEmail(client.Email);
 
             if (isClient != null)
             {
-                throw new Exception("Client already exist");
+                throw new EmailException("Client already exist");
             }
 
             try
             {
                 await base.CreateAsync(newClient);
-
-                Role? clientRole = await _context.Roles.Where(r => r.Name == "Client").FirstOrDefaultAsync();
-
-                User user = new User
-                {
-                    FirstName = client.FirstName,
-                    LastName = client.LastName,
-                    Email = client.Email,
-                    Password = client.Password,
-                    IdRole = clientRole != null ? clientRole.Id : 0,
-                    clientId = newClient.Id
-                };
-
-
-                await _userService.CreateAsync(user);
             }
             catch (Exception ex)
             {
@@ -155,6 +145,31 @@ namespace AutomotiveApi.Services.Gestion
             .Select(c => c.Reservation)
             .ToListAsync();
             return reservations;
+
+        }
+
+        public async Task<ClientLoginResponse> LoginAsync(string email, string password)
+        {
+            Client? client = await _context.Clients.Where(c => c.Email == email && c.Password != null).FirstOrDefaultAsync();
+            Console.WriteLine(JsonConvert.SerializeObject(client));
+            if (client == null)
+            {
+                return null;
+            }
+
+            if (!BCrypt.Net.BCrypt.Verify(password, client.Password))
+            {
+                return null;
+            }
+            Console.WriteLine("ok");
+
+            var genToken = _jwtService.generateClientToken(client);
+
+            return new ClientLoginResponse
+            {
+                Token = genToken,
+                Client = client
+            };
 
         }
         public async Task<IEnumerable<LongTermRental>?> GetClientLLDReservations(int id)

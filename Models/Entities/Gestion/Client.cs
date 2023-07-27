@@ -26,5 +26,6 @@ namespace AutomotiveApi.Models.Entities.Gestion
         public string? PermisVerso { get; set; }
 
         public virtual ICollection<Contrat> Contrats { get; set; }
+
     }
 }
