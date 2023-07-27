@@ -157,6 +157,19 @@ namespace AutomotiveApi.Services.Gestion
             return reservations;
 
         }
+        public async Task<IEnumerable<LongTermRental>?> GetClientLLDReservations(int id)
+        {
+            var email=await _context.Clients.Where(c=>c.Id==id).Select(c=>c.Email).FirstOrDefaultAsync();
+            if (email == null) {
+                return null;
+            }
+            var reservations = await _context.long_term_rentals.Where(c => c.email == email)
+                .Include(l => l.LLDResponses)
+                .ThenInclude(l=> l.Agence)
+                .ToListAsync();
+            return reservations;
+
+        }
 
 
     }

@@ -4,6 +4,7 @@ using AutomotiveApi.Models.Dto;
 using AutomotiveApi.Models.Entities.Gestion;
 using AutomotiveApi.Models.Entities.Param;
 using AutomotiveApi.Services.Attributes;
+using AutomotiveApi.Services.Gestion;
 using AutomotiveApi.Services.Gestion.Interfaces;
 using AutomotiveApi.Services.Jwt;
 using AutomotiveApi.Services.Param;
@@ -136,6 +137,15 @@ namespace AutomotiveApi.Controllers.v1
             var reservations = await _clientService.GetClientReservations(clientId);
 
             return Ok(reservations);
+        }
+        [HttpGet("LLDreservations")]
+        [Authorize(Roles = "Client")]
+        public async Task<ActionResult<IEnumerable<LongTermRental>>> GetClientLLDReservations()
+        {
+            int clientId = int.Parse(User.FindFirst("clientId")?.Value ?? "0");
+            var LLDreservations = await _clientService.GetClientLLDReservations(clientId);
+
+            return Ok(LLDreservations);
         }
     }
 }

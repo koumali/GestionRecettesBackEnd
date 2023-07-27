@@ -55,6 +55,7 @@ namespace AutomotiveApi.Controllers.v1
             var numeroReservation = ReservationNumberGenerator.GenerateReservationNumber();
             longTermRental.status = ReservationStatus.Pending.ToString();
             longTermRental.NumeroReservation = numeroReservation;
+            longTermRental.CreatedAt = DateTime.Now;
             var addedLongTermRental = await _longTermRentalService.CreateAsync(longTermRental);
             return Ok(addedLongTermRental);
         }

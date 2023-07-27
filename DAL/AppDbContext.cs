@@ -104,7 +104,14 @@ namespace AutomotiveApi.DAL
                     .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("FK_Reservation_id_vehicule");
             });
-
+            modelBuilder.Entity<LongTermRental>(entity =>
+            {
+                entity.HasOne(d => d.Modele)
+                    .WithMany(p => p.LongTermRentals)
+                    .HasForeignKey(d => d.IdModele)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK_Reservation_id_modele");
+            });
 
             modelBuilder.Entity<Modele>(entity =>
             {
