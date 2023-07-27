@@ -1,6 +1,7 @@
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
+using AutomotiveApi.Models.Entities.Gestion;
 using AutomotiveApi.Models.Entities.Param;
 using Microsoft.IdentityModel.Tokens;
 
@@ -50,13 +51,35 @@ namespace AutomotiveApi.Services.Jwt
                 new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
                 new Claim(JwtRegisteredClaimNames.Iat, DateTime.UtcNow.ToString()),
                 new Claim("id", user.Id.ToString()),
-                new Claim("clientId", user.clientId.ToString() ?? "0"),
                 new Claim("fullname", user.FirstName + " " + user.LastName),
                 new Claim(ClaimTypes.Role, user.Role.Name),
                 new Claim("idAgence", user.IdAgence.ToString() ?? "0")
             };
 
+            return JwtTokenFromClaims(claims);
 
+
+        }
+
+        public string generateClientToken(Client client)
+        {
+            List<Claim> claims = new List<Claim>
+            {
+                new Claim(JwtRegisteredClaimNames.Sub, _configuration["Jwt:Subject"]),
+                new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
+                new Claim(JwtRegisteredClaimNames.Iat, DateTime.UtcNow.ToString()),
+                new Claim("clientId", client.Id.ToString()),
+                new Claim("fullname", client.FirstName + " " + client.LastName),
+                new Claim(ClaimTypes.Role, "Client"),
+
+            };
+
+            return JwtTokenFromClaims(claims);
+
+        }
+
+        public string JwtTokenFromClaims(List<Claim> claims)
+        {
             var expirationTime = _configuration.GetValue<int>("Jwt:DurationInMinutes");
             var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration["Jwt:Key"]) ??
                                                throw new InvalidOperationException());
@@ -73,5 +96,6 @@ namespace AutomotiveApi.Services.Jwt
             return jwtToken;
         }
 
+        
     }
 }

@@ -71,11 +71,11 @@ namespace AutomotiveApi.DAL
 
 
             // modeles ids from json file
-            int[] modelesIds = { 10324, 113, 64, 10847, 57, 32, 10040, 897, 10740, 10230 };
+            
             var id = 1;
             var vehicules = new Faker<Vehicule>()
             .RuleFor(x => x.Id, f => id++)
-            .RuleFor(x => x.IdModele, f => f.PickRandom(modelesIds))
+            .RuleFor(x => x.IdModele, f => f.Random.Int(1, 326))
             .RuleFor(x => x.IdAgence, f => f.Random.Int(1, 10))
             .RuleFor(x => x.Prix, f => f.Random.Int(1, 10))
             .RuleFor(x => x.Matricule, f => f.Random.String2(10))

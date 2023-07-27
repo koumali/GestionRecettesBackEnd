@@ -1,3 +1,4 @@
+using AutomotiveApi.Models.Entities.Gestion;
 using AutomotiveApi.Models.Entities.Param;
 
 namespace AutomotiveApi.Models.Dto
@@ -6,5 +7,11 @@ namespace AutomotiveApi.Models.Dto
     {
         public string? Token { get; set; }
         public User? User { get; set; }
+    }
+
+    public class ClientLoginResponse
+    {
+        public string? Token { get; set; }
+        public Client? Client { get; set; }
     }
 }

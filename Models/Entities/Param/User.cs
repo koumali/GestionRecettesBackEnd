@@ -22,7 +22,5 @@ namespace AutomotiveApi.Models.Entities.Param
         // [ForeignKey("IdAgence")] 
         public virtual Agence Agence { get; set; }
 
-        public int? clientId { get; set; }
-        public virtual Client? Client { get; set; }
     }
 }

@@ -1,5 +1,6 @@
 ﻿using AutomotiveApi.Models.Entities.Core;
 using AutomotiveApi.Models.Entities.Param;
+using Newtonsoft.Json;
 
 namespace AutomotiveApi.Models.Entities.Gestion
 {
@@ -15,6 +16,9 @@ namespace AutomotiveApi.Models.Entities.Gestion
         public string Tel { get; set; }
         public string Email { get; set; }
         public string Ville { get; set; }
+
+        [JsonIgnore]
+        public string? Password { get; set; }
         public string? ZipCode { get; set; }
         public string? Adresse { get; set; }
         public string? Adresse2 { get; set; }
@@ -23,6 +27,5 @@ namespace AutomotiveApi.Models.Entities.Gestion
 
         public virtual ICollection<Contrat> Contrats { get; set; }
 
-        public virtual User? User { get; set; }
     }
 }

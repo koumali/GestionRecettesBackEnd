@@ -8,6 +8,7 @@ namespace AutomotiveApi.Services.Gestion.Interfaces
         Task<Client> AddAsync(ClientDto client);
 
         Task<Client> UpdateAsync(ClientDto client);
+        Task<ClientLoginResponse> LoginAsync(string email, string password);
         
         Task<IEnumerable<Client>> GetClientsAgence(int id);
 

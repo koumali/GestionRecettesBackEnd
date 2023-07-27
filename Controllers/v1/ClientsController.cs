@@ -8,8 +8,10 @@ using AutomotiveApi.Services.Gestion.Interfaces;
 using AutomotiveApi.Services.Jwt;
 using AutomotiveApi.Services.Param;
 using AutomotiveApi.Utility;
+using AutomotiveApi.Utility.Exceptions;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Newtonsoft.Json;
 
 namespace AutomotiveApi.Controllers.v1
 {
@@ -26,7 +28,7 @@ namespace AutomotiveApi.Controllers.v1
         {
             _clientService = clientService;
             _mapper = mapper;
-            _fileHelper = fileHelper;            
+            _fileHelper = fileHelper;
         }
 
         [HttpGet]
@@ -91,13 +93,13 @@ namespace AutomotiveApi.Controllers.v1
             {
                 return BadRequest(new { errors = "Invalid Client" });
             }
-            Client? client = await _clientService.UpdateAsync(request)  ;
-            
+            Client? client = await _clientService.UpdateAsync(request);
+
             return Ok(client);
 
-          
+
         }
-        
+
 
         [HttpGet("infos")]
         [Authorize(Roles = "Client")]
@@ -121,9 +123,13 @@ namespace AutomotiveApi.Controllers.v1
             {
                 return await _clientService.RegisterAsync(request);
             }
-            catch (Exception ex)
+            catch (EmailException ex)
             {
                 return BadRequest(new { errors = ex.Message });
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new { errors = "Erreur lors de l'ajout du client" });
             }
         }
 
@@ -137,5 +143,26 @@ namespace AutomotiveApi.Controllers.v1
 
             return Ok(reservations);
         }
+
+
+        [HttpPost("login")]
+        public async Task<ActionResult<ClientLoginResponse>> LoginClient(LoginDto request)
+        {
+            string email = request.Email;
+            string password = request.Password;
+
+            Console.WriteLine(JsonConvert.SerializeObject(request));
+
+            ClientLoginResponse response = await _clientService.LoginAsync(email, password);
+            if (response == null)
+            {
+                return BadRequest(new { errors = "Invalid Credentials" });
+            }
+
+            return Ok(response);
+
+
+        }
+
     }
 }
