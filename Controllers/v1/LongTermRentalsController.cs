@@ -4,8 +4,6 @@ using AutomotiveApi.Models.Entities.Gestion;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using AutomotiveApi.Services.Gestion.Interfaces;
-using AutomotiveApi.Services.Gestion;
-using MySqlX.XDevAPI;
 using AutomotiveApi.Utility;
 
 namespace AutomotiveApi.Controllers.v1
@@ -47,7 +45,7 @@ namespace AutomotiveApi.Controllers.v1
             var longTermRental = await _longTermRentalService.GetByIdAsync(id);
             return Ok(longTermRental);
         }
-        
+
         [HttpPost]
         public async Task<ActionResult<LongTermRental>> AddLongTermRental(LongTermRentalDto request)
         {
@@ -55,6 +53,7 @@ namespace AutomotiveApi.Controllers.v1
             var numeroReservation = ReservationNumberGenerator.GenerateReservationNumber();
             longTermRental.status = ReservationStatus.Pending.ToString();
             longTermRental.NumeroReservation = numeroReservation;
+            longTermRental.CreatedAt = DateTime.Now;
             var addedLongTermRental = await _longTermRentalService.CreateAsync(longTermRental);
             return Ok(addedLongTermRental);
         }

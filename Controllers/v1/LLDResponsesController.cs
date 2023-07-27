@@ -16,15 +16,13 @@ namespace AutomotiveApi.Controllers.v1
         private readonly IMapper _mapper;
         private readonly ILLDResponse _LLDResponseService;
         private readonly IMarque _marqueService;
-        private readonly IFileHelper _fileHelper;
 
 
-        public LLDResponsesController(ILLDResponse LLDResponseService, IMapper mapper, IFileHelper fileHelper, IMarque marqueService)
+        public LLDResponsesController(ILLDResponse LLDResponseService, IMapper mapper, IMarque marqueService)
         {
             _LLDResponseService = LLDResponseService;
             _marqueService = marqueService;
             _mapper = mapper;
-            _fileHelper = fileHelper;
         }
 
         [HttpGet]
@@ -58,8 +56,8 @@ namespace AutomotiveApi.Controllers.v1
         {
             var LLDResponse = _mapper.Map<LLDResponse>(request);
 
-                var marque = await _marqueService.GetByIdAsync(request.idLongTermRental);
-            
+            var marque = await _marqueService.GetByIdAsync(request.idLongTermRental);
+
             var addedLLDResponse = await _LLDResponseService.CreateAsync(LLDResponse);
             return Ok(addedLLDResponse);
         }

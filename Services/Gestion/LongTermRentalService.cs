@@ -16,15 +16,15 @@ namespace AutomotiveApi.Services.Gestion
 
         public new async Task<IEnumerable<LongTermRental>> GetAllAsync()
         {
-            return await _context.long_term_rentals.Where(l=>l.status=="Pending").Include(l=>l.LLDResponses).ToListAsync();
+            return await _context.long_term_rentals.Where(l => l.status == "Pending").Include(l => l.LLDResponses).ToListAsync();
         }
         public new async Task<LongTermRental> GetByIdAsync(int id)
         {
-            return await _context.long_term_rentals.Where(l => l.Id == id).Include(l=>l.LLDResponses).FirstOrDefaultAsync();
+            return await _context.long_term_rentals.Where(l => l.Id == id).Include(l => l.LLDResponses).FirstOrDefaultAsync();
         }
         public async Task<LongTermRental?> GererMaReservation(string numero, string email)
         {
-            var longTermRental = await _context.long_term_rentals.Where(r => r.NumeroReservation == numero && r.email==email).Include(l=>l.LLDResponses).ThenInclude(l=>l.Agence).FirstOrDefaultAsync();
+            var longTermRental = await _context.long_term_rentals.Where(r => r.NumeroReservation == numero && r.email == email).Include(l => l.LLDResponses).ThenInclude(l => l.Agence).FirstOrDefaultAsync();
             return longTermRental;
         }
         public async Task<LongTermRental> UpdateAsync(LongTermRental entity)

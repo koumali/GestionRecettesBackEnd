@@ -56,7 +56,7 @@ namespace AutomotiveApi.DAL
             .RuleFor(x => x.entreprise, f => f.Company.CompanyName())
             .RuleFor(x => x.zip, f => f.Address.ZipCode())
             .RuleFor(x => x.duree, f => id)
-            .RuleFor(x => x.type_vehicule, id)
+            .RuleFor(x => x.IdModele, id)
             .RuleFor(x => x.NumeroReservation,f => f.Name.FirstName())
             .RuleFor(x => x.status,f => f.Name.FirstName())
             .RuleFor(x => x.CreatedAt, f => f.Date.Past());

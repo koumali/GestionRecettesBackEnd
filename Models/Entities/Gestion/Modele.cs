@@ -11,10 +11,11 @@ namespace AutomotiveApi.Models.Entities.Gestion
         }
 
         public string Name { get; set; }
-        public int IdMarque { get; set; }        
+        public int IdMarque { get; set; }
         // [ForeignKey("IdMarque")]
         public virtual Marque Marque { get; set; }
         public string Image { get; set; }
         public virtual ICollection<Vehicule> Vehicules { get; set; }
+        public virtual ICollection<LongTermRental> LongTermRentals { get; set; }
     }
 }

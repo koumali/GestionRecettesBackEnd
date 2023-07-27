@@ -34,6 +34,6 @@ namespace AutomotiveApi.Services.Gestion
                 .ToListAsync();
         }
 
-        
+
     }
 }

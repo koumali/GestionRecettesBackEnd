@@ -12,11 +12,12 @@ namespace AutomotiveApi.Models.Entities.Gestion
         public string zip { get; set; }
         public string entreprise { get; set; }
         public int duree { get; set; }
-        public int type_vehicule { get; set; }
         public string description { get; set; }
         public string NumeroReservation { get; set; }
         public string status { get; set; }
         public int? idAgence { get; set; }
+        public int IdModele { get; set; }
+        public virtual Modele Modele { get; set; }
         public virtual ICollection<LLDResponse> LLDResponses { get; set; }
     }
 }

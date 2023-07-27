@@ -10,7 +10,7 @@ namespace AutomotiveApi.Models.Dto
         public string zip { get; set; }
         public string entreprise { get; set; }
         public int duree { get; set; }
-        public int type_vehicule { get; set; }
+        public int idModele { get; set; }
         public string description { get; set; }
     }
 }
