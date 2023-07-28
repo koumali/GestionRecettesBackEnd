@@ -151,14 +151,26 @@ app.UseWhen(context => context.Request.Path.StartsWithSegments("/api"),
     appBuilder => { appBuilder.UseMiddleware<ApiKeyChecker>(); });
 
 
-app.UseAuthentication();
 
+
+
+
+
+app.UseAuthentication();
 app.UseAuthorization();
 
-// app.UseMiddleware<FileAccessMiddlware>();
+
+
+app.UseMiddleware<FileAccessMiddlware>();
+
 app.UseStaticFiles();
 
 
+
+
 app.MapControllers();
+
+
+
 
 app.Run();

@@ -152,7 +152,7 @@ namespace AutomotiveApi.Services.Gestion
         public async Task<ClientLoginResponse> LoginAsync(string email, string password)
         {
             Client? client = await _context.Clients.Where(c => c.Email == email && c.Password != null).FirstOrDefaultAsync();
-            Console.WriteLine(JsonConvert.SerializeObject(client));
+            
             if (client == null)
             {
                 return null;
