@@ -2,12 +2,9 @@
 
 public enum ReservationStatus
 {
-    Confirmed,
-    Pending,
-    Cancelled,
-    Waitlisted,
-    CheckedIn,
-    NoShow,
-    Expired,
-    Overbooked
+    Confirmé,
+    Enattente,
+    Annulé,
+    Enregistrement,
+    Expiré,
 }
