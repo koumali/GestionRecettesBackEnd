@@ -1,6 +1,7 @@
 using AutomotiveApi.DAL;
 using AutomotiveApi.Models.Entities.Gestion;
 using AutomotiveApi.Services.Gestion.Interfaces;
+using AutomotiveApi.Utility;
 using Microsoft.EntityFrameworkCore;
 
 namespace AutomotiveApi.Services.Gestion
@@ -16,7 +17,7 @@ namespace AutomotiveApi.Services.Gestion
 
         public new async Task<IEnumerable<LongTermRental>> GetAllAsync()
         {
-            return await _context.long_term_rentals.Where(l => l.status == "Pending").Include(l => l.LLDResponses).ToListAsync();
+            return await _context.long_term_rentals.Where(l => l.status == ReservationStatus.Enattente.ToString() && l.idAgence==null).Include(l => l.Modele).ThenInclude(m=>m.Marque).Include(l => l.LLDResponses).ToListAsync();
         }
         public new async Task<LongTermRental> GetByIdAsync(int id)
         {

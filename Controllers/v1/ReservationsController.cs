@@ -22,9 +22,10 @@ namespace AutomotiveApi.Controllers.v1
         private readonly IContrat _contratService;
         private readonly IUser _userService;
         private readonly IMailService _emailService;
+        private readonly INotification _notification;
 
         public ReservationsController(IReservation reservationService, IMapper mapper, IClient clientService, IUser userService, IMailService emailService,
-            IContrat contratService)
+            IContrat contratService, INotification notification)
         {
             _reservationService = reservationService;
             _mapper = mapper;
@@ -32,6 +33,7 @@ namespace AutomotiveApi.Controllers.v1
             _contratService = contratService;
             _userService = userService;
             _emailService = emailService;
+            _notification = notification;
         }
 
         [HttpGet]
@@ -141,6 +143,9 @@ namespace AutomotiveApi.Controllers.v1
             }
 
             await _contratService.CreateAsync(newContrat1);
+
+            //notify the agence
+            await _notification.CreateNotifForAgency(createdRes.Id, "Reservation");
 
             return CreatedAtAction(nameof(GetReservationById), new { id = createdRes.Id }, createdRes);
         }

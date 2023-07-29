@@ -14,12 +14,14 @@ namespace AutomotiveApi.Controllers.v1
     {
         private readonly IMapper _mapper;
         private readonly ILongTermRental _longTermRentalService;
+        private readonly INotification _notification;
 
 
-        public LongTermRentalsController(ILongTermRental longTermRentalService, IMapper mapper)
+        public LongTermRentalsController(ILongTermRental longTermRentalService, IMapper mapper,INotification notification)
         {
             _longTermRentalService = longTermRentalService;
             _mapper = mapper;
+            _notification = notification;
         }
 
         [HttpGet]
@@ -55,6 +57,7 @@ namespace AutomotiveApi.Controllers.v1
             longTermRental.NumeroReservation = numeroReservation;
             longTermRental.CreatedAt = DateTime.Now;
             var addedLongTermRental = await _longTermRentalService.CreateAsync(longTermRental);
+            
             return Ok(addedLongTermRental);
         }
 
@@ -76,8 +79,10 @@ namespace AutomotiveApi.Controllers.v1
             }
             longTermRental.idAgence = request.IdAgence;
             longTermRental.status = ReservationStatus.Confirmé.ToString();
-
             var updatedLongTermRental = await _longTermRentalService.UpdateAsync(longTermRental);
+
+            //notify the agence
+            await _notification.CreateNotifForAgency(updatedLongTermRental.Id, type: "LongTermRental");
             return Ok(updatedLongTermRental);
         }
     }

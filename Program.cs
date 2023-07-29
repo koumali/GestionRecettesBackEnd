@@ -121,6 +121,7 @@ builder.Services.AddScoped<ILongTermRental, LongTermRentalService>();
 builder.Services.AddScoped<ILLDResponse, LLDResponsesService>();
 builder.Services.AddScoped<IFileHelper, FileHelper>();
 builder.Services.AddScoped<IMailService, MailService>();
+builder.Services.AddScoped<INotification, NotificationService>();
 
 var mappingConfig = new MapperConfiguration(mc => { mc.AddProfile(new MapperConfig()); });
 
