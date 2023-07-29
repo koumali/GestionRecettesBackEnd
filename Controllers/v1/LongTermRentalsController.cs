@@ -51,7 +51,7 @@ namespace AutomotiveApi.Controllers.v1
         {
             var longTermRental = _mapper.Map<LongTermRental>(request);
             var numeroReservation = ReservationNumberGenerator.GenerateReservationNumber();
-            longTermRental.status = ReservationStatus.Pending.ToString();
+            longTermRental.status = ReservationStatus.Enattente.ToString();
             longTermRental.NumeroReservation = numeroReservation;
             longTermRental.CreatedAt = DateTime.Now;
             var addedLongTermRental = await _longTermRentalService.CreateAsync(longTermRental);
@@ -75,7 +75,7 @@ namespace AutomotiveApi.Controllers.v1
                 return NotFound();
             }
             longTermRental.idAgence = request.IdAgence;
-            longTermRental.status = ReservationStatus.Confirmed.ToString();
+            longTermRental.status = ReservationStatus.Confirmé.ToString();
 
             var updatedLongTermRental = await _longTermRentalService.UpdateAsync(longTermRental);
             return Ok(updatedLongTermRental);
