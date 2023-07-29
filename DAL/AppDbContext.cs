@@ -31,6 +31,7 @@ namespace AutomotiveApi.DAL
         public virtual DbSet<Log_journal> log_journal { get; set; }
         public virtual DbSet<LongTermRental> long_term_rentals { get; set; }
         public virtual DbSet<LLDResponse> lld_responses { get; set; }
+        public virtual DbSet<Notification> Notifications { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
@@ -102,6 +103,20 @@ namespace AutomotiveApi.DAL
                     .HasForeignKey(d => d.IdVehicule)
                     .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("FK_Reservation_id_vehicule");
+            });
+            modelBuilder.Entity<Notification>(entity =>
+            {
+                entity.HasOne(d => d.Reservation)
+                    .WithMany(p => p.Notifications)
+                    .HasForeignKey(d => d.ReservationId)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK_Reservation_id_reservation");
+                entity.HasOne(d => d.LongTermRentals)
+                    .WithMany(p => p.Notifications)
+                    .HasForeignKey(d => d.LLDReservationId)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK_Reservation_id_LongTermRental");
+
             });
             modelBuilder.Entity<LongTermRental>(entity =>
             {

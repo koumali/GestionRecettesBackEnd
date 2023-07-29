@@ -112,7 +112,7 @@ namespace AutomotiveApi.DAL
         public static Faker<Reservation> seedReservation()
         {
             var id = 1;
-            string[] status = { "pending", "confirmed", "canceled" };
+            string[] status = {"Confirmé", "Enattente", "Annulé", "Expiré" };
             var reservations = new Faker<Reservation>()
             .RuleFor(x => x.Id, f => id++)
             .RuleFor(x => x.IdVehicule, f => f.Random.Int(1, 10))
