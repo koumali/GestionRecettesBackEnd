@@ -27,14 +27,14 @@ namespace AutomotiveApi.Services.Gestion
                 var reservation = await _context.Reservations.FindAsync(itemId);
                 if (reservation == null) return null;
                 notification.ReservationId = itemId;
-                notification.Message = "Nouvelle réservation";
+                notification.Message = "Nouvelle Reservation";
             }
             
             else if(type == "LongTermRental") { 
                 var reservation = await _context.long_term_rentals.FindAsync(itemId);
                 if (reservation == null) return null;
                 notification.LLDReservationId = itemId;
-                notification.Message = "Nouvelle réservation LLD";
+                notification.Message = "Nouvelle Reservation Long Terme";
             }
             else
             {

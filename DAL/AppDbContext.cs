@@ -125,6 +125,12 @@ namespace AutomotiveApi.DAL
                     .HasForeignKey(d => d.IdModele)
                     .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("FK_Reservation_id_modele");
+
+                entity.HasOne(d => d.Agence)
+                    .WithMany(p => p.LongTermRentals)
+                    .HasForeignKey(d => d.idAgence)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK_Reservation_id_agence");
             });
 
 

@@ -18,6 +18,7 @@ namespace AutomotiveApi.Models.Entities.Gestion
         public int? idAgence { get; set; }
         public int IdModele { get; set; }
         public virtual Modele Modele { get; set; }
+        public virtual Agence Agence { get; set; }
         public virtual ICollection<LLDResponse> LLDResponses { get; set; }
         public virtual ICollection<Notification> Notifications { get; set; }
     }

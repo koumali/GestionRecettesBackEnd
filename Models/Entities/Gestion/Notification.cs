@@ -10,7 +10,7 @@ namespace AutomotiveApi.Models.Entities.Gestion
         public string Message { get; set; }
         public bool IsRead { get; set; }
 
-        public virtual Reservation Reservation { get; set; }
-        public virtual LongTermRental LongTermRentals { get; set; }
+        public virtual Reservation? Reservation { get; set; }
+        public virtual LongTermRental? LongTermRentals { get; set; }
     }
 }

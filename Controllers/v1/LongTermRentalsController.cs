@@ -17,7 +17,7 @@ namespace AutomotiveApi.Controllers.v1
         private readonly INotification _notification;
 
 
-        public LongTermRentalsController(ILongTermRental longTermRentalService, IMapper mapper,INotification notification)
+        public LongTermRentalsController(ILongTermRental longTermRentalService, IMapper mapper, INotification notification)
         {
             _longTermRentalService = longTermRentalService;
             _mapper = mapper;
@@ -57,7 +57,7 @@ namespace AutomotiveApi.Controllers.v1
             longTermRental.NumeroReservation = numeroReservation;
             longTermRental.CreatedAt = DateTime.Now;
             var addedLongTermRental = await _longTermRentalService.CreateAsync(longTermRental);
-            
+
             return Ok(addedLongTermRental);
         }
 
@@ -77,13 +77,17 @@ namespace AutomotiveApi.Controllers.v1
             {
                 return NotFound();
             }
-            longTermRental.idAgence = request.IdAgence;
-            longTermRental.status = ReservationStatus.Confirmé.ToString();
-            var updatedLongTermRental = await _longTermRentalService.UpdateAsync(longTermRental);
+            if (longTermRental.status == ReservationStatus.Enattente.ToString())
+            {
+                longTermRental.status = ReservationStatus.Confirmé.ToString();
+                longTermRental.idAgence = request.IdAgence;
+                var updatedLongTermRental = await _longTermRentalService.UpdateAsync(longTermRental);
+                //notify the agence
+                await _notification.CreateNotifForAgency(updatedLongTermRental.Id, type: "LongTermRental");
+                return Ok(updatedLongTermRental);
+            }
 
-            //notify the agence
-            await _notification.CreateNotifForAgency(updatedLongTermRental.Id, type: "LongTermRental");
-            return Ok(updatedLongTermRental);
+            return BadRequest(new { errors = "Reservation already confirmed" });
         }
     }
 }

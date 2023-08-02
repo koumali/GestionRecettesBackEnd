@@ -80,9 +80,10 @@ namespace AutomotiveApi.Controllers.v1
             }
 
             var LLDResponse = await _LLDResponseService.GetByIdAsync(id);
-
-            LLDResponse.description = request.description;
+            
             LLDResponse.prix = request.prix;
+            LLDResponse.description = request.description;            
+                        
             var updatedLLDResponse = await _LLDResponseService.UpdateAsync(LLDResponse);
             return Ok(updatedLLDResponse);
         }

@@ -45,20 +45,21 @@ namespace AutomotiveApi.DAL
         public static Faker<LongTermRental> seedLongTermRental()
         {
             var id = 1;
+
             var lld = new Faker<LongTermRental>()
             .RuleFor(x => x.Id, f => id++)
             .RuleFor(x => x.nom, f => f.Name.FirstName())
-            .RuleFor(x => x.email, f => f.Internet.Email())
+            .RuleFor(x => x.email, f => "RyanGosling@drive.com")
             .RuleFor(x => x.ville, f => f.Address.City())
             .RuleFor(x => x.prenom, f => f.Name.LastName())
             .RuleFor(x => x.phone, f => f.Phone.PhoneNumber())
             .RuleFor(x => x.description, f => f.Name.LastName())
             .RuleFor(x => x.entreprise, f => f.Company.CompanyName())
             .RuleFor(x => x.zip, f => f.Address.ZipCode())
-            .RuleFor(x => x.duree, f => id)
-            .RuleFor(x => x.IdModele, id)
-            .RuleFor(x => x.NumeroReservation,f => f.Name.FirstName())
-            .RuleFor(x => x.status,f => f.Name.FirstName())
+            .RuleFor(x => x.duree, f => f.Random.Int(18, 33))            
+            .RuleFor(x => x.IdModele, f => f.Random.Int(1, 326))
+            .RuleFor(x => x.NumeroReservation, f => f.Random.String2(10))
+            .RuleFor(x => x.status, f => "Enattente")
             .RuleFor(x => x.CreatedAt, f => f.Date.Past());
 
             return lld;
@@ -71,7 +72,7 @@ namespace AutomotiveApi.DAL
 
 
             // modeles ids from json file
-            
+
             var id = 1;
             var vehicules = new Faker<Vehicule>()
             .RuleFor(x => x.Id, f => id++)
@@ -100,10 +101,11 @@ namespace AutomotiveApi.DAL
             var offres = new Faker<Offre>()
             .RuleFor(x => x.Id, f => id++)
             .RuleFor(x => x.IdVehicule, f => f.Random.Int(1, 10))
+            .RuleFor(x => x.isPublic, f => f.Random.Bool())
             .RuleFor(x => x.Prix, f => f.Random.Int(1, 10))
-            .RuleFor(x => x.DateDebut, f => f.Date.Past())
-            .RuleFor(x => x.DateFin, f => f.Date.Past())
-            .RuleFor(x => x.CreatedAt, f => f.Date.Past());
+            .RuleFor(x => x.DateDebut, f => f.Date.Soon())
+            .RuleFor(x => x.DateFin, f => f.Date.Future())
+            .RuleFor(x => x.CreatedAt, f => f.Date.Recent());
 
             return offres;
         }
@@ -112,13 +114,13 @@ namespace AutomotiveApi.DAL
         public static Faker<Reservation> seedReservation()
         {
             var id = 1;
-            string[] status = {"Confirmé", "Enattente", "Annulé", "Expiré" };
+            string[] status = { "ConfirmÃ©", "Enattente", "AnnulÃ©", "ExpirÃ©" };
             var reservations = new Faker<Reservation>()
             .RuleFor(x => x.Id, f => id++)
             .RuleFor(x => x.IdVehicule, f => f.Random.Int(1, 10))
-            .RuleFor(x => x.DateDepart, f => f.Date.Past())
-            .RuleFor(x => x.DateRetour, f => f.Date.Past())
-            .RuleFor(x => x.CreatedAt, f => f.Date.Past())
+            .RuleFor(x => x.DateDepart, f => f.Date.Soon())
+            .RuleFor(x => x.DateRetour, f => f.Date.Future())
+            .RuleFor(x => x.CreatedAt, f => f.Date.Recent())
             .RuleFor(x => x.NumeroReservation, f => Guid.NewGuid().ToString())
             .RuleFor(x => x.Status, f => f.PickRandom(status));
 
