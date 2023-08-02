@@ -16,7 +16,10 @@ namespace AutomotiveApi.Services.Param
 
         public Task<User?> findByEmail(string email)
         {
-            var user = _context.Users.Where(u => u.Email == email).Include(u => u.Role).Include(u => u.Agence).FirstOrDefaultAsync();
+            var user = _context.Users.Where(u => u.Email == email)
+            .Include(u => u.Role).ThenInclude(r => r.Permissions)
+            .Include(u => u.Agence)
+            .FirstOrDefaultAsync();
             return user;
         }
 
@@ -30,7 +33,7 @@ namespace AutomotiveApi.Services.Param
 
         public new async Task<User> CreateAsync(User user)
         {
-                        
+
             User? userExists = await findByEmail(user.Email);
             if (userExists != null)
             {
@@ -42,7 +45,7 @@ namespace AutomotiveApi.Services.Param
                 user.Password = BCrypt.Net.BCrypt.HashPassword(user.Password);
 
                 await _context.Users.AddAsync(user);
-                await _context.SaveChangesAsync();            
+                await _context.SaveChangesAsync();
                 return user;
             }
             catch (Exception ex)
@@ -123,7 +126,7 @@ namespace AutomotiveApi.Services.Param
                 userExists.IdAgence = user.IdAgence;
                 userExists.UpdatedAt = DateTime.Now;
                 userExists.IsActive = user.IsActive;
-                
+
                 await _context.SaveChangesAsync();
                 return userExists;
             }

@@ -24,5 +24,6 @@ namespace AutomotiveApi.Models.Entities.Gestion
         public ICollection<User> Users { get; set; }
         public ICollection<LLDResponse> LLDResponses { get; set; }
         public ICollection<LongTermRental> LongTermRentals { get; set; }
+        public ICollection<Role> Roles { get; set; }
     }
 }

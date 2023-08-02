@@ -26,8 +26,7 @@ namespace AutomotiveApi.Controllers.v1
         }
 
         [HttpGet]
-        // // $&
-        [HasPermission(Permission.PlatformTopLevelPermission)]
+        
         public async Task<ActionResult<IEnumerable<Agence>>> GetVerifiedAgences()
         {
             return Ok(await _agenceService.GetAllAsync());
@@ -35,7 +34,7 @@ namespace AutomotiveApi.Controllers.v1
         
         [HttpGet("notVerified")]
         // 
-        [HasPermission(Permission.PlatformTopLevelPermission)]
+  
         public async Task<ActionResult<IEnumerable<Agence>>> GetNotVerifiedAgences()
         {
             return Ok(await _agenceService.GetAllNotVerifiedAsync());

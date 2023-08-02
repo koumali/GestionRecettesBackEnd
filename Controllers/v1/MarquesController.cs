@@ -11,6 +11,8 @@ namespace AutomotiveApi.Controllers.v1
 {
     [Route("api/v1/[controller]")]
     [ApiController]
+
+    [HasPermission(PredefinedPermissions.Marques)]
     public class MarquesController : ControllerBase
     {
         private readonly IMapper _mapper;
@@ -24,6 +26,7 @@ namespace AutomotiveApi.Controllers.v1
         }
 
         [HttpGet]
+       
         public async Task<ActionResult<IEnumerable<Marque>>> GetMarques()
         {
             var marques = await _marqueService.GetAllAsync();
@@ -41,7 +44,7 @@ namespace AutomotiveApi.Controllers.v1
 
         [HttpGet("{id}")]
         // // [Authorize(Roles = "Admin, Commercial, Agent, Gerant")]
-        [HasPermission(Permission.AgencyThirdLevelPermission)]
+        
         public async Task<ActionResult<Marque>> GetMarqueById(int id)
         {
             var marque = await _marqueService.GetByIdAsync(id);
@@ -52,7 +55,7 @@ namespace AutomotiveApi.Controllers.v1
         //</summary>
 
         [HttpPost]
-        [HasPermission(Permission.PlatformTopLevelPermission)]
+        
         public async Task<ActionResult<Marque>> AddMarque(MarqueDto request)
         {
             var marque = _mapper.Map<Marque>(request);
@@ -61,7 +64,7 @@ namespace AutomotiveApi.Controllers.v1
         }
 
         [HttpDelete("{id}")]
-        [HasPermission(Permission.PlatformTopLevelPermission)]
+        
         public async Task<ActionResult> DeleteMarque(int id)
         {
             await _marqueService.DeleteAsync(id);
@@ -69,7 +72,7 @@ namespace AutomotiveApi.Controllers.v1
         }
 
         [HttpPut("{id}")]
-        [HasPermission(Permission.PlatformTopLevelPermission)]
+        
         public async Task<ActionResult<Marque>> UpdateMarque(int id, MarqueDto request)
         {
             var marque = await _marqueService.GetByIdAsync(id);

@@ -12,7 +12,7 @@ namespace AutomotiveApi.Controllers.v1
 {
     [Route("api/v1/[controller]")]
     [ApiController]
-    [HasPermission(Permission.PlatformTopLevelPermission)]
+    
     public class LongTermRentalsController : ControllerBase
     {
         private readonly IMapper _mapper;

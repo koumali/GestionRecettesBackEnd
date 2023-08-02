@@ -33,6 +33,8 @@ namespace AutomotiveApi.DAL
         public virtual DbSet<Notification> Notifications { get; set; }
         public virtual DbSet<Permission> Permissions { get; set; }
 
+        public DbSet<RolePermission> RolePermissions { get; set; }
+
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             optionsBuilder.EnableSensitiveDataLogging();
@@ -40,13 +42,6 @@ namespace AutomotiveApi.DAL
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            modelBuilder.Entity<Role>().HasData(
-                new Role { Id = 1, Name = "Admin" },
-                new Role { Id = 2, Name = "Gerant" },
-                new Role { Id = 3, Name = "Agent" },
-                new Role { Id = 4, Name = "Client" },
-                new Role { Id = 5, Name = "Commercial" }
-            );
 
             // load a json file
             string filePath = "DAL/Marque-Modeles-imgs.json"; // Replace with the actual file path
@@ -57,17 +52,17 @@ namespace AutomotiveApi.DAL
                 string jsonContent = File.ReadAllText(filePath);
 
                 JArray jsonArray = JArray.Parse(jsonContent);
-                int i=1,j = 1;
+                int i = 1, j = 1;
                 foreach (JObject item in jsonArray)
                 {
                     Marque marque = new Marque();
-                    marque.Id = i;i++;
+                    marque.Id = i; i++;
                     marque.Name = (string)item.GetValue("name");
 
                     foreach (JObject modele in item.GetValue("modeles"))
                     {
                         Modele m = new Modele();
-                        m.Id = j;j++;
+                        m.Id = j; j++;
                         m.Name = (string)modele.GetValue("name");
                         m.IdMarque = marque.Id;
                         m.Image = (string)modele.GetValue("images");
@@ -76,14 +71,6 @@ namespace AutomotiveApi.DAL
                     modelBuilder.Entity<Marque>().HasData(marque);
                 }
             }
-
-
-            modelBuilder.Entity<Role>(entity =>
-            {
-                entity.HasMany<Permission>(r => r.Permissions)
-                    .WithMany(p => p.Roles);
-            });
-
 
 
             modelBuilder.Entity<User>(entity =>
@@ -97,7 +84,43 @@ namespace AutomotiveApi.DAL
                 entity.HasOne(d => d.Role).WithMany(p => p.Users).HasForeignKey(d => d.IdRole)
                     .OnDelete(DeleteBehavior.ClientSetNull).HasConstraintName("FK_Users_id_role");
 
-               
+
+
+            });
+
+            modelBuilder.Entity<Role>(
+                entity =>
+                {
+                    entity.HasOne(d => d.Agence)
+                    .WithMany(p => p.Roles)
+                    .HasForeignKey(d => d.IdAgence)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK_Roles_id_agence");
+
+                    entity.HasMany(d => d.Permissions)
+                    .WithMany(p => p.Roles)
+                    .UsingEntity<RolePermission>();
+                }
+            );
+
+
+
+
+            modelBuilder.Entity<RolePermission>(entity =>
+            {
+                entity.HasKey(e => new { e.IdRole, e.IdPermission });
+
+                entity.HasOne(d => d.Role)
+                    .WithMany(p => p.RolePermissions)
+                    .HasForeignKey(d => d.IdRole)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK_RolePermission_id_role");
+
+                entity.HasOne(d => d.Permission)
+                    .WithMany(p => p.RolePermissions)
+                    .HasForeignKey(d => d.IdPermission)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK_RolePermission_id_permission");
             });
 
 
@@ -109,6 +132,8 @@ namespace AutomotiveApi.DAL
                     .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("FK_Reservation_id_vehicule");
             });
+
+
             modelBuilder.Entity<Notification>(entity =>
             {
                 entity.HasOne(d => d.Reservation)
@@ -123,6 +148,9 @@ namespace AutomotiveApi.DAL
                     .HasConstraintName("FK_Reservation_id_LongTermRental");
 
             });
+
+
+
             modelBuilder.Entity<LongTermRental>(entity =>
             {
                 entity.HasOne(d => d.Modele)
@@ -214,8 +242,18 @@ namespace AutomotiveApi.DAL
 
             modelBuilder.Entity<Contrat>().HasData(DataSeeder.seedContrat().Generate(10));
 
-            modelBuilder.Entity<User>().HasData(DataSeeder.seedUser().Generate(10));
+
+
+            modelBuilder.Entity<Role>().HasData(DataSeeder.SeedRoles());
+
             modelBuilder.Entity<Permission>().HasData(DataSeeder.SeedPermissions());
+
+            modelBuilder.Entity<RolePermission>().HasData(DataSeeder.SeedRolePermissions());
+
+            modelBuilder.Entity<User>().HasData(DataSeeder.seedUser().Generate(10));
+
+
+
 
 
             // filter deleted entities
@@ -233,6 +271,10 @@ namespace AutomotiveApi.DAL
             modelBuilder.Entity<Log_journal>().HasQueryFilter(a => a.DeletedAt == null);
             modelBuilder.Entity<LongTermRental>().HasQueryFilter(a => a.DeletedAt == null);
             modelBuilder.Entity<LLDResponse>().HasQueryFilter(a => a.DeletedAt == null);
+            modelBuilder.Entity<Notification>().HasQueryFilter(a => a.DeletedAt == null);
+            modelBuilder.Entity<Permission>().HasQueryFilter(a => a.DeletedAt == null);
+            modelBuilder.Entity<RolePermission>().HasQueryFilter(a => a.DeletedAt == null);
+
 
 
             OnModelCreatingPartial(modelBuilder);

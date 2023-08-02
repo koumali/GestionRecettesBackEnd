@@ -4,14 +4,17 @@ using AutomotiveApi.Models.Entities.Param;
 using AutomotiveApi.Services.Attributes;
 using AutomotiveApi.Services.Jwt;
 using AutomotiveApi.Services.Param;
+using AutomotiveApi.Utility;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Permission = AutomotiveApi.Utility.Permission;
+
 
 namespace AutomotiveApi.Controllers.v1
 {
     [ApiController]
     [Route("api/v1/[controller]")]
+
+    [HasPermission(PredefinedPermissions.Users)]
     public class UsersController : ControllerBase
     {
         private readonly IUser _userService;
@@ -27,7 +30,7 @@ namespace AutomotiveApi.Controllers.v1
 
 
         [HttpGet]
-        [HasPermission(Permission.PlatformTopLevelPermission)]
+       
         public async Task<ActionResult<IEnumerable<User>>> GetUsers()
         {
             var users = await _userService.GetAllAsync();
@@ -35,7 +38,7 @@ namespace AutomotiveApi.Controllers.v1
         }
 
         [HttpGet("agence/{idAgence}")]
-        [HasPermission(Permission.AgencyFirstLevelPermission)]
+       
         [ValidatIdAgence("idAgence")]
         public async Task<ActionResult<IEnumerable<User>>> GetUsersAgence(int idAgence)
         {
@@ -59,7 +62,7 @@ namespace AutomotiveApi.Controllers.v1
 
         //add user
         [HttpPost]
-        [HasPermission(Permission.AgencyFirstLevelPermission)]
+       
         public async Task<ActionResult<User>> Add(UserDto userRequest)
         {
             var user = _mapper.Map<User>(userRequest);
@@ -77,7 +80,7 @@ namespace AutomotiveApi.Controllers.v1
 
         //update user
         [HttpPut("{id}")]
-        [HasPermission(Permission.AgencyFirstLevelPermission)]
+       
         public async Task<ActionResult<User>> Update(int id, UserUpdateDto userRequest)
         {
             if (id != userRequest.Id)
@@ -102,7 +105,7 @@ namespace AutomotiveApi.Controllers.v1
         //delete user
 
         [HttpDelete("{id}")]
-        [HasPermission(Permission.AgencyFirstLevelPermission)]
+       
         public async Task<ActionResult<bool>> Delete(int id)
         {
             try
@@ -119,7 +122,7 @@ namespace AutomotiveApi.Controllers.v1
 
         //change password
         [HttpPut("{id}/password")]
-        [HasPermission(Permission.AgencyFirstLevelPermission)]
+       
         public async Task<ActionResult> ChangePassword(int id,PasswordUpdateDto changePasswordDto)
         {
             if (id != changePasswordDto.Id)

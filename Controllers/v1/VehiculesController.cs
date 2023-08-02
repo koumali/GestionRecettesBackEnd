@@ -44,7 +44,7 @@ namespace AutomotiveApi.Controllers.v1
         // }
 
         [HttpGet("agence/{idAgence}")]
-        [HasPermission(Permission.AgencyFourthLevelPermission)]
+        
         [ValidatIdAgence("idAgence")]
         public async Task<ActionResult<IEnumerable<Vehicule>>> GetVehiculesAgence(int idAgence)
         {
@@ -61,7 +61,7 @@ namespace AutomotiveApi.Controllers.v1
         }
 
         [HttpPost]
-        [HasPermission(Permission.AgencyFourthLevelPermission)]
+        
         public async Task<ActionResult<Vehicule>> AddVehicule(VehiculeDto request)
         {
             var vehicule = _mapper.Map<Vehicule>(request);
@@ -70,7 +70,7 @@ namespace AutomotiveApi.Controllers.v1
         }
 
         [HttpDelete("{id}")]
-        [HasPermission(Permission.AgencyFourthLevelPermission)]
+        
         public async Task<ActionResult> DeleteVehicule(int id)
         {
             await _vehiculeService.DeleteAsync(id);
@@ -78,7 +78,7 @@ namespace AutomotiveApi.Controllers.v1
         }
 
         [HttpPut("{id}")]
-        [HasPermission(Permission.AgencyFourthLevelPermission)]
+        
         public async Task<ActionResult<Vehicule>> UpdateVehicule(int id,VehiculeDto request)
         {
             if (id != request.Id)

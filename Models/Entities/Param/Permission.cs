@@ -1,8 +1,11 @@
-﻿namespace AutomotiveApi.Models.Entities.Param;
+﻿using AutomotiveApi.Models.Entities.Core;
 
-public class Permission
-{
-    public int Id { get; set; }
+namespace AutomotiveApi.Models.Entities.Param;
+
+public class Permission : ModelBase
+{     
     public string Name { get; set; } = string.Empty;
-    public ICollection<Role> Roles { get; set; }
+
+    public virtual ICollection<Role> Roles { get; set; }
+    public virtual ICollection<RolePermission> RolePermissions { get; set; }
 }

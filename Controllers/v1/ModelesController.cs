@@ -28,7 +28,7 @@ namespace AutomotiveApi.Controllers.v1
         }
 
         [HttpGet]
-        [HasPermission(Permission.AgencyThirdLevelPermission)]
+        
         public async Task<ActionResult<IEnumerable<Modele>>> GetModeles()
         {
             var modeles = await _modeleService.GetAllAsync();
@@ -56,7 +56,7 @@ namespace AutomotiveApi.Controllers.v1
         //</summary>
 
         [HttpPost]
-        [HasPermission(Permission.PlatformTopLevelPermission)]
+        
         public async Task<ActionResult<Modele>> AddModele([FromForm] ModeleDto request)
         {
             var modele = _mapper.Map<Modele>(request);
@@ -77,7 +77,7 @@ namespace AutomotiveApi.Controllers.v1
         }
 
         [HttpDelete("{id}")]
-        [HasPermission(Permission.PlatformTopLevelPermission)]
+        
         public async Task<ActionResult> DeleteModele(int id)
         {
             await _modeleService.DeleteAsync(id);
@@ -85,7 +85,7 @@ namespace AutomotiveApi.Controllers.v1
         }
 
         [HttpPut("{id}")]
-        [HasPermission(Permission.PlatformTopLevelPermission)]
+        
         public async Task<ActionResult<Modele>> UpdateModele(int id, [FromForm] ModeleDto request)
         {
             if (id != request.Id)

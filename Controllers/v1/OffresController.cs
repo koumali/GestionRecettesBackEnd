@@ -49,7 +49,7 @@ namespace AutomotiveApi.Controllers.v1
         }
 
         [HttpGet("agence/{idAgence}")]
-        [HasPermission(Permission.AgencySecondLevelPermission)]
+        
         [ValidatIdAgence("idAgence")]
         public async Task<ActionResult<IEnumerable<Offre>>> GetOffresAgence(int idAgence)
         {
@@ -58,7 +58,7 @@ namespace AutomotiveApi.Controllers.v1
         }
 
         [HttpPost]
-        [HasPermission(Permission.AgencySecondLevelPermission)]
+        
         public async Task<ActionResult<Offre>> AddOffre(OffreDto request)
         {
             var offre = _mapper.Map<Offre>(request);
@@ -74,7 +74,7 @@ namespace AutomotiveApi.Controllers.v1
         }
 
         [HttpDelete("{id}")]
-        [HasPermission(Permission.AgencySecondLevelPermission)]
+        
         public async Task<ActionResult> DeleteOffre(int id)
         {
             await _offreservice.DeleteAsync(id);
@@ -82,7 +82,7 @@ namespace AutomotiveApi.Controllers.v1
         }
 
         [HttpPut("{id}")]
-        [HasPermission(Permission.AgencySecondLevelPermission)]
+        
         public async Task<ActionResult<Offre>> UpdateOffre(int id, OffreDto request)
         {
             var offre = await _offreservice.GetByIdAsync(id);

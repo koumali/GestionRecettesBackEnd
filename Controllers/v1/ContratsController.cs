@@ -1,7 +1,9 @@
 using AutoMapper;
 using AutomotiveApi.Models.Dto;
 using AutomotiveApi.Models.Entities.Gestion;
+using AutomotiveApi.Services.Attributes;
 using AutomotiveApi.Services.Gestion.Interfaces;
+using AutomotiveApi.Utility;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -9,6 +11,8 @@ namespace AutomotiveApi.Controllers.v1
 {
     [ApiController]
     [Route("api/v1/[controller]")]
+
+    
     public class ContratsController : ControllerBase
     {
         private readonly IMapper _mapper;

@@ -45,7 +45,7 @@ namespace AutomotiveApi.Controllers.v1
         // }
 
         [HttpGet("agence/{idAgence}")]
-        [HasPermission(Utility.Permission.AgencySecondLevelPermission)]
+        
         public async Task<ActionResult<IEnumerable<Reservation>>> GetReservationsAgence(int idAgence)
         {
             var reservations = await _reservationService.GetReservationsAgence(idAgence);
@@ -53,7 +53,7 @@ namespace AutomotiveApi.Controllers.v1
         }
 
         [HttpPost]
-        [HasPermission(Utility.Permission.AgencySecondLevelPermission)]
+        
         public async Task<ActionResult<Reservation>> AddReservation(ReservationDto request)
         {
             // generate number of reservation
@@ -160,7 +160,7 @@ namespace AutomotiveApi.Controllers.v1
         }
 
         [HttpDelete("{id}")]
-        [HasPermission(Utility.Permission.AgencySecondLevelPermission)]
+        
         public async Task<ActionResult> DeleteReservation(int id)
         {
             await _reservationService.DeleteAsync(id);
@@ -168,7 +168,7 @@ namespace AutomotiveApi.Controllers.v1
         }
 
         [HttpPut("{id}")]
-        [HasPermission(Utility.Permission.AgencySecondLevelPermission)]
+        
         public async Task<ActionResult<Reservation>> UpdateReservation(int id, ReservationDto request)
         {
             var reservation = await _reservationService.GetByIdAsync(id);

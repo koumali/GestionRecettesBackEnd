@@ -15,7 +15,6 @@ using AutomotiveApi.Services.Mail;
 using AutomotiveApi.Services.Param;
 using AutomotiveApi.Utility;
 using AutomotiveApi.Utility.Middlwares;
-using AutomotiveApi.Models.Entities.Gestion;
 using Microsoft.AspNetCore.Authorization;
 
 var builder = WebApplication.CreateBuilder(args);

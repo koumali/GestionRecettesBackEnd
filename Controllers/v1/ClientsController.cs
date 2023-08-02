@@ -41,7 +41,7 @@ namespace AutomotiveApi.Controllers.v1
 
         // get clients of a specific agence
         [HttpGet("agence/{idAgence}")]
-        [HasPermission(Utility.Permission.AgencySecondLevelPermission)]
+        
         [ValidatIdAgence("idAgence")]
         public async Task<ActionResult<IEnumerable<Client>>> GetClientsAgence(int idAgence)
         {
@@ -54,7 +54,7 @@ namespace AutomotiveApi.Controllers.v1
         //</summary>
 
         [HttpPost]
-        [HasPermission(Utility.Permission.AgencySecondLevelPermission)]
+        
         public async Task<ActionResult<Client>> AddClient([FromForm] ClientDto request)
         {
             try
@@ -77,7 +77,7 @@ namespace AutomotiveApi.Controllers.v1
         }
 
         [HttpDelete("{id}")]
-        [HasPermission(Utility.Permission.AgencySecondLevelPermission)]
+        
         public async Task<ActionResult> DeleteClient(int id)
         {
             await _clientService.DeleteAsync(id);
@@ -85,7 +85,7 @@ namespace AutomotiveApi.Controllers.v1
         }
 
         [HttpPut("{id}")]
-        [HasPermission(Utility.Permission.AgencySecondLevelPermission)]
+        
         public async Task<ActionResult<Client>> UpdateClient(int id, [FromForm] ClientDto request)
         {
 

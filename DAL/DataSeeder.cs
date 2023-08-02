@@ -1,11 +1,80 @@
 using AutomotiveApi.Models.Entities.Gestion;
 using AutomotiveApi.Models.Entities.Param;
+using AutomotiveApi.Utility;
 using Bogus;
 
 namespace AutomotiveApi.DAL
 {
     public class DataSeeder
     {
+
+        public static IEnumerable<Permission> SeedPermissions()
+        {
+            var permissions = Enum.GetValues<PredefinedPermissions>()
+                .Select(p => new Permission
+                {
+                    Id = (int)p,
+                    Name = p.ToString()
+                });
+            return permissions;
+        }
+
+
+        public static IEnumerable<Role> SeedRoles()
+        {
+            var roles = new List<Role>
+            {
+                new Role
+                {
+                    Id = 1,
+                    Name = "SuperAdmin",
+                    
+
+                },
+                new Role
+                {
+                    Id = 2,
+                    Name = "Admin",
+
+                }
+            };
+            return roles;
+        }
+
+        public static IEnumerable<RolePermission> SeedRolePermissions()
+        {
+            var rolePermissions = new List<RolePermission>{
+                new RolePermission{
+                    Id=1,
+                    IdRole=1,
+                    IdPermission=1
+                },
+                new RolePermission{
+                    Id=2,
+                    IdRole=1,
+                    IdPermission=2
+                },
+                new RolePermission{
+                    Id=3,
+                    IdRole=1,
+                    IdPermission=3
+                },
+                new RolePermission{
+                    Id=4,
+                    IdRole=1,
+                    IdPermission=4
+                },
+                new RolePermission{
+                    Id=5,
+                    IdRole=2,
+                    IdPermission=7
+                }};
+
+            return rolePermissions;
+
+        }
+
+
         public static Faker<Agence>? seedAgence()
         {
             var id = 1;
@@ -151,7 +220,7 @@ namespace AutomotiveApi.DAL
                 .RuleFor(x => x.LastName, f => f.Name.LastName())
                 .RuleFor(x => x.Email, f => f.Internet.Email())
                 .RuleFor(x => x.Password, f => BCrypt.Net.BCrypt.HashPassword("user123" + (id - 1)))
-                .RuleFor(x => x.IdRole, f => f.Random.Int(1, 4))
+                .RuleFor(x => x.IdRole, f => f.Random.Int(1, 2))
                 .RuleFor(x => x.IsActive, f => f.Random.Bool())
                 .RuleFor(x => x.IdAgence, f => f.Random.Int(1, 10))
                 .RuleFor(x => x.CreatedAt, f => f.Date.Past());
@@ -159,15 +228,7 @@ namespace AutomotiveApi.DAL
             return Users;
         }
 
-        public static IEnumerable<Permission> SeedPermissions()
-        {
-            var permissions = Enum.GetValues<Utility.Permission>()
-                .Select(p => new Permission
-                {
-                    Id = (int)p,
-                    Name = p.ToString()
-                });
-            return permissions;
-        }
+
+
     }
 }

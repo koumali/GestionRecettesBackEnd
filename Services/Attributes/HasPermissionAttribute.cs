@@ -5,7 +5,7 @@ namespace AutomotiveApi.Services.Attributes;
 
 public sealed class HasPermissionAttribute : AuthorizeAttribute
 {
-    public HasPermissionAttribute(Permission permission)
+    public HasPermissionAttribute(PredefinedPermissions permission)
         : base(policy: permission.ToString())
     {
     }
