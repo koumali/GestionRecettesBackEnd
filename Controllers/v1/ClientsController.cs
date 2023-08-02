@@ -31,17 +31,17 @@ namespace AutomotiveApi.Controllers.v1
             _fileHelper = fileHelper;
         }
 
-        [HttpGet]
-        [Authorize(Roles = "Admin")]
-        public async Task<ActionResult<IEnumerable<Client>>> GetClients()
-        {
-            var clients = await _clientService.GetAllAsync();
-            return Ok(clients);
-        }
+        // [HttpGet]
+        // // // [Authorize(Roles = "Admin")]
+        // public async Task<ActionResult<IEnumerable<Client>>> GetClients()
+        // {
+        //     var clients = await _clientService.GetAllAsync();
+        //     return Ok(clients);
+        // }
 
         // get clients of a specific agence
         [HttpGet("agence/{idAgence}")]
-        [Authorize(Roles = "Commercial, Gerant")]
+        [HasPermission(Utility.Permission.AgencySecondLevelPermission)]
         [ValidatIdAgence("idAgence")]
         public async Task<ActionResult<IEnumerable<Client>>> GetClientsAgence(int idAgence)
         {
@@ -54,7 +54,7 @@ namespace AutomotiveApi.Controllers.v1
         //</summary>
 
         [HttpPost]
-        [Authorize(Roles = "Admin, Commercial, Gerant")]
+        [HasPermission(Utility.Permission.AgencySecondLevelPermission)]
         public async Task<ActionResult<Client>> AddClient([FromForm] ClientDto request)
         {
             try
@@ -69,7 +69,7 @@ namespace AutomotiveApi.Controllers.v1
         }
 
         [HttpGet("{id}")]
-        [Authorize(Roles = "Admin, Gerant, Commercial")]
+        // // [Authorize(Roles = "Admin, Gerant, Commercial")]
         public async Task<ActionResult<Client>> GetClientById(int id)
         {
             var client = await _clientService.GetByIdAsync(id);
@@ -77,7 +77,7 @@ namespace AutomotiveApi.Controllers.v1
         }
 
         [HttpDelete("{id}")]
-        [Authorize(Roles = "Admin, Gerant, Commercial")]
+        [HasPermission(Utility.Permission.AgencySecondLevelPermission)]
         public async Task<ActionResult> DeleteClient(int id)
         {
             await _clientService.DeleteAsync(id);
@@ -85,7 +85,7 @@ namespace AutomotiveApi.Controllers.v1
         }
 
         [HttpPut("{id}")]
-        [Authorize(Roles = "Admin, Gerant, Commercial,Client")]
+        [HasPermission(Utility.Permission.AgencySecondLevelPermission)]
         public async Task<ActionResult<Client>> UpdateClient(int id, [FromForm] ClientDto request)
         {
 
@@ -102,7 +102,7 @@ namespace AutomotiveApi.Controllers.v1
 
 
         [HttpGet("infos")]
-        [Authorize(Roles = "Client")]
+        // [Authorize(Roles = "Client")]
         public async Task<ActionResult<Client>> GetClientInfos()
         {
             int clientId = int.Parse(User.FindFirst("clientId")?.Value ?? "0");
@@ -134,7 +134,7 @@ namespace AutomotiveApi.Controllers.v1
         }
 
         [HttpGet("reservations")]
-        [Authorize(Roles = "Client")]
+        // [Authorize(Roles = "Client")]
         public async Task<ActionResult<IEnumerable<Reservation>>> GetClientReservations()
         {
             int clientId = int.Parse(User.FindFirst("clientId")?.Value ?? "0");
@@ -164,7 +164,7 @@ namespace AutomotiveApi.Controllers.v1
 
         }
         [HttpGet("LLDreservations")]
-        [Authorize(Roles = "Client")]
+        // [Authorize(Roles = "Client")]
         public async Task<ActionResult<IEnumerable<LongTermRental>>> GetClientLLDReservations()
         {
             int clientId = int.Parse(User.FindFirst("clientId")?.Value ?? "0");

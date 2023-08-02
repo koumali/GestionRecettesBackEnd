@@ -28,24 +28,24 @@ namespace AutomotiveApi.Controllers.v1
         }
 
         [HttpGet]
-        //[Authorize(Roles = "Admin, Commercial, Agent, Gerant")]
+        [HasPermission(Permission.AgencyThirdLevelPermission)]
         public async Task<ActionResult<IEnumerable<Modele>>> GetModeles()
         {
             var modeles = await _modeleService.GetAllAsync();
             return Ok(modeles);
         }
 
-        [HttpGet("agence/{idAgence}")]
-        [Authorize(Roles = "Commercial, Gerant, Agent")]
-        [ValidatIdAgence("idAgence")]
-        public async Task<ActionResult<IEnumerable<Modele>>> GetModelesAgence(int idAgence)
-        {
-            var modeles = await _modeleService.GetModelesAgence(idAgence);
-            return Ok(modeles);
-        }
+        // [HttpGet("agence/{idAgence}")]
+        // // // [Authorize(Roles = "Commercial, Gerant, Agent")]
+        // [ValidatIdAgence("idAgence")]
+        // public async Task<ActionResult<IEnumerable<Modele>>> GetModelesAgence(int idAgence)
+        // {
+        //     var modeles = await _modeleService.GetModelesAgence(idAgence);
+        //     return Ok(modeles);
+        // }
 
         [HttpGet("{id}")]
-        [Authorize(Roles = "Admin, Commercial, Agent, Gerant")]
+        // // [Authorize(Roles = "Admin, Commercial, Agent, Gerant")]
         public async Task<ActionResult<Modele>> GetModeleById(int id)
         {
             var modele = await _modeleService.GetByIdAsync(id);
@@ -56,7 +56,7 @@ namespace AutomotiveApi.Controllers.v1
         //</summary>
 
         [HttpPost]
-        [Authorize(Roles = "Admin, Commercial, Agent, Gerant")]
+        [HasPermission(Permission.PlatformTopLevelPermission)]
         public async Task<ActionResult<Modele>> AddModele([FromForm] ModeleDto request)
         {
             var modele = _mapper.Map<Modele>(request);
@@ -77,7 +77,7 @@ namespace AutomotiveApi.Controllers.v1
         }
 
         [HttpDelete("{id}")]
-        [Authorize(Roles = "Admin, Commercial, Agent, Gerant")]
+        [HasPermission(Permission.PlatformTopLevelPermission)]
         public async Task<ActionResult> DeleteModele(int id)
         {
             await _modeleService.DeleteAsync(id);
@@ -85,7 +85,7 @@ namespace AutomotiveApi.Controllers.v1
         }
 
         [HttpPut("{id}")]
-        [Authorize(Roles = "Admin, Commercial, Agent, Gerant")]
+        [HasPermission(Permission.PlatformTopLevelPermission)]
         public async Task<ActionResult<Modele>> UpdateModele(int id, [FromForm] ModeleDto request)
         {
             if (id != request.Id)

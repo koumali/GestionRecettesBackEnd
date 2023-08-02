@@ -4,6 +4,7 @@ using AutomotiveApi.Services.Attributes;
 using AutomotiveApi.Services.Param;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Permission = AutomotiveApi.Utility.Permission;
 
 namespace AutomotiveApi.Controllers.v1
 {
@@ -20,7 +21,7 @@ namespace AutomotiveApi.Controllers.v1
         }
 
         [HttpGet]
-        [Authorize(Roles = "Admin")]
+        [HasPermission(Permission.PlatformTopLevelPermission)]
         public async Task<ActionResult<IEnumerable<Role>>> GetRoles()
         {
             var roles = await _roleService.GetAllAsync();
@@ -28,14 +29,14 @@ namespace AutomotiveApi.Controllers.v1
         }
 
         [HttpGet("agence")]
-        [Authorize(Roles = "Gerant")]
+        [HasPermission(Permission.AgencyFirstLevelPermission)]
         public async Task<ActionResult<IEnumerable<Role>>> GetRolesAgence()
         {
             var roles = await _roleService.GetRolesAgence();
             return Ok(roles);
         }
         [HttpPost]
-        [Authorize(Roles = "Admin, Gerant")]
+        [HasPermission(Permission.AgencyFirstLevelPermission)]
         public async Task<ActionResult<Role>> AddRole(RoleDto request)
         {
             var role = new Role()
@@ -47,7 +48,7 @@ namespace AutomotiveApi.Controllers.v1
         }
 
         [HttpGet("{id}")]
-        [Authorize(Roles = "Admin, Gerant")]
+        // // [Authorize(Roles = "Admin, Gerant")]
         public async Task<ActionResult<Role>> GetRoleById(int id)
         {
             var role = await _roleService.GetByIdAsync(id);
@@ -55,7 +56,7 @@ namespace AutomotiveApi.Controllers.v1
         }
 
         [HttpDelete("{id}")]
-        [Authorize(Roles = "Admin, Gerant")]
+        [HasPermission(Permission.AgencyFirstLevelPermission)]
         public async Task<ActionResult> DeleteRole(int id)
         {
             await _roleService.DeleteAsync(id);
@@ -63,7 +64,7 @@ namespace AutomotiveApi.Controllers.v1
         }
 
         [HttpPut("{id}")]
-        [Authorize(Roles = "Admin, Gerant")]
+        [HasPermission(Permission.AgencyFirstLevelPermission)]
         public async Task<ActionResult<Role>> UpdateRole(int id, RoleDto request)
         {
             var role = await _roleService.GetByIdAsync(id);

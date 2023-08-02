@@ -1,15 +1,18 @@
 ﻿using AutoMapper;
 using AutomotiveApi.Models.Dto;
 using AutomotiveApi.Models.Entities.Gestion;
+using AutomotiveApi.Services.Attributes;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using AutomotiveApi.Services.Gestion.Interfaces;
+using AutomotiveApi.Utility;
 using AutomotiveApi.Utility;
 
 namespace AutomotiveApi.Controllers.v1
 {
     [Route("api/v1/[controller]")]
     [ApiController]
+    [HasPermission(Permission.PlatformTopLevelPermission)]
     public class LongTermRentalsController : ControllerBase
     {
         private readonly IMapper _mapper;
@@ -25,7 +28,6 @@ namespace AutomotiveApi.Controllers.v1
         }
 
         [HttpGet]
-        [Authorize(Roles = "Admin, Gerant")]
         public async Task<ActionResult<IEnumerable<LongTermRental>>> GetLongTermRentals()
         {
             var longTermRentals = await _longTermRentalService.GetAllAsync();
@@ -41,7 +43,6 @@ namespace AutomotiveApi.Controllers.v1
             return reservation;
         }
         [HttpGet("{id}")]
-        [Authorize(Roles = "Admin")]
         public async Task<ActionResult<LongTermRental>> GetLongTermRentalById(int id)
         {
             var longTermRental = await _longTermRentalService.GetByIdAsync(id);
@@ -62,7 +63,6 @@ namespace AutomotiveApi.Controllers.v1
         }
 
         [HttpDelete("{id}")]
-        [Authorize(Roles = "Admin")]
         public async Task<ActionResult> DeleteLongTermRental(int id)
         {
             await _longTermRentalService.DeleteAsync(id);

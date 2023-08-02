@@ -35,16 +35,16 @@ namespace AutomotiveApi.Controllers.v1
             return Ok(_vehiculeService.GetTopReservedVehicules(number));
         }
 
-        [HttpGet]
-        [Authorize(Roles = "Admin")]
-        public async Task<ActionResult<IEnumerable<Vehicule>>> GetVehicules()
-        {
-            var vehicules = await _vehiculeService.GetAllAsync();
-            return Ok(vehicules);
-        }
+        // [HttpGet]
+        // // // [Authorize(Roles = "Admin")]
+        // public async Task<ActionResult<IEnumerable<Vehicule>>> GetVehicules()
+        // {
+        //     var vehicules = await _vehiculeService.GetAllAsync();
+        //     return Ok(vehicules);
+        // }
 
         [HttpGet("agence/{idAgence}")]
-        [Authorize(Roles = "Commercial, Agent, Gerant")]
+        [HasPermission(Permission.AgencyFourthLevelPermission)]
         [ValidatIdAgence("idAgence")]
         public async Task<ActionResult<IEnumerable<Vehicule>>> GetVehiculesAgence(int idAgence)
         {
@@ -53,7 +53,7 @@ namespace AutomotiveApi.Controllers.v1
         }
 
         [HttpGet("{id}")]
-        [Authorize(Roles = "Admin, Commercial, Agent, Gerant")]
+        // // [Authorize(Roles = "Admin, Commercial, Agent, Gerant")]
         public async Task<ActionResult<Vehicule>> GetVehiculeById(int id)
         {
             var vehicule = await _vehiculeService.GetByIdAsync(id);
@@ -61,7 +61,7 @@ namespace AutomotiveApi.Controllers.v1
         }
 
         [HttpPost]
-        [Authorize(Roles = "Admin, Commercial, Agent, Gerant")]
+        [HasPermission(Permission.AgencyFourthLevelPermission)]
         public async Task<ActionResult<Vehicule>> AddVehicule(VehiculeDto request)
         {
             var vehicule = _mapper.Map<Vehicule>(request);
@@ -70,7 +70,7 @@ namespace AutomotiveApi.Controllers.v1
         }
 
         [HttpDelete("{id}")]
-        [Authorize(Roles = "Admin, Commercial, Agent, Gerant")]
+        [HasPermission(Permission.AgencyFourthLevelPermission)]
         public async Task<ActionResult> DeleteVehicule(int id)
         {
             await _vehiculeService.DeleteAsync(id);
@@ -78,7 +78,7 @@ namespace AutomotiveApi.Controllers.v1
         }
 
         [HttpPut("{id}")]
-        [Authorize(Roles = "Admin, Commercial, Agent, Gerant")]
+        [HasPermission(Permission.AgencyFourthLevelPermission)]
         public async Task<ActionResult<Vehicule>> UpdateVehicule(int id,VehiculeDto request)
         {
             if (id != request.Id)

@@ -6,6 +6,7 @@ using Microsoft.Extensions.DependencyInjection.Extensions;
 using Microsoft.OpenApi.Models;
 using AutoMapper;
 using AutomotiveApi.DAL;
+using AutomotiveApi.Services.Attributes;
 using AutomotiveApi.Services.Auth;
 using AutomotiveApi.Services.Gestion;
 using AutomotiveApi.Services.Gestion.Interfaces;
@@ -15,6 +16,7 @@ using AutomotiveApi.Services.Param;
 using AutomotiveApi.Utility;
 using AutomotiveApi.Utility.Middlwares;
 using AutomotiveApi.Models.Entities.Gestion;
+using Microsoft.AspNetCore.Authorization;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -82,15 +84,16 @@ builder.Services
 // add identity
 builder.Services.AddHttpClient();
 
-builder.Services.AddAuthorization(options =>
-{
-    options.AddPolicy("RequireAdminRole", p => p.RequireRole("Admin"));
-    options.AddPolicy("RequireUserRole", p => p.RequireRole("Client"));
-    options.AddPolicy("RequireUserRole", p => p.RequireRole("Gearnt"));
-    options.AddPolicy("RequireUserRole", p => p.RequireRole("Agent"));
-    options.AddPolicy("RequireUserRole", p => p.RequireRole("Commercial"));
-});
+// builder.Services.AddAuthorization(options =>
+// {
+//     options.AddPolicy("RequireAdminRole", p => p.RequireRole("Admin"));
+//     options.AddPolicy("RequireUserRole", p => p.RequireRole("Client"));
+//     options.AddPolicy("RequireUserRole", p => p.RequireRole("Gearnt"));
+//     options.AddPolicy("RequireUserRole", p => p.RequireRole("Agent"));
+//     options.AddPolicy("RequireUserRole", p => p.RequireRole("Commercial"));
+// });
 
+builder.Services.AddAuthorization();
 
 builder.Services.AddCors(options =>
 {
@@ -122,6 +125,10 @@ builder.Services.AddScoped<ILLDResponse, LLDResponsesService>();
 builder.Services.AddScoped<IFileHelper, FileHelper>();
 builder.Services.AddScoped<IMailService, MailService>();
 builder.Services.AddScoped<INotification, NotificationService>();
+
+builder.Services.AddTransient<IAuthorizationHandler, PermissionAuthorizationHandler>();
+builder.Services.AddTransient<IPermissionService, PermissionService>();
+builder.Services.AddSingleton<IAuthorizationPolicyProvider, PermissionAuthorizationPolicyProvider>();
 
 var mappingConfig = new MapperConfiguration(mc => { mc.AddProfile(new MapperConfig()); });
 

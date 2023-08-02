@@ -26,7 +26,7 @@ namespace AutomotiveApi.Controllers.v1
         }
 
         [HttpGet]
-        [Authorize(Roles = "Admin, Commercial, Agent, Gerant")]
+        // [Authorize(Roles = "Admin, Commercial, Agent, Gerant")]
         public async Task<ActionResult<IEnumerable<LLDResponse>>> GetLLDResponses()
         {
             var LLDResponses = await _LLDResponseService.GetAllAsync();
@@ -34,7 +34,7 @@ namespace AutomotiveApi.Controllers.v1
         }
 
         /*[HttpGet("agence/{idAgence}")]
-        [Authorize(Roles = "Commercial, Gerant, Agent")]
+        // [Authorize(Roles = "Commercial, Gerant, Agent")]
         [ValidatIdAgence("idAgence")]
         public async Task<ActionResult<IEnumerable<LLDResponse>>> GetLLDResponsesAgence(int idAgence)
         {
@@ -43,7 +43,7 @@ namespace AutomotiveApi.Controllers.v1
         }*/
 
         [HttpGet("{id}")]
-        [Authorize(Roles = "Admin, Commercial, Agent, Gerant")]
+        // [Authorize(Roles = "Admin, Commercial, Agent, Gerant")]
         public async Task<ActionResult<LLDResponse>> GetLLDResponseById(int id)
         {
             var LLDResponse = await _LLDResponseService.GetByIdAsync(id);
@@ -51,7 +51,7 @@ namespace AutomotiveApi.Controllers.v1
         }
 
         [HttpPost]
-        [Authorize(Roles = "Admin, Commercial, Agent, Gerant")]
+        // [Authorize(Roles = "Admin, Commercial, Agent, Gerant")]
         public async Task<ActionResult<LLDResponse>> AddLLDResponse([FromForm] LLDResponseDto request)
         {
             var LLDResponse = _mapper.Map<LLDResponse>(request);
@@ -63,7 +63,7 @@ namespace AutomotiveApi.Controllers.v1
         }
 
         [HttpDelete("{id}")]
-        [Authorize(Roles = "Admin, Commercial, Agent, Gerant")]
+        // [Authorize(Roles = "Admin, Commercial, Agent, Gerant")]
         public async Task<ActionResult> DeleteLLDResponse(int id)
         {
             await _LLDResponseService.DeleteAsync(id);
@@ -71,7 +71,7 @@ namespace AutomotiveApi.Controllers.v1
         }
 
         [HttpPut("{id}")]
-        [Authorize(Roles = "Admin, Commercial, Agent, Gerant")]
+        // [Authorize(Roles = "Admin, Commercial, Agent, Gerant")]
         public async Task<ActionResult<LLDResponse>> UpdateLLDResponse(int id, [FromForm] LLDResponseDto request)
         {
             if (id != request.idLongTermRental)

@@ -1,16 +1,15 @@
 using AutomotiveApi.Models.Entities.Gestion;
 using AutomotiveApi.Models.Entities.Param;
+using AutomotiveApi.Services.Attributes;
 using AutomotiveApi.Services.Param;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Permission = AutomotiveApi.Utility.Permission;
 
 namespace AutomotiveApi.Controllers.v1
 {
-
     [ApiController]
-
     [Route("api/v1/[controller]")]
-
+    [HasPermission(Permission.PlatformTopLevelPermission)]
     public class LogJournalsController : ControllerBase
     {
         private readonly ILogJournal _logJournalService;
@@ -22,21 +21,17 @@ namespace AutomotiveApi.Controllers.v1
 
 
         [HttpGet]
-        [Authorize(Roles = "Admin")]
         public ActionResult<IEnumerable<Log_journal>> GetLog_journals()
         {
             var logJournals = _logJournalService.getLog_journals();
             return Ok(logJournals);
         }
+
         [HttpGet("{id}")]
-        [Authorize(Roles = "Admin")]
         public ActionResult<Client> GetClientById(int id)
         {
             var client = _logJournalService.findById(id);
             return Ok(client);
         }
-
     }
-
-
 }

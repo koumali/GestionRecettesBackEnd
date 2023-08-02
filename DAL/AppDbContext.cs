@@ -1,7 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using AutomotiveApi.Models.Entities.Gestion;
 using AutomotiveApi.Models.Entities.Param;
-using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 
 namespace AutomotiveApi.DAL
@@ -32,6 +31,7 @@ namespace AutomotiveApi.DAL
         public virtual DbSet<LongTermRental> long_term_rentals { get; set; }
         public virtual DbSet<LLDResponse> lld_responses { get; set; }
         public virtual DbSet<Notification> Notifications { get; set; }
+        public virtual DbSet<Permission> Permissions { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
@@ -78,6 +78,11 @@ namespace AutomotiveApi.DAL
             }
 
 
+            modelBuilder.Entity<Role>(entity =>
+            {
+                entity.HasMany<Permission>(r => r.Permissions)
+                    .WithMany(p => p.Roles);
+            });
 
 
 
@@ -210,6 +215,7 @@ namespace AutomotiveApi.DAL
             modelBuilder.Entity<Contrat>().HasData(DataSeeder.seedContrat().Generate(10));
 
             modelBuilder.Entity<User>().HasData(DataSeeder.seedUser().Generate(10));
+            modelBuilder.Entity<Permission>().HasData(DataSeeder.SeedPermissions());
 
 
             // filter deleted entities

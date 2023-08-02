@@ -36,16 +36,16 @@ namespace AutomotiveApi.Controllers.v1
             _notification = notification;
         }
 
-        [HttpGet]
-        [Authorize(Roles = "Admin")]
-        public async Task<ActionResult<IEnumerable<Reservation>>> GetReservations()
-        {
-            var reservations = await _reservationService.GetAllAsync();
-            return Ok(reservations);
-        }
+        // [HttpGet]
+        // // // [Authorize(Roles = "Admin")]
+        // public async Task<ActionResult<IEnumerable<Reservation>>> GetReservations()
+        // {
+        //     var reservations = await _reservationService.GetAllAsync();
+        //     return Ok(reservations);
+        // }
 
         [HttpGet("agence/{idAgence}")]
-        [Authorize(Roles = "Commercial, Gerant")]
+        [HasPermission(Utility.Permission.AgencySecondLevelPermission)]
         public async Task<ActionResult<IEnumerable<Reservation>>> GetReservationsAgence(int idAgence)
         {
             var reservations = await _reservationService.GetReservationsAgence(idAgence);
@@ -53,7 +53,7 @@ namespace AutomotiveApi.Controllers.v1
         }
 
         [HttpPost]
-        [Authorize(Roles = "Admin, Commercial, Gerant")]
+        [HasPermission(Utility.Permission.AgencySecondLevelPermission)]
         public async Task<ActionResult<Reservation>> AddReservation(ReservationDto request)
         {
             // generate number of reservation
@@ -151,7 +151,7 @@ namespace AutomotiveApi.Controllers.v1
         }
 
         [HttpGet("{id}")]
-        [Authorize(Roles = "Admin, Commercial, Gerant")]
+        // // [Authorize(Roles = "Admin, Commercial, Gerant")]
         [ValidatIdAgence("idAgence")]
         public async Task<ActionResult<Reservation>> GetReservationById(int id)
         {
@@ -160,7 +160,7 @@ namespace AutomotiveApi.Controllers.v1
         }
 
         [HttpDelete("{id}")]
-        [Authorize(Roles = "Admin, Commercial, Gerant")]
+        [HasPermission(Utility.Permission.AgencySecondLevelPermission)]
         public async Task<ActionResult> DeleteReservation(int id)
         {
             await _reservationService.DeleteAsync(id);
@@ -168,7 +168,7 @@ namespace AutomotiveApi.Controllers.v1
         }
 
         [HttpPut("{id}")]
-        [Authorize(Roles = "Admin, Commercial, Gerant")]
+        [HasPermission(Utility.Permission.AgencySecondLevelPermission)]
         public async Task<ActionResult<Reservation>> UpdateReservation(int id, ReservationDto request)
         {
             var reservation = await _reservationService.GetByIdAsync(id);

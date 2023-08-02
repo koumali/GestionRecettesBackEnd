@@ -6,6 +6,7 @@ using AutomotiveApi.Services.Jwt;
 using AutomotiveApi.Services.Param;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Permission = AutomotiveApi.Utility.Permission;
 
 namespace AutomotiveApi.Controllers.v1
 {
@@ -26,7 +27,7 @@ namespace AutomotiveApi.Controllers.v1
 
 
         [HttpGet]
-        [Authorize(Roles = "Admin")]
+        [HasPermission(Permission.PlatformTopLevelPermission)]
         public async Task<ActionResult<IEnumerable<User>>> GetUsers()
         {
             var users = await _userService.GetAllAsync();
@@ -34,7 +35,7 @@ namespace AutomotiveApi.Controllers.v1
         }
 
         [HttpGet("agence/{idAgence}")]
-        [Authorize(Roles = "Gerant")]
+        [HasPermission(Permission.AgencyFirstLevelPermission)]
         [ValidatIdAgence("idAgence")]
         public async Task<ActionResult<IEnumerable<User>>> GetUsersAgence(int idAgence)
         {
@@ -49,7 +50,7 @@ namespace AutomotiveApi.Controllers.v1
 
         //get user by id
         [HttpGet("{id}")]
-        [Authorize(Roles = "Admin, Gerant")]
+        // // [Authorize(Roles = "Admin, Gerant")]
         public async Task<ActionResult<User>> GetUserById(int id)
         {
             var user = await _userService.GetByIdAsync(id);
@@ -58,7 +59,7 @@ namespace AutomotiveApi.Controllers.v1
 
         //add user
         [HttpPost]
-        [Authorize(Roles = "Admin, Gerant")]
+        [HasPermission(Permission.AgencyFirstLevelPermission)]
         public async Task<ActionResult<User>> Add(UserDto userRequest)
         {
             var user = _mapper.Map<User>(userRequest);
@@ -76,7 +77,7 @@ namespace AutomotiveApi.Controllers.v1
 
         //update user
         [HttpPut("{id}")]
-        [Authorize(Roles = "Admin, Gerant")]
+        [HasPermission(Permission.AgencyFirstLevelPermission)]
         public async Task<ActionResult<User>> Update(int id, UserUpdateDto userRequest)
         {
             if (id != userRequest.Id)
@@ -101,7 +102,7 @@ namespace AutomotiveApi.Controllers.v1
         //delete user
 
         [HttpDelete("{id}")]
-        [Authorize(Roles = "Admin, Gerant")]
+        [HasPermission(Permission.AgencyFirstLevelPermission)]
         public async Task<ActionResult<bool>> Delete(int id)
         {
             try
@@ -118,7 +119,7 @@ namespace AutomotiveApi.Controllers.v1
 
         //change password
         [HttpPut("{id}/password")]
-        [Authorize(Roles = "Admin, Gerant")]
+        [HasPermission(Permission.AgencyFirstLevelPermission)]
         public async Task<ActionResult> ChangePassword(int id,PasswordUpdateDto changePasswordDto)
         {
             if (id != changePasswordDto.Id)

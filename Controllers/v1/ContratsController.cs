@@ -22,7 +22,7 @@ namespace AutomotiveApi.Controllers.v1
         }
 
         [HttpGet]
-        [Authorize(Roles = "Admin")]
+        // // [Authorize(Roles = "Admin")]
         public async Task<ActionResult<IEnumerable<Contrat>>> GetContrats()
         {
             var contrats = await _contratService.GetAllAsync();
@@ -33,7 +33,7 @@ namespace AutomotiveApi.Controllers.v1
         //</summary>
 
         [HttpPost]
-        [Authorize(Roles = "Admin")]
+        // // [Authorize(Roles = "Admin")]
         public async Task<ActionResult<Contrat>> AddContrat(ContratDto request)
         {
             var contrat = _mapper.Map<Contrat>(request);
@@ -43,7 +43,7 @@ namespace AutomotiveApi.Controllers.v1
         }
 
         [HttpGet("{id}")]
-        [Authorize(Roles = "Admin")]
+        // // [Authorize(Roles = "Admin")]
         public async Task<ActionResult<Contrat>> GetContratById(int id)
         {
             var contrat = await _contratService.GetByIdAsync(id);
@@ -51,7 +51,7 @@ namespace AutomotiveApi.Controllers.v1
         }
 
         [HttpDelete("{id}")]
-        [Authorize(Roles = "Admin")]
+        // // [Authorize(Roles = "Admin")]
         public async Task<ActionResult> DeleteContrat(int id)
         {
             await _contratService.DeleteAsync(id);
@@ -59,7 +59,7 @@ namespace AutomotiveApi.Controllers.v1
         }
 
         [HttpPut("{id}")]
-        [Authorize(Roles = "Admin")]
+        // // [Authorize(Roles = "Admin")]
         public async Task<ActionResult<Contrat>> UpdateContrat(int id, ContratDto request)
         {
             var contrat = await _contratService.GetByIdAsync(id);
