@@ -12,6 +12,7 @@ namespace AutomotiveApi.Controllers.v1
 {
     [Route("api/v1/[controller]")]
     [ApiController]
+    [HasPermission(PredefinedPermissions.LongTerm)]
     
     public class LongTermRentalsController : ControllerBase
     {
@@ -34,7 +35,16 @@ namespace AutomotiveApi.Controllers.v1
             return Ok(longTermRentals);
         }
 
+        [HttpGet("agence/{idAgence}")]
+        [ValidatIdAgence("idAgence")]
+        public async Task<ActionResult<IEnumerable<LongTermRental>>> GetLongTermRentalsByAgence(int idAgence)
+        {
+            var longTermRentals = await _longTermRentalService.GetLongTermRentalsByAgence(idAgence);
+            return Ok(longTermRentals);
+        }
+
         [HttpGet("maReservation")]
+        [AllowAnonymous]
         public async Task<ActionResult<LongTermRental>> GererMaReservation(string numero, string email)
         {
             // verify reservation
@@ -50,6 +60,7 @@ namespace AutomotiveApi.Controllers.v1
         }
 
         [HttpPost]
+        [AllowAnonymous]
         public async Task<ActionResult<LongTermRental>> AddLongTermRental(LongTermRentalDto request)
         {
             var longTermRental = _mapper.Map<LongTermRental>(request);
@@ -69,7 +80,10 @@ namespace AutomotiveApi.Controllers.v1
             return Ok();
         }
 
+
+
         [HttpPut("{id}")]
+        [AllowAnonymous]
         public async Task<ActionResult<LongTermRental>> UpdateLongTermRental(int id, UpdateLongTermRentalModelDto request)
         {
             var longTermRental = await _longTermRentalService.GetByIdAsync(id);

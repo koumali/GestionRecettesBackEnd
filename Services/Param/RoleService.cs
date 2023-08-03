@@ -2,6 +2,7 @@ using AutomotiveApi.DAL;
 using AutomotiveApi.Models.Dto;
 using AutomotiveApi.Models.Entities.Param;
 using AutomotiveApi.Services.Gestion;
+using AutomotiveApi.Utility;
 using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json;
 
@@ -16,20 +17,31 @@ namespace AutomotiveApi.Services.Param
             _context = context;
         }
 
-        public async Task<IEnumerable<Role>> GetRolesAgence()
+        public async Task<IEnumerable<Role>> GetRolesAgence(int idAgc)
         {
             var listRoles = await _context.Roles
-                .Where(u => u.Id != 0 && u.Name.ToLower() != "admin")
-                .Distinct()
-                .ToListAsync();
+            .Where(r => r.IdAgence == idAgc)
+            .Include(r => r.Permissions)
+            .ToListAsync();
+
             return listRoles;
         }
 
         public new async Task<IEnumerable<Role>> GetAllAsync()
         {
-            var listRoles = await _context.Roles
-            .Include(r => r.Permissions)
-            .ToListAsync();
+            var listRoles = await _context.Roles.Where(r => r.Name == predefinedRoles.Admin.ToString() || r.Name == predefinedRoles.SuperAdmin.ToString())
+            .Include(r => r.Permissions).Select(r => new Role()
+            {
+                Id = r.Id,
+                Name = r.Name,
+                IdAgence = r.IdAgence,
+                Permissions = r.Permissions.Select(p => new Permission()
+                {
+                    Id = p.Id,
+                    Name = p.Name
+                }).ToList()
+            }).ToListAsync();
+
 
             return listRoles;
         }
@@ -38,8 +50,17 @@ namespace AutomotiveApi.Services.Param
         {
             var role = await _context.Roles
             .Where(r => r.Id == id)
-            .Include(r => r.Permissions)
-            .FirstOrDefaultAsync();
+            .Include(r => r.Permissions).Select(r => new Role()
+            {
+                Id = r.Id,
+                Name = r.Name,
+                IdAgence = r.IdAgence,
+                Permissions = r.Permissions.Select(p => new Permission()
+                {
+                    Id = p.Id,
+                    Name = p.Name
+                }).ToList()
+            }).FirstOrDefaultAsync();
 
             return role;
         }
@@ -104,7 +125,7 @@ namespace AutomotiveApi.Services.Param
             {
                 throw new Exception("You must select at least one permission");
             }
-            
+
 
             var selectedPermissions = await _context.RolePermissions
             .Where(rp => rp.IdRole == role.Id)

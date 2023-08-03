@@ -83,14 +83,12 @@ builder.Services
 // add identity
 builder.Services.AddHttpClient();
 
-// builder.Services.AddAuthorization(options =>
-// {
-//     options.AddPolicy("RequireAdminRole", p => p.RequireRole("Admin"));
-//     options.AddPolicy("RequireUserRole", p => p.RequireRole("Client"));
-//     options.AddPolicy("RequireUserRole", p => p.RequireRole("Gearnt"));
-//     options.AddPolicy("RequireUserRole", p => p.RequireRole("Agent"));
-//     options.AddPolicy("RequireUserRole", p => p.RequireRole("Commercial"));
-// });
+
+builder.Services.AddAuthorization(options =>
+{
+    options.AddPolicy("RequireAdminRole", p => p.RequireRole(predefinedRoles.SuperAdmin.ToString()));
+});
+
 
 builder.Services.AddAuthorization();
 

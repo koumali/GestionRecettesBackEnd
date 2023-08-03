@@ -1,5 +1,6 @@
 ﻿using AutomotiveApi.DAL;
 using AutomotiveApi.Models.Entities.Param;
+using AutomotiveApi.Utility;
 using Microsoft.EntityFrameworkCore;
 
 namespace AutomotiveApi.Services.Param;
@@ -7,6 +8,7 @@ namespace AutomotiveApi.Services.Param;
 public class PermissionService : IPermissionService
 {
     private readonly AppDbContext _context;
+    private object predefinedPermissions;
 
     public PermissionService(AppDbContext context)
     {
@@ -26,5 +28,18 @@ public class PermissionService : IPermissionService
     public async Task<IEnumerable<Permission>> GetAllAsync()
     {
         return await _context.Permissions.ToListAsync();
+    }
+
+    public async Task<IEnumerable<Permission>> GetPermissionsAgence()
+    {
+        var notAllowed = new List<string> { PredefinedPermissions.Permissions.ToString(),
+         PredefinedPermissions.Users.ToString(),
+          PredefinedPermissions.Roles.ToString(),
+          PredefinedPermissions.Agences.ToString() ,
+          PredefinedPermissions.Modeles.ToString(),
+          PredefinedPermissions.Marques.ToString()
+          };
+
+        return await _context.Permissions.Where(p => !notAllowed.Contains(p.Name)).ToListAsync();
     }
 }

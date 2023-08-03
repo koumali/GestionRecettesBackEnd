@@ -7,7 +7,7 @@ namespace AutomotiveApi.Services.Param
 {
     public interface IRole : IGenericData<Role>
     {
-        Task<IEnumerable<Role>> GetRolesAgence();
+        Task<IEnumerable<Role>> GetRolesAgence(int idAgence);
         Task<Role> CreateWithPermissionsAsync(RoleDto entity);
         Task<Role> UpdateWithPermissionsAsync(RoleDto entity);
 

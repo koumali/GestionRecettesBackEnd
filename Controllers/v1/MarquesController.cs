@@ -26,34 +26,22 @@ namespace AutomotiveApi.Controllers.v1
         }
 
         [HttpGet]
-       
+       [AllowAnonymous]
         public async Task<ActionResult<IEnumerable<Marque>>> GetMarques()
         {
             var marques = await _marqueService.GetAllAsync();
             return Ok(marques);
         }
         
-       // [HttpGet("agence/{idAgence}")]
-       //  // // [Authorize(Roles = "Commercial, Agent, Gerant")]
-       // [ValidatIdAgence("idAgence")]
-       //  public async Task<ActionResult<IEnumerable<Marque>>> GetMarquesAgence(int idAgence)
-       //  {
-       //      var marques = await _marqueService.GetMarquesAgence(idAgence);
-       //      return Ok(marques);
-       //  }
+ 
 
-        [HttpGet("{id}")]
-        // // [Authorize(Roles = "Admin, Commercial, Agent, Gerant")]
-        
+        [HttpGet("{id}")]          
         public async Task<ActionResult<Marque>> GetMarqueById(int id)
         {
             var marque = await _marqueService.GetByIdAsync(id);
             return Ok(marque);
         }
-        //<summary>
-        //Add Marque
-        //</summary>
-
+    
         [HttpPost]
         
         public async Task<ActionResult<Marque>> AddMarque(MarqueDto request)

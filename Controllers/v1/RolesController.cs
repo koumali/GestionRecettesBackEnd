@@ -12,7 +12,7 @@ namespace AutomotiveApi.Controllers.v1
     [ApiController]
     [Route("api/v1/[controller]")]
 
-   
+
 
     [HasPermission(PredefinedPermissions.Roles)]
     public class RolesController : ControllerBase
@@ -30,23 +30,27 @@ namespace AutomotiveApi.Controllers.v1
 
         public async Task<ActionResult<IEnumerable<Role>>> GetRoles()
         {
+            
             var roles = await _roleService.GetAllAsync();
             return Ok(roles);
         }
 
         [HttpGet("agence")]
-
+        
         public async Task<ActionResult<IEnumerable<Role>>> GetRolesAgence()
         {
-            var roles = await _roleService.GetRolesAgence();
+            int idAgence = int.Parse(User.FindFirst("idAgence")?.Value ?? "0");
+            var roles = await _roleService.GetRolesAgence(idAgence);
             return Ok(roles);
         }
         [HttpPost]
 
         public async Task<ActionResult<Role?>> AddRole(RoleDto request)
-        {
+        {            
             try
             {
+                int idAgence = int.Parse(User.FindFirst("idAgence")?.Value ?? "0");
+                request.IdAgence = idAgence;
                 var addedRole = await _roleService.CreateWithPermissionsAsync(request);
                 return Ok(addedRole);
             }
@@ -82,6 +86,9 @@ namespace AutomotiveApi.Controllers.v1
             {
                 return BadRequest(new { errors = "Id's do not match" });
             }
+
+            int idAgence = int.Parse(User.FindFirst("idAgence")?.Value ?? "0");
+            request.IdAgence = idAgence;
 
             var updatedRole = await _roleService.UpdateWithPermissionsAsync(request);
 

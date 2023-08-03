@@ -10,10 +10,11 @@ namespace AutomotiveApi.DAL
 
         public static IEnumerable<Permission> SeedPermissions()
         {
+            int id = 1;
             var permissions = Enum.GetValues<PredefinedPermissions>()
                 .Select(p => new Permission
                 {
-                    Id = (int)p,
+                    Id = id++,
                     Name = p.ToString()
                 });
             return permissions;

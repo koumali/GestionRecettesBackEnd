@@ -7,7 +7,9 @@ namespace AutomotiveApi.Services.Gestion.Interfaces
         Task<LongTermRental?> GererMaReservation(string numero, string email);
         Task<LongTermRental> GetByIdAsync(int id);
         Task<IEnumerable<LongTermRental>> GetAllAsync();
+        Task<IEnumerable<LongTermRental>> GetLongTermRentalsByAgence(int idAgence);
         Task<LongTermRental> UpdateAsync(LongTermRental entity);
+        
         // LongTermRental? add(LongTermRental LongTermRental);
         // void delete(int id);
         // LongTermRental? update(LongTermRental LongTermRental);

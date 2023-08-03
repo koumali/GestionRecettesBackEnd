@@ -11,6 +11,7 @@ namespace AutomotiveApi.Controllers.v1
 {
     [Route("api/v1/[controller]")]
     [ApiController]
+    [HasPermission(PredefinedPermissions.Vehicles)]
     public class VehiculesController : ControllerBase
     {
         private readonly IMapper _mapper;
@@ -35,13 +36,7 @@ namespace AutomotiveApi.Controllers.v1
             return Ok(_vehiculeService.GetTopReservedVehicules(number));
         }
 
-        // [HttpGet]
-        // // // [Authorize(Roles = "Admin")]
-        // public async Task<ActionResult<IEnumerable<Vehicule>>> GetVehicules()
-        // {
-        //     var vehicules = await _vehiculeService.GetAllAsync();
-        //     return Ok(vehicules);
-        // }
+        
 
         [HttpGet("agence/{idAgence}")]
         
@@ -64,7 +59,7 @@ namespace AutomotiveApi.Controllers.v1
         
         public async Task<ActionResult<Vehicule>> AddVehicule(VehiculeDto request)
         {
-            var vehicule = _mapper.Map<Vehicule>(request);
+            var vehicule = _mapper.Map<Vehicule>(request);            
             var addedVehicule = await _vehiculeService.CreateAsync(vehicule);
             return Ok(addedVehicule);
         }

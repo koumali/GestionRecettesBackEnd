@@ -11,6 +11,7 @@ namespace AutomotiveApi.Controllers.v1
 {
     [Route("api/v1/[controller]")]
     [ApiController]
+    [HasPermission(PredefinedPermissions.Modeles)]
     public class ModelesController : ControllerBase
     {
         private readonly IMapper _mapper;
@@ -28,6 +29,7 @@ namespace AutomotiveApi.Controllers.v1
         }
 
         [HttpGet]
+        [AllowAnonymous]
         
         public async Task<ActionResult<IEnumerable<Modele>>> GetModeles()
         {
@@ -35,26 +37,16 @@ namespace AutomotiveApi.Controllers.v1
             return Ok(modeles);
         }
 
-        // [HttpGet("agence/{idAgence}")]
-        // // // [Authorize(Roles = "Commercial, Gerant, Agent")]
-        // [ValidatIdAgence("idAgence")]
-        // public async Task<ActionResult<IEnumerable<Modele>>> GetModelesAgence(int idAgence)
-        // {
-        //     var modeles = await _modeleService.GetModelesAgence(idAgence);
-        //     return Ok(modeles);
-        // }
+      
 
-        [HttpGet("{id}")]
-        // // [Authorize(Roles = "Admin, Commercial, Agent, Gerant")]
+
+        [HttpGet("{id}")]      
         public async Task<ActionResult<Modele>> GetModeleById(int id)
         {
             var modele = await _modeleService.GetByIdAsync(id);
             return Ok(modele);
         }
-        //<summary>
-        //Add Modele
-        //</summary>
-
+ 
         [HttpPost]
         
         public async Task<ActionResult<Modele>> AddModele([FromForm] ModeleDto request)

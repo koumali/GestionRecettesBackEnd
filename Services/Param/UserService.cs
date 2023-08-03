@@ -1,6 +1,7 @@
 using AutomotiveApi.DAL;
 using AutomotiveApi.Models.Entities.Param;
 using AutomotiveApi.Services.Gestion;
+using AutomotiveApi.Utility;
 using Microsoft.EntityFrameworkCore;
 
 namespace AutomotiveApi.Services.Param
@@ -27,11 +28,12 @@ namespace AutomotiveApi.Services.Param
         {
             return await _context.Users
                 .Include(u => u.Role)
+                .Include(u => u.Agence)
                 .Where(u => u.IdAgence == idAgence)
                 .ToListAsync();
         }
 
-        public new async Task<User> CreateAsync(User user)
+        public new async Task<User?> CreateAsync(User user)
         {
 
             User? userExists = await findByEmail(user.Email);
@@ -46,7 +48,7 @@ namespace AutomotiveApi.Services.Param
 
                 await _context.Users.AddAsync(user);
                 await _context.SaveChangesAsync();
-                return user;
+                return await GetByIdAsync(user.Id);
             }
             catch (Exception ex)
             {
@@ -56,7 +58,8 @@ namespace AutomotiveApi.Services.Param
 
         public new async Task<IEnumerable<User>> GetAllAsync()
         {
-            var users = await _context.Users.Include(u => u.Role).Include(u => u.Agence).Select
+            var users = await _context.Users.Where(u => u.Role.Name == predefinedRoles.SuperAdmin.ToString() || u.Role.Name == predefinedRoles.Admin.ToString())
+            .Include(u => u.Role).Include(u => u.Agence).Select
             (
                 u => new User
                 {
@@ -78,7 +81,23 @@ namespace AutomotiveApi.Services.Param
 
         public new async Task<User?> GetByIdAsync(int id)
         {
-            var user = await _context.Users.Where(u => u.Id == id).Include(u => u.Role).FirstOrDefaultAsync();
+
+            var user = await _context.Users.Where(u => u.Id == id).Include(u => u.Role).Include(u => u.Agence).Select
+            (
+                u => new User
+                {
+                    Id = u.Id,
+                    FirstName = u.FirstName,
+                    LastName = u.LastName,
+                    Email = u.Email,
+                    IsActive = u.IsActive,
+                    IdRole = u.IdRole,
+                    IdAgence = u.IdAgence,
+                    Role = u.Role,
+                    Agence = u.Agence
+                }
+            ).FirstOrDefaultAsync();
+
             return user;
         }
 
@@ -102,7 +121,7 @@ namespace AutomotiveApi.Services.Param
             }
         }
 
-        public new async Task<User> UpdateAsync(User user)
+        public new async Task<User?> UpdateAsync(User user)
         {
             var userExists = await _context.Users.Where(u => u.Id == user.Id).FirstOrDefaultAsync();
             if (userExists == null)
@@ -128,7 +147,7 @@ namespace AutomotiveApi.Services.Param
                 userExists.IsActive = user.IsActive;
 
                 await _context.SaveChangesAsync();
-                return userExists;
+                return await GetByIdAsync(user.Id);
             }
             catch (Exception ex)
             {

@@ -14,6 +14,7 @@ namespace AutomotiveApi.Controllers.v1
 {
     [ApiController]
     [Route("api/v1/[controller]")]
+    [HasPermission(PredefinedPermissions.Reservations)]
     public class ReservationsController : ControllerBase
     {
         private readonly IReservation _reservationService;
@@ -36,13 +37,6 @@ namespace AutomotiveApi.Controllers.v1
             _notification = notification;
         }
 
-        // [HttpGet]
-        // // // [Authorize(Roles = "Admin")]
-        // public async Task<ActionResult<IEnumerable<Reservation>>> GetReservations()
-        // {
-        //     var reservations = await _reservationService.GetAllAsync();
-        //     return Ok(reservations);
-        // }
 
         [HttpGet("agence/{idAgence}")]
         
@@ -71,6 +65,7 @@ namespace AutomotiveApi.Controllers.v1
         }
 
         [HttpGet("maReservation")]
+        [AllowAnonymous]
         public async Task<ActionResult<Reservation>> GererMaReservation(string numero, string email)
         {
             // verify client
@@ -83,6 +78,7 @@ namespace AutomotiveApi.Controllers.v1
         }
 
         [HttpPost("public")]
+        [AllowAnonymous]
         public async Task<ActionResult<Reservation>> AddReservationPublic([FromForm] FullReservationDto request)
         {
             // generate number of reservation

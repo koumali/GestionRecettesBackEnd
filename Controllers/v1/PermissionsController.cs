@@ -9,12 +9,15 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace AutomotiveApi.Controllers.v1
 {
+
+
     [ApiController]
     [Route("api/v1/[controller]")]
     [HasPermission(PredefinedPermissions.Permissions)]
     public class PermissionsController : ControllerBase
     {
         private readonly IPermissionService _permissionService;
+
 
 
         public PermissionsController(IPermissionService permissionService)
@@ -24,11 +27,20 @@ namespace AutomotiveApi.Controllers.v1
 
 
         [HttpGet]
-       
+        [Authorize(Roles = nameof(predefinedRoles.SuperAdmin))]
         public async Task<ActionResult<IEnumerable<Permission>>> GetPermissions()
         {
-            var permissions = await _permissionService.GetAllAsync();            
+            var permissions = await _permissionService.GetAllAsync();
             return Ok(permissions);
         }
+
+        [HttpGet("agence")]
+        public async Task<ActionResult<IEnumerable<Permission>>> GetPermissionsAgence()
+        {
+            var permissions = await _permissionService.GetPermissionsAgence();
+            return Ok(permissions);
+        }
+
+
     }
 }

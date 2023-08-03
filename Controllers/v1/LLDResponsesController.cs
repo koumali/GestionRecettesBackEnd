@@ -11,6 +11,7 @@ namespace AutomotiveApi.Controllers.v1
 {
     [Route("api/v1/[controller]")]
     [ApiController]
+    
     public class LLDResponsesController : ControllerBase
     {
         private readonly IMapper _mapper;
@@ -26,24 +27,17 @@ namespace AutomotiveApi.Controllers.v1
         }
 
         [HttpGet]
-        // [Authorize(Roles = "Admin, Commercial, Agent, Gerant")]
+        [HasPermission(PredefinedPermissions.LongTerm)]
         public async Task<ActionResult<IEnumerable<LLDResponse>>> GetLLDResponses()
         {
             var LLDResponses = await _LLDResponseService.GetAllAsync();
             return Ok(LLDResponses);
         }
 
-        /*[HttpGet("agence/{idAgence}")]
-        // [Authorize(Roles = "Commercial, Gerant, Agent")]
-        [ValidatIdAgence("idAgence")]
-        public async Task<ActionResult<IEnumerable<LLDResponse>>> GetLLDResponsesAgence(int idAgence)
-        {
-            var LLDResponses = await _LLDResponseService.GetLLDResponsesAgence(idAgence);
-            return Ok(LLDResponses);
-        }*/
+        
 
         [HttpGet("{id}")]
-        // [Authorize(Roles = "Admin, Commercial, Agent, Gerant")]
+        [HasPermission(PredefinedPermissions.LongTerm)]
         public async Task<ActionResult<LLDResponse>> GetLLDResponseById(int id)
         {
             var LLDResponse = await _LLDResponseService.GetByIdAsync(id);
@@ -51,7 +45,7 @@ namespace AutomotiveApi.Controllers.v1
         }
 
         [HttpPost]
-        // [Authorize(Roles = "Admin, Commercial, Agent, Gerant")]
+        [HasPermission(PredefinedPermissions.LongTerm)]
         public async Task<ActionResult<LLDResponse>> AddLLDResponse([FromForm] LLDResponseDto request)
         {
             var LLDResponse = _mapper.Map<LLDResponse>(request);
@@ -63,7 +57,7 @@ namespace AutomotiveApi.Controllers.v1
         }
 
         [HttpDelete("{id}")]
-        // [Authorize(Roles = "Admin, Commercial, Agent, Gerant")]
+        [HasPermission(PredefinedPermissions.LongTerm)]
         public async Task<ActionResult> DeleteLLDResponse(int id)
         {
             await _LLDResponseService.DeleteAsync(id);
@@ -71,7 +65,7 @@ namespace AutomotiveApi.Controllers.v1
         }
 
         [HttpPut("{id}")]
-        // [Authorize(Roles = "Admin, Commercial, Agent, Gerant")]
+        [HasPermission(PredefinedPermissions.LongTerm)]
         public async Task<ActionResult<LLDResponse>> UpdateLLDResponse(int id, [FromForm] LLDResponseDto request)
         {
             if (id != request.idLongTermRental)

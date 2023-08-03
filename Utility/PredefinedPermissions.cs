@@ -2,30 +2,30 @@
 
 public enum PredefinedPermissions
 {
-    // PlatformTopLevelPermission = 1,
+    // PlatformTopLevelPermission ,
 
-    // AgencyFirstLevelPermission = 2,
+    // AgencyFirstLevelPermission ,
 
-    // AgencySecondLevelPermission = 3,
+    // AgencySecondLevelPermission ,
 
-    // AgencyThirdLevelPermission = 4,
+    // AgencyThirdLevelPermission ,
 
-    // AgencyFourthLevelPermission = 5
+    // AgencyFourthLevelPermission ,
 
-    Users = 1,
-    Roles = 2,
-    Permissions = 3,
-    Agences = 4,
+    Users,
+    Roles ,
+    Permissions ,
+    Agences ,
 
-    Marques = 5,
-    Modeles = 6,
+    Marques ,
+    Modeles ,
 
-    Reservations = 7,
+    Reservations ,
 
-    Clients = 8,
+    Clients ,
 
-    LongTerm = 9,
+    LongTerm ,
 
-    Vehicles = 10,
+    Vehicles ,
 
 }

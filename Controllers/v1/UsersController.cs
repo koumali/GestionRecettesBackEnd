@@ -29,16 +29,14 @@ namespace AutomotiveApi.Controllers.v1
         }
 
 
-        [HttpGet]
-       
+        [HttpGet]        
         public async Task<ActionResult<IEnumerable<User>>> GetUsers()
         {
             var users = await _userService.GetAllAsync();
             return Ok(users);
         }
 
-        [HttpGet("agence/{idAgence}")]
-       
+        [HttpGet("agence/{idAgence}")]       
         [ValidatIdAgence("idAgence")]
         public async Task<ActionResult<IEnumerable<User>>> GetUsersAgence(int idAgence)
         {
@@ -46,30 +44,23 @@ namespace AutomotiveApi.Controllers.v1
             return Ok(users);
         }
 
-        //<summary>
-        //Get user by id
-        //testing
-        //</summary>
-
-        //get user by id
-        [HttpGet("{id}")]
-        // // [Authorize(Roles = "Admin, Gerant")]
+      
+        [HttpGet("{id}")]        
         public async Task<ActionResult<User>> GetUserById(int id)
         {
             var user = await _userService.GetByIdAsync(id);
             return Ok(user);
         }
 
-        //add user
-        [HttpPost]
-       
+        
+        [HttpPost]       
         public async Task<ActionResult<User>> Add(UserDto userRequest)
         {
             var user = _mapper.Map<User>(userRequest);
             try
             {
                 var newUser = await _userService.CreateAsync(user);
-                return CreatedAtAction(nameof(GetUserById), new { id = newUser.Id }, newUser);
+                return newUser;
             }
             catch (Exception ex)
             {

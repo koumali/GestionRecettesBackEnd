@@ -28,6 +28,15 @@ namespace AutomotiveApi.Services.Gestion
         {
             return await _context.long_term_rentals.Where(l => l.Id == id).Include(l => l.LLDResponses).FirstOrDefaultAsync();
         }
+
+        public async Task<IEnumerable<LongTermRental>> GetLongTermRentalsByAgence(int idAgence)
+        {
+            return await _context.long_term_rentals
+            .Where(l => l.idAgence == idAgence)
+            .Include(l => l.Modele)
+            .ThenInclude(m => m.Marque)
+            .Include(l => l.LLDResponses).ToListAsync();
+        }
         public async Task<LongTermRental?> GererMaReservation(string numero, string email)
         {
             var longTermRental = await _context.long_term_rentals.Where(r => r.NumeroReservation == numero && r.email == email).Include(l => l.LLDResponses).ThenInclude(l => l.Agence).FirstOrDefaultAsync();
