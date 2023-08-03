@@ -11,6 +11,7 @@ namespace AutomotiveApi.Controllers.v1
 {
     [ApiController]
     [Route("api/v1/[controller]")]
+    [HasPermission(PredefinedPermissions.Offres)]
     public class OffresController : ControllerBase
     {
         private readonly IOffre _offreservice;
@@ -26,6 +27,7 @@ namespace AutomotiveApi.Controllers.v1
       
 
         [HttpGet("public")]
+        [AllowAnonymous]
         public async Task<ActionResult<IEnumerable<Offre>>> GetPublicOffres(string name,string startDate, string endDate)
         {
             var date1 = (new DateTime(1970, 1, 1)).AddMilliseconds(double.Parse(startDate));
@@ -36,6 +38,7 @@ namespace AutomotiveApi.Controllers.v1
         }
         
         [HttpGet("public/{id}")]
+        [AllowAnonymous]
         public async Task<ActionResult<Offre>> GetPublicOffreById(int id)
         {
             var offre = await _offreservice.GetPublicByIdAsync(id);

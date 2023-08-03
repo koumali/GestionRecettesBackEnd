@@ -25,9 +25,33 @@ namespace AutomotiveApi.Services.Gestion
         public async Task<IEnumerable<Offre>> GetOffresAgence(int idAgence)
         {
             return await _context.Offres
-                .Include(o => o.Vehicule)
-                .Where(o => o.Vehicule.Agence.Id == idAgence)
-                .ToListAsync();
+            .Where(o => o.Vehicule.Agence.Id == idAgence)
+                .Include(o => o.Vehicule).ThenInclude(v => v.Modele)
+                .Select(o => new Offre
+                {
+                    Id = o.Id,
+                    DateDebut = o.DateDebut,
+                    DateFin = o.DateFin,
+                    Prix = o.Prix,
+                    isPublic = o.isPublic,
+                    Vehicule = new Vehicule
+                    {
+                        Id = o.Vehicule.Id,
+                        Matricule = o.Vehicule.Matricule,
+                        IdAgence = o.Vehicule.IdAgence,
+                        Modele = new Modele
+                        {
+                            Id = o.Vehicule.Modele.Id,
+                            Name = o.Vehicule.Modele.Name,
+                            Image = o.Vehicule.Modele.Image,
+                            Marque = new Marque
+                            {
+                                Id = o.Vehicule.Modele.Marque.Id,
+                                Name = o.Vehicule.Modele.Marque.Name
+                            }
+                        }
+                    }
+                }).ToListAsync();
         }
 
         public new async Task<Offre?> GetByIdAsync(int id)
