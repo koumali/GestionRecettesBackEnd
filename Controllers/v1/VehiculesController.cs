@@ -48,7 +48,7 @@ namespace AutomotiveApi.Controllers.v1
         }
 
         [HttpGet("{id}")]
-        // // [Authorize(Roles = "Admin, Commercial, Agent, Gerant")]
+      
         public async Task<ActionResult<Vehicule>> GetVehiculeById(int id)
         {
             var vehicule = await _vehiculeService.GetByIdAsync(id);

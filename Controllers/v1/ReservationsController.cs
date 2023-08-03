@@ -147,7 +147,7 @@ namespace AutomotiveApi.Controllers.v1
         }
 
         [HttpGet("{id}")]
-        // // [Authorize(Roles = "Admin, Commercial, Gerant")]
+     
         [ValidatIdAgence("idAgence")]
         public async Task<ActionResult<Reservation>> GetReservationById(int id)
         {

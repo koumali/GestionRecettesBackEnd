@@ -2,15 +2,6 @@
 
 public enum PredefinedPermissions
 {
-    // PlatformTopLevelPermission ,
-
-    // AgencyFirstLevelPermission ,
-
-    // AgencySecondLevelPermission ,
-
-    // AgencyThirdLevelPermission ,
-
-    // AgencyFourthLevelPermission ,
 
     Users,
     Roles ,

@@ -23,13 +23,7 @@ namespace AutomotiveApi.Controllers.v1
             _mapper = mapper;
         }
 
-        // [HttpGet]
-        // // // [Authorize(Roles = "Admin, Commercial, Gerant")]
-        // public async Task<ActionResult<IEnumerable<Offre>>> GetOffres()
-        // {
-        //     var offres = await _offreservice.GetAllAsync();
-        //     return Ok(offres);
-        // }
+      
 
         [HttpGet("public")]
         public async Task<ActionResult<IEnumerable<Offre>>> GetPublicOffres(string name,string startDate, string endDate)
