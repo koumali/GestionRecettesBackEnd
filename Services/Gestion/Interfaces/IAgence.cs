@@ -5,6 +5,7 @@ namespace AutomotiveApi.Services.Gestion.Interfaces
     public interface IAgence : IGenericData<Agence>
     {
         Task<IEnumerable<string>> GetAllVilleAsync();
+        Task<IEnumerable<dynamic>> GetAllAgencesAsync();
         Task<IEnumerable<Agence>> GetAllNotVerifiedAsync();
     }
 }

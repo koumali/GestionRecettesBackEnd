@@ -12,5 +12,6 @@ namespace AutomotiveApi.Models.Dto
         public int duree { get; set; }
         public int idModele { get; set; }
         public string description { get; set; }
+        public List<int> selectedAgences { get; set; }
     }
 }

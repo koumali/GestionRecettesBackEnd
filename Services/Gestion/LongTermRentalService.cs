@@ -3,6 +3,7 @@ using AutomotiveApi.Models.Entities.Gestion;
 using AutomotiveApi.Services.Gestion.Interfaces;
 using AutomotiveApi.Utility;
 using Microsoft.EntityFrameworkCore;
+using Org.BouncyCastle.Asn1.Ocsp;
 
 namespace AutomotiveApi.Services.Gestion
 {
@@ -28,7 +29,23 @@ namespace AutomotiveApi.Services.Gestion
         {
             return await _context.long_term_rentals.Where(l => l.Id == id).Include(l => l.LLDResponses).FirstOrDefaultAsync();
         }
+        public async Task<LongTermRental> CreateAsync(LongTermRental entity, List<int> selectedAgences)
+        {
+            await _context.Set<LongTermRental>().AddAsync(entity);
+            await _context.SaveChangesAsync();
+            foreach (var selectedAgenceId in selectedAgences)
+            {
+               var agenceLongTermRental = new AgenceLongTermRental
+               {
+                   AgenceId = selectedAgenceId,
+                   LongTermRentalId = entity.Id
+               };
+               await _context.AgenceLongTermRentals.AddAsync(agenceLongTermRental);
+            }
+            await _context.SaveChangesAsync();
 
+            return entity;
+        }
         public async Task<IEnumerable<LongTermRental>> GetLongTermRentalsByAgence(int idAgence)
         {
             return await _context.long_term_rentals

@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 using AutomotiveApi.Services.Gestion.Interfaces;
 using AutomotiveApi.Utility;
 using AutomotiveApi.Utility;
+using Microsoft.EntityFrameworkCore;
 
 namespace AutomotiveApi.Controllers.v1
 {
@@ -68,8 +69,8 @@ namespace AutomotiveApi.Controllers.v1
             longTermRental.status = ReservationStatus.Enattente.ToString();
             longTermRental.NumeroReservation = numeroReservation;
             longTermRental.CreatedAt = DateTime.Now;
-            var addedLongTermRental = await _longTermRentalService.CreateAsync(longTermRental);
-
+            var addedLongTermRental = await _longTermRentalService.CreateAsync(longTermRental, request.selectedAgences);
+           
             return Ok(addedLongTermRental);
         }
 

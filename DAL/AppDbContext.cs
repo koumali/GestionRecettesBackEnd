@@ -34,6 +34,8 @@ namespace AutomotiveApi.DAL
         public virtual DbSet<Permission> Permissions { get; set; }
 
         public DbSet<RolePermission> RolePermissions { get; set; }
+        public DbSet<AgenceLongTermRental> AgenceLongTermRentals { get; set; }
+
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
@@ -122,6 +124,22 @@ namespace AutomotiveApi.DAL
                     .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("FK_RolePermission_id_permission");
             });
+            modelBuilder.Entity<AgenceLongTermRental>(entity =>
+            {
+                entity.HasKey(e => new { e.AgenceId, e.LongTermRentalId });
+
+                entity.HasOne(d => d.Agence)
+                    .WithMany(p => p.AgenceLongTermRentals)
+                    .HasForeignKey(d => d.AgenceId)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK_RolePermission_id_agence");
+
+                entity.HasOne(d => d.LongTermRental)
+                    .WithMany(p => p.AgenceLongTermRentals)
+                    .HasForeignKey(d => d.LongTermRentalId)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK_RolePermission_id_longTermRental");
+            });
 
 
             modelBuilder.Entity<Reservation>(entity =>
@@ -164,6 +182,7 @@ namespace AutomotiveApi.DAL
                     .HasForeignKey(d => d.idAgence)
                     .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("FK_Reservation_id_agence");
+
             });
 
 
