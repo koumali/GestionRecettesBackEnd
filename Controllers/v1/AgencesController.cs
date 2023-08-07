@@ -26,12 +26,17 @@ namespace AutomotiveApi.Controllers.v1
         }
 
         [HttpGet]
-        
         public async Task<ActionResult<IEnumerable<Agence>>> GetVerifiedAgences()
         {
             return Ok(await _agenceService.GetAllAsync());
         }
-        
+        [HttpGet("agences")]
+        public async Task<ActionResult<IEnumerable<dynamic>>> GetAllAgences()
+        {
+           
+            return Ok(await _agenceService.GetAllAgencesAsync());
+        }
+
         [HttpGet("notVerified")]
         // 
   

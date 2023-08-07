@@ -18,7 +18,11 @@ namespace AutomotiveApi.Services.Gestion
         {
             return await _context.Agences.Select(a => a.City).Distinct().ToListAsync();
         }
-    
+        public async Task<IEnumerable<dynamic?>> GetAllAgencesAsync()
+        {
+            return await _context.Agences.Select(a => new { a.Id, a.Name}).ToListAsync();
+        }
+
         // get all verified agences
         public new async Task<IEnumerable<Agence>> GetAllAsync()
         {
