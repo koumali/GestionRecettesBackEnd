@@ -109,7 +109,7 @@ namespace AutomotiveApi.Controllers.v1
                 return Ok(updatedLongTermRental);
             }
 
-            return BadRequest(new { errors = "Reservation already confirmed" });
+            return BadRequest(new { errors = "la reservation est deja confirmé" });
         }
     }
 }

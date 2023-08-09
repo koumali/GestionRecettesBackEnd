@@ -61,7 +61,7 @@ namespace AutomotiveApi.Controllers.v1
             }
             else
             {
-                return BadRequest(new { errors = "Image is required" });
+                return BadRequest(new { errors = "Image est obligatoire" });
             }
             
             var addedModele = await _modeleService.CreateAsync(modele);
@@ -82,7 +82,7 @@ namespace AutomotiveApi.Controllers.v1
         {
             if (id != request.Id)
             {
-                return BadRequest(new { errors = "Id in body doesn't match Id in URI" });
+                return BadRequest(new { errors = "Id non valide" });
             }
 
             var modele = await _modeleService.GetByIdAsync(id);

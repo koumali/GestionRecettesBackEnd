@@ -77,7 +77,7 @@ namespace AutomotiveApi.Services.Param
 
             if (roleDto.SelectedPermissionIds.Count == 0)
             {
-                throw new Exception("You must select at least one permission");
+                throw new Exception("vous devez selectionner au moins une permission");
             }
 
             await base.CreateAsync(role);
@@ -115,7 +115,7 @@ namespace AutomotiveApi.Services.Param
 
             if (role == null)
             {
-                throw new Exception("Role not found");
+                throw new Exception("Role non trouvé");
             }
 
             role.Name = roleDto.Name;
@@ -123,7 +123,7 @@ namespace AutomotiveApi.Services.Param
 
             if (roleDto.SelectedPermissionIds.Count == 0)
             {
-                throw new Exception("You must select at least one permission");
+                throw new Exception("vous devez selectionner au moins une permission");
             }
 
 

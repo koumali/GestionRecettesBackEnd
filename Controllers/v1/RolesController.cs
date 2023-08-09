@@ -85,7 +85,7 @@ namespace AutomotiveApi.Controllers.v1
         {
             if (id != request.Id)
             {
-                return BadRequest(new { errors = "Id's do not match" });
+                return BadRequest(new { errors = "Id n'est pas valide" });
             }
 
             int idAgence = int.Parse(User.FindFirst("idAgence")?.Value ?? "0");

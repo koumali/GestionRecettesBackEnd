@@ -31,6 +31,7 @@ namespace AutomotiveApi.Services.Gestion
         }
         public async Task<LongTermRental> CreateAsync(LongTermRental entity, List<int> selectedAgences)
         {
+            entity.CreatedAt = DateTime.Now;
             await _context.Set<LongTermRental>().AddAsync(entity);
             await _context.SaveChangesAsync();
             foreach (var selectedAgenceId in selectedAgences)

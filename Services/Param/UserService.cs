@@ -39,13 +39,13 @@ namespace AutomotiveApi.Services.Param
             User? userExists = await findByEmail(user.Email);
             if (userExists != null)
             {
-                throw new Exception("User already exists");
+                throw new Exception("utilisateur existe deja");
             }
 
             try
             {
                 user.Password = BCrypt.Net.BCrypt.HashPassword(user.Password);
-
+                user.CreatedAt = DateTime.Now;                
                 await _context.Users.AddAsync(user);
                 await _context.SaveChangesAsync();
                 return await GetByIdAsync(user.Id);
@@ -106,7 +106,7 @@ namespace AutomotiveApi.Services.Param
             var user = await _context.Users.Where(u => u.Id == id).FirstOrDefaultAsync();
             if (user == null)
             {
-                throw new Exception("User not found");
+                throw new Exception("utilisateur n'existe pas");
             }
 
             try
@@ -126,14 +126,14 @@ namespace AutomotiveApi.Services.Param
             var userExists = await _context.Users.Where(u => u.Id == user.Id).FirstOrDefaultAsync();
             if (userExists == null)
             {
-                throw new Exception("User not found");
+                throw new Exception("utilisateur n'existe pas");
             }
 
             //verifier si l'email existe deja
             var emailExists = await _context.Users.Where(u => u.Email == user.Email && u.Id != user.Id).FirstOrDefaultAsync();
             if (emailExists != null)
             {
-                throw new Exception("Email already exists");
+                throw new Exception("Email existe deja");
             }
 
             try

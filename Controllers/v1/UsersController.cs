@@ -76,7 +76,7 @@ namespace AutomotiveApi.Controllers.v1
         {
             if (id != userRequest.Id)
             {
-                return BadRequest(new { errors = "Invalid user id" });
+                return BadRequest(new { errors = "id non valide" });
             }
 
             var user = _mapper.Map<User>(userRequest);
@@ -118,7 +118,7 @@ namespace AutomotiveApi.Controllers.v1
         {
             if (id != changePasswordDto.Id)
             {
-                return BadRequest(new { errors = "Invalid user id" });
+                return BadRequest(new { errors = "id non valide" });
             }
             
             try

@@ -32,7 +32,8 @@ namespace AutomotiveApi.Utility.Middlwares
 
                     Console.WriteLine("Comparing ClientID " + clientId + " to " + folderId);
 
-                    int idAgence = string.IsNullOrEmpty(context.User.FindFirst("idAgence")?.Value) ? int.Parse(context.User.FindFirst("idAgence")?.Value) : 0;
+                    int idAgence = string.IsNullOrEmpty(context.User.FindFirst("idAgence")?.Value) ? 0: int.Parse(context.User.FindFirst("idAgence")?.Value) ;
+                    
 
                     AppDbContext? _context = context.RequestServices.GetService(typeof(AppDbContext)) as AppDbContext;
 

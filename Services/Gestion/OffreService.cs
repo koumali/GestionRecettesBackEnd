@@ -16,8 +16,7 @@ namespace AutomotiveApi.Services.Gestion
 
         public new async Task<Offre> CreateAsync(Offre entity)
         {
-            await _context.Offres.AddAsync(entity);
-            await _context.SaveChangesAsync();
+            await base.CreateAsync(entity);
             return await _context.Offres.Include(o => o.Vehicule)
                 .FirstOrDefaultAsync(o => o.Id == entity.Id);
         }

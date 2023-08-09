@@ -52,7 +52,7 @@ namespace AutomotiveApi.Controllers.v1
             var loginResponse = await _authService.login(email, password);
             if (loginResponse == null)
             {
-                return Unauthorized(new { errors = "Invalid Credentials" });
+                return Unauthorized(new { errors = "Email ou mot de passe incorrect" });
             }
 
             return Ok(loginResponse);

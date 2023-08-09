@@ -26,13 +26,14 @@ public class GenericDataService<T> : IGenericData<T> where T : ModelBase, new()
 
     public async Task<T> CreateAsync(T entity)
     {
+        entity.CreatedAt = DateTime.Now;
         await _db.Set<T>().AddAsync(entity);
         await _db.SaveChangesAsync();
         return entity;
     }
 
     public async Task<T> UpdateAsync(T entity)
-    {
+    {                
         entity.UpdatedAt = DateTime.Now;
         _db.Set<T>().Update(entity);
         await _db.SaveChangesAsync();

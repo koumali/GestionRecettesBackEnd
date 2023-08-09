@@ -25,22 +25,25 @@ public class MailService : IMailService
         multipart.Add(new TextPart(TextFormat.Html) { Text = mailData.Body });
 
 
-        foreach (var file in mailData.files)
+        if (mailData.files != null)
         {
-
-            var content = new MemoryStream();
-            file.CopyTo(content);
-            content.Position = 0;
-
-            var contentType = ContentType.Parse(file.ContentType);
-            var part = new MimePart(contentType.MimeType)
+            foreach (var file in mailData.files)
             {
-                FileName = Path.GetFileName(file.FileName),
-                ContentTransferEncoding = ContentEncoding.Base64,
-                Content = new MimeContent(content),
-            };
 
-            multipart.Add(part);
+                var content = new MemoryStream();
+                file.CopyTo(content);
+                content.Position = 0;
+
+                var contentType = ContentType.Parse(file.ContentType);
+                var part = new MimePart(contentType.MimeType)
+                {
+                    FileName = Path.GetFileName(file.FileName),
+                    ContentTransferEncoding = ContentEncoding.Base64,
+                    Content = new MimeContent(content),
+                };
+
+                multipart.Add(part);
+            }
         }
 
         email.Body = multipart;

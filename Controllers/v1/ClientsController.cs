@@ -41,7 +41,7 @@ namespace AutomotiveApi.Controllers.v1
 
         // get clients of a specific agence
         [HttpGet("agence/{idAgence}")]
-        
+
         [ValidatIdAgence("idAgence")]
         public async Task<ActionResult<IEnumerable<Client>>> GetClientsAgence(int idAgence)
         {
@@ -54,7 +54,7 @@ namespace AutomotiveApi.Controllers.v1
         //</summary>
 
         [HttpPost]
-        
+
         public async Task<ActionResult<Client>> AddClient([FromForm] ClientDto request)
         {
             try
@@ -69,7 +69,7 @@ namespace AutomotiveApi.Controllers.v1
         }
 
         [HttpGet("{id}")]
-      
+
         public async Task<ActionResult<Client>> GetClientById(int id)
         {
             var client = await _clientService.GetByIdAsync(id);
@@ -77,7 +77,7 @@ namespace AutomotiveApi.Controllers.v1
         }
 
         [HttpDelete("{id}")]
-        
+
         public async Task<ActionResult> DeleteClient(int id)
         {
             await _clientService.DeleteAsync(id);
@@ -85,13 +85,13 @@ namespace AutomotiveApi.Controllers.v1
         }
 
         [HttpPut("{id}")]
-        
+
         public async Task<ActionResult<Client>> UpdateClient(int id, [FromForm] ClientDto request)
         {
 
             if (id != request.Id)
             {
-                return BadRequest(new { errors = "Invalid Client" });
+                return BadRequest(new { errors = "id non valide" });
             }
             Client? client = await _clientService.UpdateAsync(request);
 
@@ -117,7 +117,7 @@ namespace AutomotiveApi.Controllers.v1
         {
             if (request.terms == false)
             {
-                return BadRequest(new { errors = "You must accept terms and conditions" });
+                return BadRequest(new { errors = "vous devez accepter les conditions d'utilisation" });
             }
             try
             {
@@ -156,7 +156,7 @@ namespace AutomotiveApi.Controllers.v1
             ClientLoginResponse response = await _clientService.LoginAsync(email, password);
             if (response == null)
             {
-                return BadRequest(new { errors = "Invalid Credentials" });
+                return BadRequest(new { errors = "Email ou mot de passe incorrect" });
             }
 
             return Ok(response);

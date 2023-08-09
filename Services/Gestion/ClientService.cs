@@ -67,6 +67,7 @@ namespace AutomotiveApi.Services.Gestion
 
 
             Client newClient = _mapper.Map<Client>(client);
+            newClient.CreatedAt = DateTime.Now;
 
             _context.Clients.Add(newClient);
             _context.SaveChanges();
@@ -120,7 +121,7 @@ namespace AutomotiveApi.Services.Gestion
 
             if (isClient != null)
             {
-                throw new EmailException("Client already exist");
+                throw new EmailException("client deja existant");
             }
 
             try

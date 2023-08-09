@@ -50,25 +50,33 @@ namespace AutomotiveApi.Controllers.v1
         [HasPermission(PredefinedPermissions.LongTerm)]
         public async Task<ActionResult<LLDResponse>> AddLLDResponse([FromForm] LLDResponseDto request)
         {
+
             var LLDResponse = _mapper.Map<LLDResponse>(request);
 
             var addedLLDResponse = await _LLDResponseService.CreateAsync(LLDResponse);
 
-            string? email = await _LLDResponseService.GetEmailByIdAsync(addedLLDResponse.idLongTermRental);
-
-            MailData mailData = new MailData
+            try
             {
-                To = email,
-                Subject = request.title,
-                Body = request.description + "\n Prix : " + request.prix,
-                files = request.files
-            };
+                string? email = await _LLDResponseService.GetEmailByIdAsync(addedLLDResponse.idLongTermRental);
+
+                MailData mailData = new MailData
+                {
+                    To = email,
+                    Subject = request.title,
+                    Body = request.description + "\n Prix : " + request.prix,
+                    files = request.files
+                };
 
 
 
-            await _mailService.SendAsync(mailData);
+                await _mailService.SendAsync(mailData);
 
-            return Ok(addedLLDResponse);
+                return Ok(addedLLDResponse);
+            }
+            catch (Exception e)
+            {
+                return BadRequest(new { errors = "une erreur est survenue lors de l'envoi de l'email" });
+            }
 
 
 
@@ -88,7 +96,7 @@ namespace AutomotiveApi.Controllers.v1
         {
             if (id != request.idLongTermRental)
             {
-                return BadRequest(new { errors = "Id in body doesn't match Id in URI" });
+                return BadRequest(new { errors = "id non valide" });
             }
 
             var LLDResponse = await _LLDResponseService.GetByIdAsync(id);

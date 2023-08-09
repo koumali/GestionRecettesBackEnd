@@ -26,7 +26,7 @@ namespace AutomotiveApi.Services.Gestion
         {
             return await _context.Reservations
                 .Include(r => r.Vehicule).ThenInclude(v => v.Modele)
-                .Where(r => r.Vehicule.Agence.Id == idAgence)
+                .Where(r => r.Vehicule.Agence.Id == idAgence).Include(r => r.Contrats).ThenInclude(c => c.Client)
                 .Select(r => new Reservation
                 {
                     Id = r.Id,
@@ -51,7 +51,23 @@ namespace AutomotiveApi.Services.Gestion
                                 Name = r.Vehicule.Modele.Marque.Name
                             }
                         }
-                    }
+                    },
+
+                    // get clients array from contrat
+                    Contrats = r.Contrats.Select(c => new Contrat
+                    {
+                        Id = c.Id,
+                        Client = new Client
+                        {
+                            Id = c.Client.Id,
+                            FirstName = c.Client.FirstName,
+                            LastName = c.Client.LastName,
+                            Email = c.Client.Email,
+                            Tel = c.Client.Tel
+                        }
+                    }).ToList()
+
+
                 }).ToListAsync();
         }
 
