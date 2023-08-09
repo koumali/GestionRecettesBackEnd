@@ -10,6 +10,7 @@ namespace AutomotiveApi.Services.Gestion.Interfaces
         Task<LongTermRental> GetByIdAsync(int id);
         Task<IEnumerable<LongTermRental>> GetAllAsync();
         Task<IEnumerable<LongTermRental>> GetLongTermRentalsByAgence(int idAgence);
+        Task<IEnumerable<LongTermRental>> GetRequestsByAgence(int idAgence);
         Task<LongTermRental> UpdateAsync(LongTermRental entity);
         
         // LongTermRental? add(LongTermRental LongTermRental);

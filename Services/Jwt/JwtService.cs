@@ -57,13 +57,13 @@ namespace AutomotiveApi.Services.Jwt
                 new Claim("id", user.Id.ToString()),
                 new Claim("fullname", user.FirstName + " " + user.LastName),
                 new Claim(ClaimTypes.Role, user.Role.Name),
-                new Claim("idAgence", user.IdAgence.ToString() ?? "0")
+                new Claim("idAgence", string.IsNullOrEmpty(user.IdAgence.ToString()) ? "0" : user.IdAgence.ToString()),
             };
 
             var permissions = _permissionService.GetPermissionsAsync(user.Id);
             foreach (var permission in permissions)
             {
-                claims.Add(new ("permissions", permission));
+                claims.Add(new("permissions", permission));
             }
             return JwtTokenFromClaims(claims);
 
@@ -105,6 +105,6 @@ namespace AutomotiveApi.Services.Jwt
             return jwtToken;
         }
 
-        
+
     }
 }

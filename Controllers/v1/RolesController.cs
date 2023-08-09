@@ -30,13 +30,13 @@ namespace AutomotiveApi.Controllers.v1
 
         public async Task<ActionResult<IEnumerable<Role>>> GetRoles()
         {
-            
+
             var roles = await _roleService.GetAllAsync();
             return Ok(roles);
         }
 
         [HttpGet("agence")]
-        
+
         public async Task<ActionResult<IEnumerable<Role>>> GetRolesAgence()
         {
             int idAgence = int.Parse(User.FindFirst("idAgence")?.Value ?? "0");
@@ -46,11 +46,12 @@ namespace AutomotiveApi.Controllers.v1
         [HttpPost]
 
         public async Task<ActionResult<Role?>> AddRole(RoleDto request)
-        {            
+        {
             try
             {
                 int idAgence = int.Parse(User.FindFirst("idAgence")?.Value ?? "0");
-                request.IdAgence = idAgence;
+                if (idAgence != 0)
+                    request.IdAgence = idAgence;
                 var addedRole = await _roleService.CreateWithPermissionsAsync(request);
                 return Ok(addedRole);
             }
@@ -88,7 +89,8 @@ namespace AutomotiveApi.Controllers.v1
             }
 
             int idAgence = int.Parse(User.FindFirst("idAgence")?.Value ?? "0");
-            request.IdAgence = idAgence;
+            if (idAgence != 0)
+                request.IdAgence = idAgence;
 
             var updatedRole = await _roleService.UpdateWithPermissionsAsync(request);
 

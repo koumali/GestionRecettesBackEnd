@@ -2,12 +2,14 @@
 using AutomotiveApi.Models.Entities.Gestion;
 using AutomotiveApi.Services.Gestion.Interfaces;
 using Microsoft.EntityFrameworkCore;
+using AutomotiveApi.Services.Mail;
 
 namespace AutomotiveApi.Services.Gestion
 {
     public class LLDResponsesService : GenericDataService<LLDResponse>, ILLDResponse
     {
         private readonly AppDbContext _context;
+        private readonly IMailService _mailService;
 
         public LLDResponsesService(AppDbContext context) : base(context)
         {
@@ -19,19 +21,30 @@ namespace AutomotiveApi.Services.Gestion
             return await _context.lld_responses.FirstOrDefaultAsync(m => m.Id == id);
         }
 
-        public new async Task<LLDResponse> CreateAsync(LLDResponse entity)
+        public new async Task<LLDResponse?> CreateAsync(LLDResponse entity)
         {
 
-            await _context.lld_responses.AddAsync(entity);
-            await _context.SaveChangesAsync();
-            return await _context.lld_responses
-                .FirstOrDefaultAsync(m => m.Id == entity.Id);
+
+            var addedEntity = await base.CreateAsync(entity);
+
+            return addedEntity;
+
+
         }
 
         public new async Task<IEnumerable<LLDResponse>> GetAllAsync()
         {
             return await _context.lld_responses
                 .ToListAsync();
+        }
+
+        public async Task<string?> GetEmailByIdAsync(int id)
+        {
+            var email = await _context.long_term_rentals
+                .Where(m => m.Id == id)
+                .Select(m => m.email)
+                .FirstOrDefaultAsync();
+            return email;
         }
 
 
