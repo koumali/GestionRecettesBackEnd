@@ -3,7 +3,7 @@ using AutomotiveApi.Models.Entities.Gestion;
 using AutomotiveApi.Services.Gestion.Interfaces;
 using AutomotiveApi.Utility;
 using Microsoft.EntityFrameworkCore;
-using Org.BouncyCastle.Asn1.Ocsp;
+
 
 namespace AutomotiveApi.Services.Gestion
 {
@@ -35,12 +35,12 @@ namespace AutomotiveApi.Services.Gestion
             await _context.SaveChangesAsync();
             foreach (var selectedAgenceId in selectedAgences)
             {
-               var agenceLongTermRental = new AgenceLongTermRental
-               {
-                   AgenceId = selectedAgenceId,
-                   LongTermRentalId = entity.Id
-               };
-               await _context.AgenceLongTermRentals.AddAsync(agenceLongTermRental);
+                var agenceLongTermRental = new AgenceLongTermRental
+                {
+                    AgenceId = selectedAgenceId,
+                    LongTermRentalId = entity.Id
+                };
+                await _context.AgenceLongTermRentals.AddAsync(agenceLongTermRental);
             }
             await _context.SaveChangesAsync();
 
@@ -53,6 +53,14 @@ namespace AutomotiveApi.Services.Gestion
             .Include(l => l.Modele)
             .ThenInclude(m => m.Marque)
             .Include(l => l.LLDResponses).ToListAsync();
+        }
+
+        public async Task<IEnumerable<LongTermRental>> GetRequestsByAgence(int idAgence)
+        {
+            return await _context.long_term_rentals
+          .Where(l => l.idAgence == null && l.AgenceLongTermRentals.Any(a => a.AgenceId == idAgence)).Include(l => l.Modele)
+          .ThenInclude(m => m.Marque).Include(l => l.LLDResponses.Where(l => l.idAgence == idAgence))
+          .ToListAsync();
         }
         public async Task<LongTermRental?> GererMaReservation(string numero, string email)
         {

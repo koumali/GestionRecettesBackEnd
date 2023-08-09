@@ -33,18 +33,18 @@ namespace AutomotiveApi.Controllers.v1
         [HttpGet("agences")]
         public async Task<ActionResult<IEnumerable<dynamic>>> GetAllAgences()
         {
-           
+
             return Ok(await _agenceService.GetAllAgencesAsync());
         }
 
         [HttpGet("notVerified")]
         // 
-  
+
         public async Task<ActionResult<IEnumerable<Agence>>> GetNotVerifiedAgences()
         {
             return Ok(await _agenceService.GetAllNotVerifiedAsync());
         }
-        
+
         [HttpGet("Villes")]
         public async Task<ActionResult<IEnumerable<string>>> GetAgencesVilles()
         {
@@ -70,12 +70,22 @@ namespace AutomotiveApi.Controllers.v1
             var agence = _mapper.Map<Agence>(request);
 
             var addedAgence = await _agenceService.CreateAsync(agence);
-            _mailService.SendEmail(request);
+
+            MailData mailData = new MailData
+            {
+                Subject = "Agence ajoutée",
+                Body = "Votre agence a été ajoutée avec succès",
+                To = request.Email
+            };
+
+            await _mailService.SendAsync(mailData);
+
+
             return CreatedAtAction(nameof(GetAgenceById), new { id = addedAgence.Id }, addedAgence);
         }
 
         [HttpGet("{id}")]
-        
+
         public async Task<ActionResult<Agence>> GetAgenceById(int id)
         {
             var agence = await _agenceService.GetByIdAsync(id);

@@ -32,16 +32,16 @@ namespace AutomotiveApi.Utility.Middlwares
 
                     Console.WriteLine("Comparing ClientID " + clientId + " to " + folderId);
 
-                    int idAgence = int.Parse(context.User.FindFirst("idAgence")?.Value ?? "0");
+                    int idAgence = string.IsNullOrEmpty(context.User.FindFirst("idAgence")?.Value) ? int.Parse(context.User.FindFirst("idAgence")?.Value) : 0;
 
                     AppDbContext? _context = context.RequestServices.GetService(typeof(AppDbContext)) as AppDbContext;
 
-                    
+
 
                     bool hasAccess = await _context.Set<Contrat>()
                     .Where(c => c.IdClient == folderId && c.Reservation.Vehicule.IdAgence == idAgence).AnyAsync();
 
-                    Console.WriteLine("Agence ID : " + idAgence + " to " + folderId);                    
+                    Console.WriteLine("Agence ID : " + idAgence + " to " + folderId);
 
                     if (clientId == folderId || hasAccess)
                     {

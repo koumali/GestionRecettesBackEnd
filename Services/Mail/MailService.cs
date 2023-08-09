@@ -2,6 +2,7 @@
 using MailKit.Security;
 using MimeKit;
 using AutomotiveApi.Models.Dto;
+using MimeKit.Text;
 
 namespace AutomotiveApi.Services.Mail;
 
@@ -14,42 +15,43 @@ public class MailService : IMailService
         _config = config;
     }
 
-    public void SendEmail(AgenceClientDto mailRequest)
+
+    public async Task SendAsync(MailData mailData)
     {
         var email = new MimeMessage();
-        email.From.Add(MailboxAddress.Parse(_config.GetSection("Mail").Value));
-        email.To.Add(MailboxAddress.Parse(_config.GetSection("Mail").Value));
-        email.Subject = mailRequest.Name;
-        email.Body = new TextPart(MimeKit.Text.TextFormat.Html)
-        {
-            Text = $"message = {mailRequest.Address}, email = {mailRequest.Email}, phone = {mailRequest.Tel} "
-        };
-
-        using var smtp = new SmtpClient();
-        smtp.Connect(_config.GetSection("Host").Value, int.Parse(_config.GetSection("Port").Value),
-            SecureSocketOptions.StartTls);
-        smtp.Authenticate(_config.GetSection("Mail").Value, _config.GetSection("Password").Value);
-        smtp.Send(email);
-        smtp.Disconnect(true);
-    }
-
-    public bool SendFullEmail(MailData mailData)
-    {
-        var email = new MimeMessage();
-        email.From.Add(MailboxAddress.Parse(_config.GetSection("Mail").Value));
+        email.From.Add(MailboxAddress.Parse(_config.GetSection("From").Value));
         email.To.Add(MailboxAddress.Parse(mailData.To));
-        email.Subject = mailData.Subject;
-        email.Body = new TextPart(MimeKit.Text.TextFormat.Html)
+        var multipart = new Multipart("mixed");
+        multipart.Add(new TextPart(TextFormat.Html) { Text = mailData.Body });
+
+
+        foreach (var file in mailData.files)
         {
-            Text = mailData.Body
-        };
+
+            var content = new MemoryStream();
+            file.CopyTo(content);
+            content.Position = 0;
+
+            var contentType = ContentType.Parse(file.ContentType);
+            var part = new MimePart(contentType.MimeType)
+            {
+                FileName = Path.GetFileName(file.FileName),
+                ContentTransferEncoding = ContentEncoding.Base64,
+                Content = new MimeContent(content),
+            };
+
+            multipart.Add(part);
+        }
+
+        email.Body = multipart;
 
         using var smtp = new SmtpClient();
-        smtp.Connect(_config.GetSection("Host").Value, int.Parse(_config.GetSection("Port").Value),
-            SecureSocketOptions.StartTls);
-        smtp.Authenticate(_config.GetSection("Mail").Value, _config.GetSection("Password").Value);
-        smtp.Send(email);
-        smtp.Disconnect(true);
-        return true;
+
+        await smtp.ConnectAsync(_config.GetSection("Host").Value, int.Parse(_config.GetSection("Port").Value),
+                    SecureSocketOptions.StartTls);
+
+        await smtp.AuthenticateAsync(_config.GetSection("Mail").Value, _config.GetSection("Password").Value);
+        await smtp.SendAsync(email);
+        await smtp.DisconnectAsync(true);
     }
 }

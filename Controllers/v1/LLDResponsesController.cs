@@ -2,27 +2,29 @@
 using AutomotiveApi.Models.Dto;
 using AutomotiveApi.Models.Entities.Gestion;
 using AutomotiveApi.Services.Attributes;
-using Microsoft.AspNetCore.Authorization;
+
 using Microsoft.AspNetCore.Mvc;
 using AutomotiveApi.Services.Gestion.Interfaces;
 using AutomotiveApi.Utility;
+using AutomotiveApi.Services.Mail;
+using Newtonsoft.Json;
 
 namespace AutomotiveApi.Controllers.v1
 {
     [Route("api/v1/[controller]")]
     [ApiController]
-    
+
     public class LLDResponsesController : ControllerBase
     {
         private readonly IMapper _mapper;
         private readonly ILLDResponse _LLDResponseService;
-        private readonly IMarque _marqueService;
+        private readonly IMailService _mailService;
 
 
-        public LLDResponsesController(ILLDResponse LLDResponseService, IMapper mapper, IMarque marqueService)
+        public LLDResponsesController(ILLDResponse LLDResponseService, IMapper mapper, IMailService mailService)
         {
+            _mailService = mailService;
             _LLDResponseService = LLDResponseService;
-            _marqueService = marqueService;
             _mapper = mapper;
         }
 
@@ -34,7 +36,7 @@ namespace AutomotiveApi.Controllers.v1
             return Ok(LLDResponses);
         }
 
-        
+
 
         [HttpGet("{id}")]
         [HasPermission(PredefinedPermissions.LongTerm)]
@@ -50,10 +52,26 @@ namespace AutomotiveApi.Controllers.v1
         {
             var LLDResponse = _mapper.Map<LLDResponse>(request);
 
-            var marque = await _marqueService.GetByIdAsync(request.idLongTermRental);
-
             var addedLLDResponse = await _LLDResponseService.CreateAsync(LLDResponse);
+
+            string? email = await _LLDResponseService.GetEmailByIdAsync(addedLLDResponse.idLongTermRental);
+
+            MailData mailData = new MailData
+            {
+                To = email,
+                Subject = request.title,
+                Body = request.description + "\n Prix : " + request.prix,
+                files = request.files
+            };
+
+
+
+            await _mailService.SendAsync(mailData);
+
             return Ok(addedLLDResponse);
+
+
+
         }
 
         [HttpDelete("{id}")]
@@ -74,10 +92,10 @@ namespace AutomotiveApi.Controllers.v1
             }
 
             var LLDResponse = await _LLDResponseService.GetByIdAsync(id);
-            
+
             LLDResponse.prix = request.prix;
-            LLDResponse.description = request.description;            
-                        
+            LLDResponse.description = request.description;
+
             var updatedLLDResponse = await _LLDResponseService.UpdateAsync(LLDResponse);
             return Ok(updatedLLDResponse);
         }

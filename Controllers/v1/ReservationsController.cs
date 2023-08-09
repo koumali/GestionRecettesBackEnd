@@ -1,7 +1,6 @@
 using AutoMapper;
 using AutomotiveApi.Models.Dto;
 using AutomotiveApi.Models.Entities.Gestion;
-using AutomotiveApi.Models.Entities.Param;
 using AutomotiveApi.Services.Attributes;
 using AutomotiveApi.Services.Gestion.Interfaces;
 using AutomotiveApi.Services.Mail;
@@ -25,7 +24,8 @@ namespace AutomotiveApi.Controllers.v1
         private readonly IMailService _emailService;
         private readonly INotification _notification;
 
-        public ReservationsController(IReservation reservationService, IMapper mapper, IClient clientService, IUser userService, IMailService emailService,
+        public ReservationsController(IReservation reservationService, IMapper mapper, IClient clientService, IUser userService,
+         IMailService emailService,
             IContrat contratService, INotification notification)
         {
             _reservationService = reservationService;
@@ -39,7 +39,7 @@ namespace AutomotiveApi.Controllers.v1
 
 
         [HttpGet("agence/{idAgence}")]
-        
+
         public async Task<ActionResult<IEnumerable<Reservation>>> GetReservationsAgence(int idAgence)
         {
             var reservations = await _reservationService.GetReservationsAgence(idAgence);
@@ -47,7 +47,7 @@ namespace AutomotiveApi.Controllers.v1
         }
 
         [HttpPost]
-        
+
         public async Task<ActionResult<Reservation>> AddReservation(ReservationDto request)
         {
             // generate number of reservation
@@ -108,7 +108,7 @@ namespace AutomotiveApi.Controllers.v1
                     Body = $"Votre reservation a été bien enregistrée, votre numéro de reservation est {createdRes.NumeroReservation}"
                 };
 
-                _emailService.SendFullEmail(mailData);
+                await _emailService.SendAsync(mailData);
             }
             catch (Exception e)
             {
@@ -147,7 +147,7 @@ namespace AutomotiveApi.Controllers.v1
         }
 
         [HttpGet("{id}")]
-     
+
         [ValidatIdAgence("idAgence")]
         public async Task<ActionResult<Reservation>> GetReservationById(int id)
         {
@@ -156,7 +156,7 @@ namespace AutomotiveApi.Controllers.v1
         }
 
         [HttpDelete("{id}")]
-        
+
         public async Task<ActionResult> DeleteReservation(int id)
         {
             await _reservationService.DeleteAsync(id);
@@ -164,7 +164,7 @@ namespace AutomotiveApi.Controllers.v1
         }
 
         [HttpPut("{id}")]
-        
+
         public async Task<ActionResult<Reservation>> UpdateReservation(int id, ReservationDto request)
         {
             var reservation = await _reservationService.GetByIdAsync(id);

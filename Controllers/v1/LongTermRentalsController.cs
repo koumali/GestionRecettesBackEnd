@@ -6,15 +6,14 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using AutomotiveApi.Services.Gestion.Interfaces;
 using AutomotiveApi.Utility;
-using AutomotiveApi.Utility;
-using Microsoft.EntityFrameworkCore;
+
 
 namespace AutomotiveApi.Controllers.v1
 {
     [Route("api/v1/[controller]")]
     [ApiController]
     [HasPermission(PredefinedPermissions.LongTerm)]
-    
+
     public class LongTermRentalsController : ControllerBase
     {
         private readonly IMapper _mapper;
@@ -33,6 +32,14 @@ namespace AutomotiveApi.Controllers.v1
         public async Task<ActionResult<IEnumerable<LongTermRental>>> GetLongTermRentals()
         {
             var longTermRentals = await _longTermRentalService.GetAllAsync();
+            return Ok(longTermRentals);
+        }
+
+        [HttpGet("requests/agence/{idAgence}")]
+        [ValidatIdAgence("idAgence")]
+        public async Task<ActionResult<IEnumerable<LongTermRental>>> GetRequestsByAgence(int idAgence)
+        {
+            var longTermRentals = await _longTermRentalService.GetRequestsByAgence(idAgence);
             return Ok(longTermRentals);
         }
 
@@ -70,7 +77,7 @@ namespace AutomotiveApi.Controllers.v1
             longTermRental.NumeroReservation = numeroReservation;
             longTermRental.CreatedAt = DateTime.Now;
             var addedLongTermRental = await _longTermRentalService.CreateAsync(longTermRental, request.selectedAgences);
-           
+
             return Ok(addedLongTermRental);
         }
 
