@@ -1,11 +1,8 @@
 using System.ComponentModel.DataAnnotations;
 
-namespace AutomotiveApi.Models.Dto
+namespace AutomotiveApi.Models.Dto;
+
+public class MarqueDto
 {
-    public class MarqueDto
-    {
-        [Required]
-        [MaxLength(50)]
-        public string Name { get; set; }
-    }
+    [Required] [MaxLength(50)] public string Name { get; set; }
 }

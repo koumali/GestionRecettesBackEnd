@@ -1,44 +1,40 @@
 using System.ComponentModel.DataAnnotations;
 
-namespace AutomotiveApi.Utility.Validators
+namespace AutomotiveApi.Utility.Validators;
+
+public class MaxFileSize : ValidationAttribute
 {
+    private readonly int _maxFileSize;
 
-    public class MaxFileSize : ValidationAttribute
+    public MaxFileSize(int maxFileSize)
     {
-        private readonly int _maxFileSize;
+        _maxFileSize = maxFileSize;
+    }
 
-        public MaxFileSize(int maxFileSize)
+    protected override ValidationResult IsValid(object value, ValidationContext validationContext)
+    {
+        if (value == null)
         {
-            _maxFileSize = maxFileSize;
-        }
-
-        protected override ValidationResult IsValid(object value, ValidationContext validationContext)
-        {
-            if (value == null)
-            {
-                return ValidationResult.Success;
-            }
-
-            var file = value as IFormFile;
-
-            if (file == null)
-            {
-                return ValidationResult.Success;
-            }
-
-            if (file.Length > _maxFileSize)
-            {
-                return new ValidationResult(GetErrorMessage());
-            }
-
             return ValidationResult.Success;
         }
 
-        public string GetErrorMessage()
+        var file = value as IFormFile;
+
+        if (file == null)
         {
-            return $"Maximum allowed file size is {_maxFileSize} bytes.";
+            return ValidationResult.Success;
         }
+
+        if (file.Length > _maxFileSize)
+        {
+            return new ValidationResult(GetErrorMessage());
+        }
+
+        return ValidationResult.Success;
     }
 
-
+    public string GetErrorMessage()
+    {
+        return $"Maximum allowed file size is {_maxFileSize} bytes.";
+    }
 }

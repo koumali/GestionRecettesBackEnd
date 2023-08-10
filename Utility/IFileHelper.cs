@@ -1,7 +1,6 @@
-namespace AutomotiveApi.Utility
+namespace AutomotiveApi.Utility;
+
+public interface IFileHelper
 {
-    public interface IFileHelper
-    {
-        Task<String> UploadImage(IFormFile file, string folder, string? name=null);
-    }
+    Task<String> UploadImage(IFormFile file, string folder, string? name = null);
 }

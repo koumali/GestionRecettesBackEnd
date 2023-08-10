@@ -3,120 +3,122 @@ using AutomotiveApi.Models.Entities.Param;
 using AutomotiveApi.Utility;
 using Bogus;
 
-namespace AutomotiveApi.DAL
+namespace AutomotiveApi.DAL;
+
+public class DataSeeder
 {
-    public class DataSeeder
+    public static IEnumerable<Permission> SeedPermissions()
     {
-
-        public static IEnumerable<Permission> SeedPermissions()
-        {
-            int id = 1;
-            var permissions = Enum.GetValues<PredefinedPermissions>()
-                .Select(p => new Permission
-                {
-                    Id = id++,
-                    Name = p.ToString()
-                });
-            return permissions;
-        }
-
-
-        public static IEnumerable<Role> SeedRoles()
-        {
-            var roles = new List<Role>
+        int id = 1;
+        var permissions = Enum.GetValues<PredefinedPermissions>()
+            .Select(p => new Permission
             {
-                new Role
-                {
-                    Id = 1,
-                    Name = "SuperAdmin",
-                    
+                Id = id++,
+                Name = p.ToString()
+            });
+        return permissions;
+    }
 
-                },
-                new Role
-                {
-                    Id = 2,
-                    Name = "Admin",
 
-                }
-            };
-            return roles;
-        }
-
-        public static IEnumerable<RolePermission> SeedRolePermissions()
+    public static IEnumerable<Role> SeedRoles()
+    {
+        var roles = new List<Role>
         {
-            var rolePermissions = new List<RolePermission>{
-                new RolePermission{
-                    Id=1,
-                    IdRole=1,
-                    IdPermission=1
-                },
-                new RolePermission{
-                    Id=2,
-                    IdRole=1,
-                    IdPermission=2
-                },
-                new RolePermission{
-                    Id=3,
-                    IdRole=1,
-                    IdPermission=3
-                },
-                new RolePermission{
-                    Id=4,
-                    IdRole=1,
-                    IdPermission=4
-                },
-                new RolePermission{
-                    Id=5,
-                    IdRole=2,
-                    IdPermission=7
-                }};
+            new Role
+            {
+                Id = 1,
+                Name = "SuperAdmin",
+            },
+            new Role
+            {
+                Id = 2,
+                Name = "Admin",
+            }
+        };
+        return roles;
+    }
 
-            return rolePermissions;
-
-        }
-
-
-        public static Faker<Agence>? seedAgence()
+    public static IEnumerable<RolePermission> SeedRolePermissions()
+    {
+        var rolePermissions = new List<RolePermission>
         {
-            var id = 1;
-            var agences = new Faker<Agence>()
-                .RuleFor(x => x.Id, f => id++).RuleFor(x => x.Name, f => f.Name.JobTitle())
-                .RuleFor(x => x.Tel, f => f.Phone.PhoneNumber())
-                .RuleFor(x => x.Email, f => f.Internet.Email())
-                .RuleFor(x => x.Address, f => f.Address.StreetAddress())
-                .RuleFor(x => x.City, f => f.Address.City())
-                .RuleFor(x => x.ZipCode, f => f.Address.ZipCode())
-                .RuleFor(x => x.Latitude, f => f.Address.Latitude())
-                .RuleFor(x => x.Longitude, f => f.Address.Longitude())
-                .RuleFor(x => x.CreatedAt, f => f.Date.Past());
+            new RolePermission
+            {
+                Id = 1,
+                IdRole = 1,
+                IdPermission = 1
+            },
+            new RolePermission
+            {
+                Id = 2,
+                IdRole = 1,
+                IdPermission = 2
+            },
+            new RolePermission
+            {
+                Id = 3,
+                IdRole = 1,
+                IdPermission = 3
+            },
+            new RolePermission
+            {
+                Id = 4,
+                IdRole = 1,
+                IdPermission = 4
+            },
+            new RolePermission
+            {
+                Id = 5,
+                IdRole = 2,
+                IdPermission = 7
+            }
+        };
 
-            return agences;
-        }
+        return rolePermissions;
+    }
 
-        public static Faker<Client> seedClient()
-        {
-            var id = 1;
-            var clients = new Faker<Client>()
-                .RuleFor(x => x.Id, f => id++).RuleFor(x => x.FirstName, f => f.Name.FirstName())
-                .RuleFor(x => x.LastName, f => f.Name.LastName())
-                .RuleFor(x => x.Tel, f => f.Phone.PhoneNumber())
-                .RuleFor(x => x.Email, f => f.Internet.Email())
-                .RuleFor(x => x.Ville, f => f.Address.City())
-                .RuleFor(x => x.ZipCode, f => f.Address.ZipCode())
-                .RuleFor(x => x.Adresse, f => f.Address.StreetAddress())
-                .RuleFor(x => x.Adresse2, f => f.Address.StreetAddress())
-                .RuleFor(x => x.PermisRecto, f => f.Image.PicsumUrl())
-                .RuleFor(x => x.PermisVerso, f => f.Image.PicsumUrl())
-                .RuleFor(x => x.CreatedAt, f => f.Date.Past());
 
-            return clients;
-        }
+    public static Faker<Agence>? seedAgence()
+    {
+        var id = 1;
+        var agences = new Faker<Agence>()
+            .RuleFor(x => x.Id, f => id++).RuleFor(x => x.Name, f => f.Name.JobTitle())
+            .RuleFor(x => x.Tel, f => f.Phone.PhoneNumber())
+            .RuleFor(x => x.Email, f => f.Internet.Email())
+            .RuleFor(x => x.Address, f => f.Address.StreetAddress())
+            .RuleFor(x => x.City, f => f.Address.City())
+            .RuleFor(x => x.ZipCode, f => f.Address.ZipCode())
+            .RuleFor(x => x.Latitude, f => f.Address.Latitude())
+            .RuleFor(x => x.Longitude, f => f.Address.Longitude())
+            .RuleFor(x => x.CreatedAt, f => f.Date.Past());
 
-        public static Faker<LongTermRental> seedLongTermRental()
-        {
-            var id = 1;
+        return agences;
+    }
 
-            var lld = new Faker<LongTermRental>()
+    public static Faker<Client> seedClient()
+    {
+        var id = 1;
+        var clients = new Faker<Client>()
+            .RuleFor(x => x.Id, f => id++).RuleFor(x => x.FirstName, f => f.Name.FirstName())
+            .RuleFor(x => x.LastName, f => f.Name.LastName())
+            .RuleFor(x => x.Tel, f => f.Phone.PhoneNumber())
+            .RuleFor(x => x.Email, f => f.Internet.Email())
+            .RuleFor(x => x.Ville, f => f.Address.City())
+            .RuleFor(x => x.ZipCode, f => f.Address.ZipCode())
+            .RuleFor(x => x.Adresse, f => f.Address.StreetAddress())
+            .RuleFor(x => x.Adresse2, f => f.Address.StreetAddress())
+            .RuleFor(x => x.PermisRecto, f => f.Image.PicsumUrl())
+            .RuleFor(x => x.PermisVerso, f => f.Image.PicsumUrl())
+            .RuleFor(x => x.CreatedAt, f => f.Date.Past());
+
+        return clients;
+    }
+
+    public static Faker<LongTermRental> seedLongTermRental()
+    {
+        var id = 1;
+
+        var lld = new Faker<LongTermRental>()
             .RuleFor(x => x.Id, f => id++)
             .RuleFor(x => x.nom, f => f.Name.FirstName())
             .RuleFor(x => x.email, f => "RyanGosling@drive.com")
@@ -132,19 +134,17 @@ namespace AutomotiveApi.DAL
             .RuleFor(x => x.status, f => "Enattente")
             .RuleFor(x => x.CreatedAt, f => f.Date.Past());
 
-            return lld;
-        }
+        return lld;
+    }
 
-        // seed vehicules
+    // seed vehicules
 
-        public static Faker<Vehicule> seedVehicule()
-        {
+    public static Faker<Vehicule> seedVehicule()
+    {
+        // modeles ids from json file
 
-
-            // modeles ids from json file
-
-            var id = 1;
-            var vehicules = new Faker<Vehicule>()
+        var id = 1;
+        var vehicules = new Faker<Vehicule>()
             .RuleFor(x => x.Id, f => id++)
             .RuleFor(x => x.IdModele, f => f.Random.Int(1, 326))
             .RuleFor(x => x.IdAgence, f => f.Random.Int(1, 10))
@@ -161,14 +161,14 @@ namespace AutomotiveApi.DAL
             .RuleFor(x => x.Airbag, f => f.Random.Bool())
             .RuleFor(x => x.CreatedAt, f => f.Date.Past());
 
-            return vehicules;
-        }
+        return vehicules;
+    }
 
-        // seed offres
-        public static Faker<Offre> seedOffre()
-        {
-            var id = 1;
-            var offres = new Faker<Offre>()
+    // seed offres
+    public static Faker<Offre> seedOffre()
+    {
+        var id = 1;
+        var offres = new Faker<Offre>()
             .RuleFor(x => x.Id, f => id++)
             .RuleFor(x => x.IdVehicule, f => f.Random.Int(1, 10))
             .RuleFor(x => x.isPublic, f => f.Random.Bool())
@@ -177,15 +177,15 @@ namespace AutomotiveApi.DAL
             .RuleFor(x => x.DateFin, f => f.Date.Future())
             .RuleFor(x => x.CreatedAt, f => f.Date.Recent());
 
-            return offres;
-        }
+        return offres;
+    }
 
 
-        public static Faker<Reservation> seedReservation()
-        {
-            var id = 1;
-            string[] status = { "Confirmé", "Enattente", "Annulé", "Expiré" };
-            var reservations = new Faker<Reservation>()
+    public static Faker<Reservation> seedReservation()
+    {
+        var id = 1;
+        string[] status = { "Confirmé", "Enattente", "Annulé", "Expiré" };
+        var reservations = new Faker<Reservation>()
             .RuleFor(x => x.Id, f => id++)
             .RuleFor(x => x.IdVehicule, f => f.Random.Int(1, 10))
             .RuleFor(x => x.DateDepart, f => f.Date.Soon())
@@ -194,42 +194,36 @@ namespace AutomotiveApi.DAL
             .RuleFor(x => x.NumeroReservation, f => Guid.NewGuid().ToString())
             .RuleFor(x => x.Status, f => f.PickRandom(status));
 
-            return reservations;
-        }
+        return reservations;
+    }
 
-        // seed contrats
-        public static Faker<Contrat> seedContrat()
-        {
-            var id = 1;
-            var contrats = new Faker<Contrat>()
+    // seed contrats
+    public static Faker<Contrat> seedContrat()
+    {
+        var id = 1;
+        var contrats = new Faker<Contrat>()
             .RuleFor(x => x.Id, f => id++)
             .RuleFor(x => x.IdReservation, f => f.Random.Int(1, 10))
             .RuleFor(x => x.IdClient, f => f.Random.Int(1, 10))
             .RuleFor(x => x.IsConducteur, f => f.Random.Bool());
 
-            return contrats;
-        }
+        return contrats;
+    }
 
 
+    public static Faker<User> seedUser()
+    {
+        var id = 1;
+        var Users = new Faker<User>()
+            .RuleFor(x => x.Id, f => id++).RuleFor(x => x.FirstName, f => f.Name.FirstName())
+            .RuleFor(x => x.LastName, f => f.Name.LastName())
+            .RuleFor(x => x.Email, f => f.Internet.Email())
+            .RuleFor(x => x.Password, f => BCrypt.Net.BCrypt.HashPassword("user123" + (id - 1)))
+            .RuleFor(x => x.IdRole, f => f.Random.Int(1, 2))
+            .RuleFor(x => x.IsActive, f => f.Random.Bool())
+            .RuleFor(x => x.IdAgence, f => f.Random.Int(1, 10))
+            .RuleFor(x => x.CreatedAt, f => f.Date.Past());
 
-
-        public static Faker<User> seedUser()
-        {
-            var id = 1;
-            var Users = new Faker<User>()
-                .RuleFor(x => x.Id, f => id++).RuleFor(x => x.FirstName, f => f.Name.FirstName())
-                .RuleFor(x => x.LastName, f => f.Name.LastName())
-                .RuleFor(x => x.Email, f => f.Internet.Email())
-                .RuleFor(x => x.Password, f => BCrypt.Net.BCrypt.HashPassword("user123" + (id - 1)))
-                .RuleFor(x => x.IdRole, f => f.Random.Int(1, 2))
-                .RuleFor(x => x.IsActive, f => f.Random.Bool())
-                .RuleFor(x => x.IdAgence, f => f.Random.Int(1, 10))
-                .RuleFor(x => x.CreatedAt, f => f.Date.Past());
-
-            return Users;
-        }
-
-
-
+        return Users;
     }
 }

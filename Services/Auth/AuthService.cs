@@ -3,44 +3,43 @@ using AutomotiveApi.Models.Entities.Param;
 using AutomotiveApi.Services.Jwt;
 using AutomotiveApi.Services.Param;
 
-namespace AutomotiveApi.Services.Auth
+namespace AutomotiveApi.Services.Auth;
+
+public class AuthService : IAuth
 {
-    public class AuthService : IAuth
+    private readonly IUser _userService;
+    private readonly IJwt _jwtService;
+
+    public AuthService(IUser userService, IJwt jwtService)
     {
-        private readonly IUser _userService;
-        private readonly IJwt _jwtService;
+        _userService = userService;
+        _jwtService = jwtService;
+    }
 
-        public AuthService(IUser userService, IJwt jwtService)
+    public async Task<LoginResponse?> login(string email, string password)
+    {
+        var user = await _userService.findByEmail(email);
+        if (user == null)
         {
-            _userService = userService;
-            _jwtService = jwtService;
+            return null;
         }
 
-        public async Task<LoginResponse?> login(string email, string password)
+        if (!BCrypt.Net.BCrypt.Verify(password, user.Password))
         {
-            var user = await _userService.findByEmail(email);
-            if (user == null)
-            {
-                return null;
-            }
-
-            if (!BCrypt.Net.BCrypt.Verify(password, user.Password))
-            {
-                return null;
-            }
-
-            var genToken = _jwtService.generateToken(user);
-
-            return new LoginResponse
-            {
-                Token = genToken,
-                User = user
-            };
+            return null;
         }
 
-        public async Task<User?> register(User user)
+        var genToken = _jwtService.generateToken(user);
+
+        return new LoginResponse
         {
-            return await _userService.CreateAsync(user);
-        }
+            Token = genToken,
+            User = user
+        };
+    }
+
+    public async Task<User?> register(User user)
+    {
+        return await _userService.CreateAsync(user);
     }
 }

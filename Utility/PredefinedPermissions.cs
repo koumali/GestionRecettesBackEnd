@@ -2,22 +2,20 @@
 
 public enum PredefinedPermissions
 {
-
     Users,
-    Roles ,
-    Permissions ,
-    Agences ,
+    Roles,
+    Permissions,
+    Agences,
 
-    Marques ,
-    Modeles ,
+    Marques,
+    Modeles,
 
-    Reservations ,
+    Reservations,
 
-    Clients ,
+    Clients,
 
-    LongTerm ,
+    LongTerm,
 
-    Vehicles ,
+    Vehicles,
     Offres
-
 }

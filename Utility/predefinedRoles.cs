@@ -2,9 +2,8 @@
 
 public enum predefinedRoles
 {
-    SuperAdmin ,
-    Admin ,
-    User ,
+    SuperAdmin,
+    Admin,
+    User,
     Guest
-
 }

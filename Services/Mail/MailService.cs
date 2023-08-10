@@ -29,7 +29,6 @@ public class MailService : IMailService
         {
             foreach (var file in mailData.files)
             {
-
                 var content = new MemoryStream();
                 file.CopyTo(content);
                 content.Position = 0;
@@ -51,7 +50,7 @@ public class MailService : IMailService
         using var smtp = new SmtpClient();
 
         await smtp.ConnectAsync(_config.GetSection("Host").Value, int.Parse(_config.GetSection("Port").Value),
-                    SecureSocketOptions.StartTls);
+            SecureSocketOptions.StartTls);
 
         await smtp.AuthenticateAsync(_config.GetSection("Mail").Value, _config.GetSection("Password").Value);
         await smtp.SendAsync(email);

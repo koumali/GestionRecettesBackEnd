@@ -1,10 +1,7 @@
-using System.ComponentModel.DataAnnotations;
+namespace AutomotiveApi.Models.Dto;
 
-namespace AutomotiveApi.Models.Dto
+public class ContratDto
 {
-    public class ContratDto
-    {
-        public int IdClient { get; set; }
-        public int IdReservation { get; set; }
-    }
+    public int IdClient { get; set; }
+    public int IdReservation { get; set; }
 }

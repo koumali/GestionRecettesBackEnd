@@ -1,16 +1,15 @@
 ﻿using AutomotiveApi.Models.Entities.Core;
 
-namespace AutomotiveApi.Models.Entities.Gestion
+namespace AutomotiveApi.Models.Entities.Gestion;
+
+public partial class Marque : ModelBase
 {
-    public partial class Marque : ModelBase
+    public Marque()
     {
-        public Marque()
-        {
-            Modeles = new HashSet<Modele>();
-        }
-
-        public string Name { get; set; }
-
-        public virtual ICollection<Modele> Modeles { get; set; }
+        Modeles = new HashSet<Modele>();
     }
+
+    public string Name { get; set; }
+
+    public virtual ICollection<Modele> Modeles { get; set; }
 }

@@ -1,31 +1,20 @@
 using System.ComponentModel.DataAnnotations;
 
-namespace AutomotiveApi.Models.Dto
+namespace AutomotiveApi.Models.Dto;
+
+public class UserUpdateDto
 {
-    public class UserUpdateDto
-    {
+    [Required] public int Id { get; set; }
 
-        [Required]
-        public int Id { get; set; }
+    [Required] [MaxLength(50)] public string FirstName { get; set; }
 
-        [Required]
-        [MaxLength(50)]
-        public string FirstName { get; set; }
+    [Required] [MaxLength(50)] public string LastName { get; set; }
 
-        [Required]
-        [MaxLength(50)]
-        public string LastName { get; set; }
+    [Required] [EmailAddress] public string Email { get; set; }
 
-        [Required]
-        [EmailAddress]
-        public string Email { get; set; }
+    [Required] public bool? IsActive { get; set; }
 
-        [Required]
-        public bool? IsActive { get; set; }
+    [Required] public int IdRole { get; set; }
 
-        [Required]
-        public int IdRole { get; set; }
-
-        public int? IdAgence { get; set; }
-    }
+    public int? IdAgence { get; set; }
 }
