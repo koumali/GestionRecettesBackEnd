@@ -35,4 +35,10 @@ public class AgenceService : GenericDataService<Agence>, IAgence
     {
         return await _context.Agences.Where(a => !a.IsVerified).ToListAsync();
     }
+
+    public async Task<IEnumerable<Agence>> GetAgenceWithHisSubAgences(int id)
+    {
+        return await _context.Agences.Where(a => a.Id == id || a.ParentId == id)
+            .ToListAsync();
+    }
 }

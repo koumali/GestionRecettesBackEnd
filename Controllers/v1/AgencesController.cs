@@ -87,6 +87,12 @@ public class AgencesController : ControllerBase
         return Ok(agence);
     }
 
+    [HttpGet("hisAgences/{id}")]
+    public async Task<ActionResult<List<Agence>>> GetAgenceWithHisSubAgences(int id)
+    {
+        return Ok(await _agenceService.GetAgenceWithHisSubAgences(id));
+    }
+
     [HttpDelete("{id}")]
     // 
     public async Task<ActionResult> DeleteAgence(int id)

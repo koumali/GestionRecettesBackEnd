@@ -7,5 +7,6 @@ namespace AutomotiveApi.Services.Gestion.Interfaces
         Task<IEnumerable<string>> GetAllVilleAsync();
         Task<IEnumerable<dynamic>> GetAllAgencesAsync();
         Task<IEnumerable<Agence>> GetAllNotVerifiedAsync();
+        Task<IEnumerable<Agence>> GetAgenceWithHisSubAgences(int id);
     }
 }
