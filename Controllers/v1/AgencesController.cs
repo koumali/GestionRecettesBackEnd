@@ -48,6 +48,7 @@ public class AgencesController : ControllerBase
     }
 
     [HttpGet("Villes")]
+    [AllowAnonymous]
     public async Task<ActionResult<IEnumerable<string>>> GetAgencesVilles()
     {
         return Ok(await _agenceService.GetAllVilleAsync());

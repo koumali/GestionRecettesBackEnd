@@ -4,6 +4,7 @@ using AutomotiveApi.Models.Entities.Gestion;
 using AutomotiveApi.Services.Attributes;
 using AutomotiveApi.Services.Gestion.Interfaces;
 using AutomotiveApi.Utility;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace AutomotiveApi.Controllers.v1;
@@ -23,12 +24,14 @@ public class VehiculesController : ControllerBase
     }
 
     [HttpGet("marque/{name}")]
+    [AllowAnonymous]
     public async Task<ActionResult<IEnumerable<Vehicule>>> GetVehiculesByMarque(string name)
     {
         return Ok(await _vehiculeService.GetVehiculesByMarque(name));
     }
 
     [HttpGet("reserved/{number}")]
+    [AllowAnonymous]
     public ActionResult<IEnumerable<Vehicule>> GetTopReservedVehicules(int number)
     {
         return Ok(_vehiculeService.GetTopReservedVehicules(number));

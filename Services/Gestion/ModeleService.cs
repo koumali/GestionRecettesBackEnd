@@ -29,6 +29,14 @@ public class ModeleService : GenericDataService<Modele>, IModele
             .FirstOrDefaultAsync(m => m.Id == entity.Id);
     }
 
+    public new async Task<Modele> UpdateAsync(Modele entity)
+    {
+        await base.UpdateAsync(entity);
+        return await _context.Modeles
+            .Include(m => m.Marque)
+            .FirstOrDefaultAsync(m => m.Id == entity.Id);
+    }
+
     public new async Task<IEnumerable<Modele>> GetAllAsync()
     {
         return await _context.Modeles
