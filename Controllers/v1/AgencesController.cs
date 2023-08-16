@@ -35,13 +35,13 @@ public class AgencesController : ControllerBase
     }
 
     [HttpGet("agences")]
+    [AllowAnonymous]
     public async Task<ActionResult<IEnumerable<dynamic>>> GetAllAgences()
     {
         return Ok(await _agenceService.GetAllAgencesAsync());
     }
 
     [HttpGet("notVerified")]
-    // 
     public async Task<ActionResult<IEnumerable<Agence>>> GetNotVerifiedAgences()
     {
         return Ok(await _agenceService.GetAllNotVerifiedAsync());
@@ -53,12 +53,8 @@ public class AgencesController : ControllerBase
     {
         return Ok(await _agenceService.GetAllVilleAsync());
     }
-    //<summary>
-    //Add Agence
-    //</summary>
 
     [HttpPost]
-    // 
     public async Task<ActionResult<Agence>> AddAgence(AgenceDto request)
     {
         var agence = _mapper.Map<Agence>(request);
@@ -68,6 +64,7 @@ public class AgencesController : ControllerBase
     }
 
     [HttpPost("client")]
+    [AllowAnonymous]
     public async Task<ActionResult<Agence>> AddClientAgence(AgenceClientDto request)
     {
         var agence = _mapper.Map<Agence>(request);
@@ -88,6 +85,7 @@ public class AgencesController : ControllerBase
     }
 
     [HttpGet("{id}")]
+    [AllowAnonymous]
     public async Task<ActionResult<Agence>> GetAgenceById(int id)
     {
         var agence = await _agenceService.GetByIdAsync(id);
@@ -95,13 +93,13 @@ public class AgencesController : ControllerBase
     }
 
     [HttpGet("hisAgences/{id}")]
+    [AllowAnonymous]
     public async Task<ActionResult<List<Agence>>> GetAgenceWithHisSubAgences(int id)
     {
         return Ok(await _agenceService.GetAgenceWithHisSubAgences(id));
     }
 
     [HttpDelete("{id}")]
-    // 
     public async Task<ActionResult> DeleteAgence(int id)
     {
         await _agenceService.DeleteAsync(id);
@@ -109,12 +107,11 @@ public class AgencesController : ControllerBase
     }
 
     [HttpPut("{id}")]
-    // 
     public async Task<ActionResult<Agence>> UpdateAgence(int id, AgenceDto request)
     {
         var agence = await _agenceService.GetByIdAsync(id);
-        if (agence == null) 
-            return NotFound(new {errors= "Agence non trouvée"});
+        if (agence == null)
+            return NotFound(new { errors = "Agence non trouvée" });
 
         agence.Name = request.Name;
         agence.Tel = request.Tel;
