@@ -9,6 +9,6 @@ public class PasswordUpdateDto
     [Required] [MinLength(8)] public string NewPassword { get; set; }
 
     [Required]
-    [Compare("newPassword", ErrorMessage = "The new password and confirmation password do not match.")]
+    [Compare("NewPassword", ErrorMessage = "les mots de passe ne correspondent pas")]
     public string ConfirmPassword { get; set; }
 }

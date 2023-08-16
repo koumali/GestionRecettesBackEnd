@@ -12,6 +12,6 @@ namespace AutomotiveApi.Services.Param
         // User? update(User user);
         // User? delete(int id);
 
-        Task<bool> changePassword(int id, string newPassword);
+        Task<bool> changePassword(int id, string newPassword);        
     }
 }

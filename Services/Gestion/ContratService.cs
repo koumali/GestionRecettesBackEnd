@@ -14,28 +14,18 @@ public class ContratService : GenericDataService<Contrat>, IContrat
         _context = context;
     }
 
-    // public Contrat? add(Contrat Contrat)
-    // {
-    //     try
-    //     {
-    //         _context.Contrats.Add(Contrat);
-    //         _context.SaveChanges();
-    //         return Contrat;
-    //     }
-    //     catch (Exception ex)
-    //     {
-    //         throw new Exception(ex.Message);
-    //     }
-    // }
-    //
-    //
-    // public Contrat? findById(int id)
-    // {
-    //     var Contrat = _context.Contrats.Where(u => u.id == id).FirstOrDefault();
-    //     return Contrat;
-    // }
-    //
-    //
+    public new async Task<Contrat> CreateAsync(Contrat contrat)
+    {
+        Contrat newCont = await base.CreateAsync(contrat);
+
+        return _context.Contrats
+            .Include(c => c.Client)
+            .Include(r => r.Reservation)
+            .FirstOrDefault(c => c.Id == newCont.Id);
+    }
+
+
+
     public new async Task<IEnumerable<Contrat>> GetAllAsync()
     {
         return await _context.Contrats
@@ -43,32 +33,20 @@ public class ContratService : GenericDataService<Contrat>, IContrat
             .Include(r => r.Reservation)
             .ToListAsync();
     }
-    // public IEnumerable<Contrat> getContrats()
-    // {
-    //     return _context.Contrats.Include(c => c.Client).ToList();
-    // }
-    //
-    // public void delete(int id)
-    // {
-    //     var Contrat = _context.Contrats.Find(id);
-    //     if (Contrat != null)
-    //     {
-    //         _context.Contrats.Remove(Contrat);
-    //         _context.SaveChanges();
-    //     }
-    // }
-    //
-    // public Contrat update(Contrat updatedContrat)
-    // {
-    //     try
-    //     {
-    //         _context.Contrats.Update(updatedContrat);
-    //         _context.SaveChanges();
-    //         return updatedContrat;
-    //     }
-    //     catch (Exception ex)
-    //     {
-    //         throw new Exception(ex.Message);
-    //     }
-    // }
+
+    public async Task<Contrat> DeleteContrat(int id)
+    {
+        Contrat? contrat = await _context.Contrats.FirstOrDefaultAsync(c => c.Id == id);
+
+        if (contrat == null)
+        {
+            throw new Exception("Contrat not found");
+        }
+
+        _context.Contrats.Remove(contrat);
+        await _context.SaveChangesAsync();
+
+        return contrat;
+    }
+
 }

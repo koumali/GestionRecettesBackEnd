@@ -1,4 +1,5 @@
 using AutomotiveApi.DAL;
+using AutomotiveApi.Models.Entities.Gestion;
 using AutomotiveApi.Models.Entities.Param;
 using AutomotiveApi.Services.Gestion;
 using AutomotiveApi.Utility;
@@ -45,7 +46,7 @@ namespace AutomotiveApi.Services.Param
             try
             {
                 user.Password = BCrypt.Net.BCrypt.HashPassword(user.Password);
-                user.CreatedAt = DateTime.Now;                
+                user.CreatedAt = DateTime.Now;
                 await _context.Users.AddAsync(user);
                 await _context.SaveChangesAsync();
                 return await GetByIdAsync(user.Id);
@@ -70,8 +71,17 @@ namespace AutomotiveApi.Services.Param
                     IsActive = u.IsActive,
                     IdRole = u.IdRole,
                     IdAgence = u.IdAgence,
-                    Role = u.Role,
-                    Agence = u.Agence
+                    IsVerified = u.IsVerified,
+                    Role = new Role
+                    {
+                        Id = u.Role.Id,
+                        Name = u.Role.Name,                      
+                    },
+                    Agence = new Agence
+                    {
+                        Id = u.Agence.Id,
+                        Name = u.Agence.Name
+                    }
                 }
             ).ToListAsync();
 
@@ -93,8 +103,17 @@ namespace AutomotiveApi.Services.Param
                     IsActive = u.IsActive,
                     IdRole = u.IdRole,
                     IdAgence = u.IdAgence,
-                    Role = u.Role,
-                    Agence = u.Agence
+                    IsVerified = u.IsVerified,
+                    Role = new Role
+                    {
+                        Id = u.Role.Id,
+                        Name = u.Role.Name,                        
+                    },
+                    Agence = new Agence
+                    {
+                        Id = u.Agence.Id,
+                        Name = u.Agence.Name
+                    }
                 }
             ).FirstOrDefaultAsync();
 

@@ -1,13 +1,16 @@
 using AutoMapper;
 using AutomotiveApi.Models.Dto;
 using AutomotiveApi.Models.Entities.Gestion;
+using AutomotiveApi.Services.Attributes;
 using AutomotiveApi.Services.Gestion.Interfaces;
+using AutomotiveApi.Utility;
 using Microsoft.AspNetCore.Mvc;
 
 namespace AutomotiveApi.Controllers.v1;
 
 [ApiController]
 [Route("api/v1/[controller]")]
+[HasPermission(PredefinedPermissions.Reservations)]
 public class ContratsController : ControllerBase
 {
     private readonly IMapper _mapper;
@@ -53,8 +56,8 @@ public class ContratsController : ControllerBase
     // // [Authorize(Roles = "Admin")]
     public async Task<ActionResult> DeleteContrat(int id)
     {
-        await _contratService.DeleteAsync(id);
-        return Ok();
+        Contrat contrat = await _contratService.DeleteContrat(id);
+        return Ok(contrat);
     }
 
     [HttpPut("{id}")]
@@ -69,6 +72,7 @@ public class ContratsController : ControllerBase
 
         contrat.IdClient = request.IdClient;
         contrat.IdReservation = request.IdReservation;
+        contrat.IsConducteur = request.IsConducteur;
         var updatedContrat = await _contratService.UpdateAsync(contrat);
         return Ok(updatedContrat);
     }

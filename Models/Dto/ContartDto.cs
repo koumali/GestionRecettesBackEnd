@@ -4,4 +4,5 @@ public class ContratDto
 {
     public int IdClient { get; set; }
     public int IdReservation { get; set; }
+    public bool IsConducteur { get; set; }
 }

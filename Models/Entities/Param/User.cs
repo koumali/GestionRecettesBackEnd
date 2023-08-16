@@ -25,4 +25,6 @@ public partial class User : ModelBase
 
     // [ForeignKey("IdAgence")] 
     public virtual Agence Agence { get; set; }
+
+    public bool? IsVerified { get; set; }=false;
 }

@@ -85,7 +85,21 @@ public class ClientService : GenericDataService<Client>, IClient
 
     public async Task<Client> UpdateAsync(ClientDto request)
     {
+
+
+        bool emailExist = await _context.Clients.Where(c => c.Email.ToLower() == request.Email.ToLower() && c.Id != request.Id && c.Password != null).AnyAsync();
+
+        if (emailExist)
+        {
+            throw new EmailException("email deja existant");
+        }
+
         Client? client = await _context.Clients.FindAsync(request.Id);
+
+        if (client == null)
+        {
+            throw new EmailException("client introuvable");
+        }
 
         if (request.PermisRecto != null)
         {
@@ -102,11 +116,16 @@ public class ClientService : GenericDataService<Client>, IClient
         client.FirstName = request.FirstName;
         client.LastName = request.LastName;
         client.Tel = request.Tel;
-        client.Email = request.Email;
         client.Ville = request.Ville;
         client.ZipCode = request.ZipCode;
         client.Adresse = request.Adresse;
         client.Adresse2 = request.Adresse2;
+
+        if (client.Email.ToLower() != request.Email.ToLower())
+        {
+            client.Email = request.Email;
+            client.IsVerified = false;
+        }
 
         var updatedClient = await base.UpdateAsync(client);
         return updatedClient;
@@ -188,5 +207,27 @@ public class ClientService : GenericDataService<Client>, IClient
             .ThenInclude(l => l.Agence)
             .ToListAsync();
         return reservations;
+    }
+
+    public async Task<Client> ChangePasswordAsync(int id, ChangePasswordDto changePasswordDto)
+    {
+        Client? client = await _context.Clients.Where(c => c.Id == id && c.Password != null
+        ).FirstOrDefaultAsync();
+
+        if (client == null)
+        {
+            throw new EmailException("client introuvable");
+        }
+
+        if (!BCrypt.Net.BCrypt.Verify(changePasswordDto.CurrentPassword, client.Password))
+        {
+            throw new EmailException("mot de passe incorrect");
+        }
+
+        client.Password = BCrypt.Net.BCrypt.HashPassword(changePasswordDto.NewPassword);
+
+        await base.UpdateAsync(client);
+
+        return client;
     }
 }

@@ -4,6 +4,8 @@ using AutomotiveApi.Models.Entities.Gestion;
 using AutomotiveApi.Services.Attributes;
 using AutomotiveApi.Services.Gestion.Interfaces;
 using AutomotiveApi.Services.Jwt;
+using AutomotiveApi.Services.Mail;
+using AutomotiveApi.Services.Param;
 using AutomotiveApi.Utility;
 using AutomotiveApi.Utility.Exceptions;
 using Microsoft.AspNetCore.Mvc;
@@ -17,25 +19,19 @@ public class ClientsController : ControllerBase
 {
     private readonly IMapper _mapper;
     private readonly IClient _clientService;
-    private readonly IFileHelper _fileHelper;
+    private readonly IEmailVerification _emailVerificationService;
+    private readonly IMailService _mailService;
 
 
-    public ClientsController(IClient clientService, IMapper mapper, IFileHelper fileHelper, IJwt jwtService)
+    public ClientsController(IClient clientService, IMapper mapper, IEmailVerification emailVerificationService, IMailService mailService)
     {
         _clientService = clientService;
         _mapper = mapper;
-        _fileHelper = fileHelper;
+        _emailVerificationService = emailVerificationService;
+        _mailService = mailService;
     }
 
-    // [HttpGet]
-    // // // [Authorize(Roles = "Admin")]
-    // public async Task<ActionResult<IEnumerable<Client>>> GetClients()
-    // {
-    //     var clients = await _clientService.GetAllAsync();
-    //     return Ok(clients);
-    // }
 
-    // get clients of a specific agence
     [HttpGet("agence/{idAgence}")]
     [ValidatIdAgence("idAgence")]
     public async Task<ActionResult<IEnumerable<Client>>> GetClientsAgence(int idAgence)
@@ -44,9 +40,7 @@ public class ClientsController : ControllerBase
         return Ok(clients);
     }
 
-    //<summary>
-    //Add Client
-    //</summary>
+
 
     [HttpPost]
     public async Task<ActionResult<Client>> AddClient([FromForm] ClientDto request)
@@ -111,8 +105,22 @@ public class ClientsController : ControllerBase
 
         try
         {
-            return await _clientService.RegisterAsync(request);
+            var newClient = await _clientService.RegisterAsync(request);
+            var token = await _emailVerificationService.GenerateVerificationToken(newClient.Email);
+            var url = $"{Request.Scheme}://{Request.Host}/verify-email?token={token}";
+            var mailData = new MailData
+            {
+                To = newClient.Email,
+                Subject = "verification de l'email",
+                Body = "Veuillez cliquer sur le lien ci-dessous pour vérifier votre adresse e-mail",
+                url = url
+            };
+
+            await _mailService.SendAsync(mailData);
+
+            return Ok(newClient);
         }
+
         catch (EmailException ex)
         {
             return BadRequest(new { errors = ex.Message });
@@ -160,5 +168,22 @@ public class ClientsController : ControllerBase
         var LLDreservations = await _clientService.GetClientLLDReservations(clientId);
 
         return Ok(LLDreservations);
+    }
+
+    [HttpPost("change-password")]
+
+    public async Task<ActionResult> ChangePassword(ChangePasswordDto request)
+    {
+        int clientId = int.Parse(User.FindFirst("clientId")?.Value ?? "0");
+
+        try
+        {
+            await _clientService.ChangePasswordAsync(clientId, request);
+            return Ok();
+        }
+        catch (Exception ex)
+        {
+            return BadRequest(new { errors = ex.Message });
+        }
     }
 }

@@ -122,6 +122,8 @@ builder.Services.AddScoped<ILLDResponse, LLDResponsesService>();
 builder.Services.AddScoped<IFileHelper, FileHelper>();
 builder.Services.AddScoped<IMailService, MailService>();
 builder.Services.AddScoped<INotification, NotificationService>();
+builder.Services.AddScoped<IPasswordReset, PasswordResetService>();
+builder.Services.AddScoped<IEmailVerification, EmailVerificationService>();
 
 builder.Services.AddTransient<IAuthorizationHandler, PermissionAuthorizationHandler>();
 builder.Services.AddTransient<IPermissionService, PermissionService>();

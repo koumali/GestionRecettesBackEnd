@@ -7,7 +7,7 @@ namespace AutomotiveApi.Services.Gestion.Interfaces
         // IEnumerable<Contrat> getContrats();
         // Contrat? findById(int id);
         // Contrat? add(Contrat Contrat);
-        // void delete(int id);
+        Task<Contrat> DeleteContrat(int id);
         // Contrat? update(Contrat Contrat);
     }
 }

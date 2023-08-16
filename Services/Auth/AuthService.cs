@@ -21,12 +21,17 @@ public class AuthService : IAuth
         var user = await _userService.findByEmail(email);
         if (user == null)
         {
-            return null;
+            throw new Exception("Email ou mot de passe incorrect");
         }
 
         if (!BCrypt.Net.BCrypt.Verify(password, user.Password))
         {
-            return null;
+            throw new Exception("Email ou mot de passe incorrect");
+        }
+
+        if (user.IsActive == false)
+        {
+            throw new Exception("Votre compte est désactivé");
         }
 
         var genToken = _jwtService.generateToken(user);

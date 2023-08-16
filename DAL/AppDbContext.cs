@@ -33,13 +33,17 @@ public partial class AppDbContext : DbContext
     public virtual DbSet<Notification> Notifications { get; set; }
     public virtual DbSet<Permission> Permissions { get; set; }
 
-    public DbSet<RolePermission> RolePermissions { get; set; }
-    public DbSet<AgenceLongTermRental> AgenceLongTermRentals { get; set; }
+    public virtual DbSet<RolePermission> RolePermissions { get; set; }
+    public virtual DbSet<AgenceLongTermRental> AgenceLongTermRentals { get; set; }
+
+    public virtual DbSet<PasswordResetToken> PasswordResetTokens { get; set; }
+
+    public virtual DbSet<EmailVerificationToken> EmailVerificationTokens { get; set; }
 
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {
-        optionsBuilder.EnableSensitiveDataLogging();
+      
     }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)

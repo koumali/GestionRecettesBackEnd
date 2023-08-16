@@ -9,10 +9,13 @@ namespace AutomotiveApi.Services.Mail;
 public class MailService : IMailService
 {
     private readonly IConfiguration _config;
+    private readonly IWebHostEnvironment _hostingEnvironment;
 
-    public MailService(IConfiguration config)
+
+    public MailService(IConfiguration config, IWebHostEnvironment hostingEnvironment)
     {
         _config = config;
+        _hostingEnvironment = hostingEnvironment;
     }
 
 
@@ -21,8 +24,26 @@ public class MailService : IMailService
         var email = new MimeMessage();
         email.From.Add(MailboxAddress.Parse(_config.GetSection("From").Value));
         email.To.Add(MailboxAddress.Parse(mailData.To));
+        email.Subject = mailData.Subject;
         var multipart = new Multipart("mixed");
-        multipart.Add(new TextPart(TextFormat.Html) { Text = mailData.Body });
+
+        var bodyBuilder = new BodyBuilder();
+
+        using (StreamReader SourceReader = System.IO.File.OpenText(_hostingEnvironment.WebRootPath + "/Templates/EmailTemplate.html"))
+        {
+            bodyBuilder.HtmlBody = SourceReader.ReadToEnd();
+
+            bodyBuilder.HtmlBody = bodyBuilder.HtmlBody.Replace("CONTENT HERE", mailData.Body);
+            bodyBuilder.HtmlBody = bodyBuilder.HtmlBody.Replace("URL HERE", mailData.url);
+        }
+
+
+
+        multipart.Add(new TextPart(TextFormat.Html)
+        {
+            Text = bodyBuilder.HtmlBody
+
+        });
 
 
         if (mailData.files != null)

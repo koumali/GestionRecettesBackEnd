@@ -13,5 +13,6 @@ namespace AutomotiveApi.Services.Gestion.Interfaces
         Task<Client> RegisterAsync(ClientRegisterDto client);
         Task<IEnumerable<Reservation>?> GetClientReservations(int id);
         Task<IEnumerable<LongTermRental>?> GetClientLLDReservations(int id);
+        Task<Client> ChangePasswordAsync(int id, ChangePasswordDto changePasswordDto);
     }
 }

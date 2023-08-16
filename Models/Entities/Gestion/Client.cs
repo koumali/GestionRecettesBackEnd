@@ -23,6 +23,7 @@ public partial class Client : ModelBase
     public string? Adresse2 { get; set; }
     public string? PermisRecto { get; set; }
     public string? PermisVerso { get; set; }
+    public bool? IsVerified { get; set; } = false;
 
     public virtual ICollection<Contrat> Contrats { get; set; }
 }

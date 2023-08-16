@@ -1,14 +1,19 @@
 ﻿using AutoMapper;
 using AutomotiveApi.Models.Dto;
 using AutomotiveApi.Models.Entities.Gestion;
+using AutomotiveApi.Services.Attributes;
 using AutomotiveApi.Services.Gestion.Interfaces;
+using AutomotiveApi.Services.Mail;
+using AutomotiveApi.Utility;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using IMailService = AutomotiveApi.Services.Mail.IMailService;
+
 
 namespace AutomotiveApi.Controllers.v1;
 
 [Route("api/v1/[controller]")]
 [ApiController]
+[HasPermission(PredefinedPermissions.Agences)]
 public class AgencesController : ControllerBase
 {
     private readonly IMapper _mapper;
@@ -23,6 +28,7 @@ public class AgencesController : ControllerBase
     }
 
     [HttpGet]
+    [AllowAnonymous]
     public async Task<ActionResult<IEnumerable<Agence>>> GetVerifiedAgences()
     {
         return Ok(await _agenceService.GetAllAsync());
@@ -106,7 +112,8 @@ public class AgencesController : ControllerBase
     public async Task<ActionResult<Agence>> UpdateAgence(int id, AgenceDto request)
     {
         var agence = await _agenceService.GetByIdAsync(id);
-        if (agence == null) return NotFound();
+        if (agence == null) 
+            return NotFound(new {errors= "Agence non trouvée"});
 
         agence.Name = request.Name;
         agence.Tel = request.Tel;
