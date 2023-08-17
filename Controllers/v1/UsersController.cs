@@ -41,7 +41,7 @@ namespace AutomotiveApi.Controllers.v1
         }
 
         [HttpGet("agence/{idAgence}")]
-        [ValidatIdAgence("idAgence")]
+        // [ValidatIdAgence("idAgence")]
         public async Task<ActionResult<IEnumerable<User>>> GetUsersAgence(int idAgence)
         {
             var users = await _userService.GetUsersAgence(idAgence);

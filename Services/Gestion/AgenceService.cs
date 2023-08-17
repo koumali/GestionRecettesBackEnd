@@ -41,4 +41,9 @@ public class AgenceService : GenericDataService<Agence>, IAgence
         return await _context.Agences.Where(a => a.Id == id || a.ParentId == id)
             .ToListAsync();
     }
+
+    public bool CheckIfParentAgence(int id)
+    {
+        return _context.Agences.Any(a => a.ParentId == id);
+    }
 }

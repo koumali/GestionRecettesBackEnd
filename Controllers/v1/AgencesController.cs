@@ -84,6 +84,14 @@ public class AgencesController : ControllerBase
         return CreatedAtAction(nameof(GetAgenceById), new { id = addedAgence.Id }, addedAgence);
     }
 
+    [HttpGet("checkIsParent/{id}")]
+    [AllowAnonymous]
+    public ActionResult<bool> CheckIsParentAgence(int id)
+    {
+        var isParent = _agenceService.CheckIfParentAgence(id);
+        return Ok(isParent);
+    }
+
     [HttpGet("{id}")]
     [AllowAnonymous]
     public async Task<ActionResult<Agence>> GetAgenceById(int id)
