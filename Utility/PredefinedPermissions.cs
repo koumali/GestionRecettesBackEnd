@@ -2,6 +2,7 @@
 
 public enum PredefinedPermissions
 {
+    Dashboard,
     Users,
     Roles,
     Permissions,
