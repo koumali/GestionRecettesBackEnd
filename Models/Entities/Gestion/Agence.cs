@@ -1,5 +1,6 @@
 ﻿using AutomotiveApi.Models.Entities.Core;
 using AutomotiveApi.Models.Entities.Param;
+using AutomotiveApi.Utility.Validators;
 
 namespace AutomotiveApi.Models.Entities.Gestion;
 
@@ -21,6 +22,7 @@ public partial class Agence : ModelBase
     public double? Longitude { get; set; }
     public bool IsVerified { get; set; }
     public int? ParentId { get; set; }
+    public string? Logo { get; set; }
     public ICollection<Vehicule> Vehicules { get; set; }
     public ICollection<User> Users { get; set; }
     public ICollection<LLDResponse> LLDResponses { get; set; }

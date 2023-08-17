@@ -2,6 +2,7 @@
 using AutomotiveApi.Models.Dto;
 using AutomotiveApi.Models.Entities.Gestion;
 using AutomotiveApi.Services.Attributes;
+using AutomotiveApi.Services.Gestion;
 using AutomotiveApi.Services.Gestion.Interfaces;
 using AutomotiveApi.Services.Mail;
 using AutomotiveApi.Utility;
@@ -53,35 +54,47 @@ public class AgencesController : ControllerBase
     {
         return Ok(await _agenceService.GetAllVilleAsync());
     }
+    [HttpGet("Partenaires")]
+    [AllowAnonymous]
+    public async Task<ActionResult<IEnumerable<string>>> GetAgencesLogos()
+    {
+        return Ok(await _agenceService.GetAllLogosAsync());
+    }
 
     [HttpPost]
-    public async Task<ActionResult<Agence>> AddAgence(AgenceDto request)
+    public async Task<ActionResult<Agence>> AddAgence([FromForm] AgenceDto request)
     {
-        var agence = _mapper.Map<Agence>(request);
-        var addedAgence = await _agenceService.CreateAsync(agence);
+       
+        var addedAgence = await _agenceService.AddAsync(request);
 
         return CreatedAtAction(nameof(GetAgenceById), new { id = addedAgence.Id }, addedAgence);
     }
 
     [HttpPost("client")]
     [AllowAnonymous]
-    public async Task<ActionResult<Agence>> AddClientAgence(AgenceClientDto request)
+    public async Task<ActionResult<Agence>> AddClientAgence([FromForm] AgenceClientDto request)
     {
-        var agence = _mapper.Map<Agence>(request);
-
-        var addedAgence = await _agenceService.CreateAsync(agence);
-
-        MailData mailData = new MailData
+        
+        try
         {
-            Subject = "Agence ajoutée",
-            Body = "Votre agence a été ajoutée avec succès",
-            To = request.Email
-        };
+            var addedAgence = await _agenceService.AddAbonAsync(request);
+            MailData mailData = new MailData
+            {
+                Subject = "Agence ajoutée",
+                Body = "Votre agence a été ajoutée avec succès",
+                To = request.Email
+            };
 
-        await _mailService.SendAsync(mailData);
+            await _mailService.SendAsync(mailData);
 
 
-        return CreatedAtAction(nameof(GetAgenceById), new { id = addedAgence.Id }, addedAgence);
+            return CreatedAtAction(nameof(GetAgenceById), new { id = addedAgence.Id }, addedAgence);
+
+        }
+        catch (Exception ex)
+        {
+            return BadRequest(new { errors = ex.Message });
+        }
     }
 
     [HttpGet("checkIsParent/{id}")]
@@ -121,7 +134,7 @@ public class AgencesController : ControllerBase
         if (agence == null)
             return NotFound(new { errors = "Agence non trouvée" });
 
-        agence.Name = request.Name;
+        /*agence.Name = request.Name;
         agence.Tel = request.Tel;
         agence.Email = request.Email;
         agence.Address = request.Address;
@@ -129,9 +142,10 @@ public class AgencesController : ControllerBase
         agence.ZipCode = request.ZipCode;
         agence.Latitude = request.Latitude;
         agence.Longitude = request.Longitude;
-        agence.IsVerified = request.IsVerified;
+        agence.IsVerified = request.IsVerified;*/
+        //agence.Logo = request.Logo;
 
-        var updatedAgence = await _agenceService.UpdateAsync(agence);
+        var updatedAgence = await _agenceService.UpdateAsync(request);
         return Ok(updatedAgence);
     }
 }
