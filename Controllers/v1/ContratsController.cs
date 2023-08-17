@@ -23,19 +23,15 @@ public class ContratsController : ControllerBase
         _mapper = mapper;
     }
 
-    [HttpGet]
-    // // [Authorize(Roles = "Admin")]
+    [HttpGet]    
     public async Task<ActionResult<IEnumerable<Contrat>>> GetContrats()
     {
         var contrats = await _contratService.GetAllAsync();
         return Ok(contrats);
     }
-    //<summary>
-    //Add Contrat
-    //</summary>
+    
 
-    [HttpPost]
-    // // [Authorize(Roles = "Admin")]
+    [HttpPost]   
     public async Task<ActionResult<Contrat>> AddContrat(ContratDto request)
     {
         var contrat = _mapper.Map<Contrat>(request);
@@ -44,16 +40,14 @@ public class ContratsController : ControllerBase
         return Ok(addedContrat);
     }
 
-    [HttpGet("{id}")]
-    // // [Authorize(Roles = "Admin")]
+    [HttpGet("{id}")]  
     public async Task<ActionResult<Contrat>> GetContratById(int id)
     {
         var contrat = await _contratService.GetByIdAsync(id);
         return Ok(contrat);
     }
 
-    [HttpDelete("{id}")]
-    // // [Authorize(Roles = "Admin")]
+    [HttpDelete("{id}")]    
     public async Task<ActionResult> DeleteContrat(int id)
     {
         Contrat contrat = await _contratService.DeleteContrat(id);
@@ -61,7 +55,6 @@ public class ContratsController : ControllerBase
     }
 
     [HttpPut("{id}")]
-    // // [Authorize(Roles = "Admin")]
     public async Task<ActionResult<Contrat>> UpdateContrat(int id, ContratDto request)
     {
         var contrat = await _contratService.GetByIdAsync(id);
