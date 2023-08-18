@@ -128,7 +128,7 @@ public class AgencesController : ControllerBase
     }
 
     [HttpPut("{id}")]
-    public async Task<ActionResult<Agence>> UpdateAgence(int id, AgenceDto request)
+    public async Task<ActionResult<Agence>> UpdateAgence(int id, [FromForm]  AgenceDto request)
     {
         var agence = await _agenceService.GetByIdAsync(id);
         if (agence == null)
