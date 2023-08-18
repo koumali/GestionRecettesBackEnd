@@ -39,7 +39,7 @@ public class VehiculesController : ControllerBase
 
 
     [HttpGet("agence/{idAgence}")]
-    [ValidatIdAgence("idAgence")]
+    /*[ValidatIdAgence("idAgence")]*/
     public async Task<ActionResult<IEnumerable<Vehicule>>> GetVehiculesAgence(int idAgence)
     {
         var vehicules = await _vehiculeService.GetVehiculesAgence(idAgence);

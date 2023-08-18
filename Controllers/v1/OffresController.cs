@@ -46,7 +46,7 @@ public class OffresController : ControllerBase
     }
 
     [HttpGet("agence/{idAgence}")]
-    [ValidatIdAgence("idAgence")]
+    /*[ValidatIdAgence("idAgence")]*/
     public async Task<ActionResult<IEnumerable<Offre>>> GetOffresAgence(int idAgence)
     {
         var offres = await _offreservice.GetOffresAgence(idAgence);

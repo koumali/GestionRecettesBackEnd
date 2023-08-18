@@ -36,7 +36,7 @@ public class LongTermRentalsController : ControllerBase
     }
 
     [HttpGet("requests/agence/{idAgence}")]
-    [ValidatIdAgence("idAgence")]
+    /*[ValidatIdAgence("idAgence")]*/
     public async Task<ActionResult<IEnumerable<LongTermRental>>> GetRequestsByAgence(int idAgence)
     {
         var longTermRentals = await _longTermRentalService.GetRequestsByAgence(idAgence);
@@ -44,7 +44,7 @@ public class LongTermRentalsController : ControllerBase
     }
 
     [HttpGet("agence/{idAgence}")]
-    [ValidatIdAgence("idAgence")]
+    /*[ValidatIdAgence("idAgence")]*/
     public async Task<ActionResult<IEnumerable<LongTermRental>>> GetLongTermRentalsByAgence(int idAgence)
     {
         var longTermRentals = await _longTermRentalService.GetLongTermRentalsByAgence(idAgence);
