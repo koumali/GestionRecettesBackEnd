@@ -33,7 +33,7 @@ public class ClientsController : ControllerBase
 
 
     [HttpGet("agence/{idAgence}")]
-    [ValidatIdAgence("idAgence")]
+    /*[ValidatIdAgence("idAgence")]*/
     public async Task<ActionResult<IEnumerable<Client>>> GetClientsAgence(int idAgence)
     {
         var clients = await _clientService.GetClientsAgence(idAgence);
