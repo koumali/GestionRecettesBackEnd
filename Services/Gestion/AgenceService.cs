@@ -63,7 +63,8 @@ public class AgenceService : GenericDataService<Agence>, IAgence
     }
     public async Task<IEnumerable<string?>> GetAllVilleAsync()
     {
-        return await _context.Agences.Select(a => a.City).Distinct().ToListAsync();
+        return await _context.Agences.Where(a => a.IsVerified && a.City != null)
+            .Select(a => a.City).Distinct().ToListAsync();
     }
     public async Task<IEnumerable<string?>> GetAllLogosAsync()
     {
