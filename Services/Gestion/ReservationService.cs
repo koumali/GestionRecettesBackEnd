@@ -77,4 +77,53 @@ public class ReservationService : GenericDataService<Reservation>, IReservation
         // return reservation
         return reservation;
     }
+
+    public new async Task<Reservation?> GetByIdAsync(int id)
+    {
+        Reservation? res = await _context.Reservations.Where(r => r.Id == id)
+              .Include(r => r.Vehicule).ThenInclude(v => v.Modele)
+              .Include(r => r.Contrats).ThenInclude(c => c.Client)
+              .Select(r => new Reservation
+              {
+                  Id = r.Id,
+                  DateDepart = r.DateDepart,
+                  DateRetour = r.DateRetour,
+                  Status = r.Status,
+                  NumeroReservation = r.NumeroReservation,
+                  CreatedAt = r.CreatedAt,
+                  Vehicule = new Vehicule
+                  {
+                      Id = r.Vehicule.Id,
+                      Matricule = r.Vehicule.Matricule,
+                      IdAgence = r.Vehicule.IdAgence,
+                      Modele = new Modele
+                      {
+                          Id = r.Vehicule.Modele.Id,
+                          Name = r.Vehicule.Modele.Name,
+                          Image = r.Vehicule.Modele.Image,
+                          Marque = new Marque
+                          {
+                              Id = r.Vehicule.Modele.Marque.Id,
+                              Name = r.Vehicule.Modele.Marque.Name
+                          }
+                      }
+                  },
+
+                  // get clients array from contrat
+                  Contrats = r.Contrats.Select(c => new Contrat
+                  {
+                      Id = c.Id,
+                      Client = new Client
+                      {
+                          Id = c.Client.Id,
+                          FirstName = c.Client.FirstName,
+                          LastName = c.Client.LastName,
+                          Email = c.Client.Email,
+                          Tel = c.Client.Tel
+                      }
+                  }).ToList()
+              }).FirstOrDefaultAsync();
+
+        return res;
+    }
 }

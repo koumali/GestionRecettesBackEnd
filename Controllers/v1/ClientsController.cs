@@ -149,7 +149,7 @@ public class ClientsController : ControllerBase
         string email = request.Email;
         string password = request.Password;
 
-        Console.WriteLine(JsonConvert.SerializeObject(request));
+     
 
         ClientLoginResponse response = await _clientService.LoginAsync(email, password);
         if (response == null)

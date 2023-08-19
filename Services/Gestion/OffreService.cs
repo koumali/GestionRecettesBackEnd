@@ -74,7 +74,7 @@ public class OffreService : GenericDataService<Offre>, IOffre
 
     public async Task<IEnumerable<Offre>> GetPublicOffres(string name, DateTime datedebut, DateTime datefin)
     {
-        Console.WriteLine(datedebut);
+       
         return await _context.Offres
             .Where(o => o.isPublic && o.DateDebut <= datedebut && datefin <= o.DateFin &&
                         o.Vehicule.Agence.City == name)

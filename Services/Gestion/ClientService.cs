@@ -136,7 +136,7 @@ public class ClientService : GenericDataService<Client>, IClient
         Client newClient = _mapper.Map<Client>(client);
         newClient.Password = BCrypt.Net.BCrypt.HashPassword(client.Password);
 
-        Client? isClient = await GetClientByEmail(client.Email);
+        Client? isClient = await _context.Clients.Where(c => c.Email.ToLower() == client.Email.ToLower() && c.Password != null).FirstOrDefaultAsync();
 
         if (isClient != null)
         {
@@ -149,7 +149,7 @@ public class ClientService : GenericDataService<Client>, IClient
         }
         catch (Exception ex)
         {
-            Console.WriteLine(ex.Message);
+            throw new EmailException(ex.Message);
         }
 
         return newClient;
@@ -183,7 +183,7 @@ public class ClientService : GenericDataService<Client>, IClient
             return null;
         }
 
-        Console.WriteLine("ok");
+
 
         var genToken = _jwtService.generateClientToken(client);
 

@@ -82,7 +82,7 @@ public class ModelesController : ControllerBase
         var modele = await _modeleService.GetByIdAsync(id);
         if (request.Image != null)
         {
-            string folder = modele.Marque.Name + "/" + request.Name ?? "";
+            string folder = "modeles";
             modele.Image = await _fileHelper.UploadImage(request.Image, folder);
         }
 

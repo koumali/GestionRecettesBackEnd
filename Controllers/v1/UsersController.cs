@@ -36,14 +36,24 @@ namespace AutomotiveApi.Controllers.v1
         [HttpGet]
         public async Task<ActionResult<IEnumerable<User>>> GetUsers()
         {
-            var users = await _userService.GetAllAsync();
-            return Ok(users);
+            try
+            {
+                var users = await _userService.GetAllAsync();
+                return Ok(users);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+                // add message to errors list
+                return BadRequest(new { errors = "Erreur lors de la récupération des utilisateurs" });
+            }
         }
 
         [HttpGet("agence/{idAgence}")]
         // [ValidatIdAgence("idAgence")]
         public async Task<ActionResult<IEnumerable<User>>> GetUsersAgence(int idAgence)
         {
+            
             var users = await _userService.GetUsersAgence(idAgence);
             return Ok(users);
         }

@@ -18,10 +18,10 @@ public class FileAccessMiddlware
     public async Task InvokeAsync(HttpContext context)
     {
         var path = context.Request.Path.Value;
-        Console.WriteLine("Path: " + path);
+    
         if (path.StartsWith("/Permis"))
         {
-            Console.WriteLine(path);
+    
             // split path to get folder name
             var folderName = path.Split("/")[2];
 
@@ -30,7 +30,7 @@ public class FileAccessMiddlware
                 int folderId = Int32.Parse(folderName);
                 int clientId = int.Parse(context.User.FindFirst("clientId")?.Value ?? "0");
 
-                Console.WriteLine("Comparing ClientID " + clientId + " to " + folderId);
+           
 
                 int idAgence = string.IsNullOrEmpty(context.User.FindFirst("idAgence")?.Value)
                     ? 0
@@ -43,7 +43,7 @@ public class FileAccessMiddlware
                 bool hasAccess = await _context.Set<Contrat>()
                     .Where(c => c.IdClient == folderId && c.Reservation.Vehicule.IdAgence == idAgence).AnyAsync();
 
-                Console.WriteLine("Agence ID : " + idAgence + " to " + folderId);
+            
 
                 if (clientId == folderId || hasAccess)
                 {
@@ -58,7 +58,7 @@ public class FileAccessMiddlware
             }
             catch (Exception e)
             {
-                Console.WriteLine(e.Message);
+         
                 context.Response.StatusCode = 404;
                 return;
             }
