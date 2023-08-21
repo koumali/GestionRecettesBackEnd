@@ -12,5 +12,7 @@ public class LongTermRentalDto
     public int duree { get; set; }
     public int idModele { get; set; }
     public string description { get; set; }
+    public string Gearbox { get; set; }
+    public string Moteur { get; set; }
     public List<int> selectedAgences { get; set; }
 }

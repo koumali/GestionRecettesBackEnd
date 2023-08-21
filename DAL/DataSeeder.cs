@@ -126,6 +126,8 @@ public class DataSeeder
             .RuleFor(x => x.prenom, f => f.Name.LastName())
             .RuleFor(x => x.phone, f => f.Phone.PhoneNumber())
             .RuleFor(x => x.description, f => f.Name.LastName())
+            .RuleFor(x => x.Moteur, f => f.Random.String2(10))
+            .RuleFor(x => x.Gearbox, f => f.Random.String2(10))
             .RuleFor(x => x.entreprise, f => f.Company.CompanyName())
             .RuleFor(x => x.zip, f => f.Address.ZipCode())
             .RuleFor(x => x.duree, f => f.Random.Int(18, 33))
