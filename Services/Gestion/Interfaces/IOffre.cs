@@ -8,9 +8,9 @@ namespace AutomotiveApi.Services.Gestion.Interfaces
         Task<IEnumerable<Offre>> GetOffresAgence(int idAgence);
         Task<IEnumerable<Offre>> GetPublicOffres(string name, DateTime datedebut, DateTime datefin);
         Task<Offre?> GetPublicByIdAsync(int id);
-        // Offre? findById(int id);
-        // Offre? add(Offre Offre);
-        // void delete(int id);
-        // Offre? update(Offre Offre);
+
+        Task<Offre?> CreateWithDetailsAsync(OffreDto entity);                
+        Task<Offre?> UpdateWithDetailsAsync(OffreDto entity);
+        
     }
 }

@@ -35,6 +35,7 @@ public class ReservationService : GenericDataService<Reservation>, IReservation
                 Status = r.Status,
                 NumeroReservation = r.NumeroReservation,
                 CreatedAt = r.CreatedAt,
+                MontantTotal = r.MontantTotal,
                 Vehicule = new Vehicule
                 {
                     Id = r.Vehicule.Id,
@@ -90,6 +91,7 @@ public class ReservationService : GenericDataService<Reservation>, IReservation
                   DateRetour = r.DateRetour,
                   Status = r.Status,
                   NumeroReservation = r.NumeroReservation,
+                  MontantTotal = r.MontantTotal,
                   CreatedAt = r.CreatedAt,
                   Vehicule = new Vehicule
                   {
@@ -125,5 +127,21 @@ public class ReservationService : GenericDataService<Reservation>, IReservation
               }).FirstOrDefaultAsync();
 
         return res;
+    }
+
+    public new async Task<Reservation> UpdateAsync(Reservation entity)
+    {
+        var reservation = await _context.Reservations.Where(r => r.Id == entity.Id).FirstOrDefaultAsync();
+                  
+        if (reservation is null) throw new Exception("Reservation not found");
+
+        reservation.DateDepart = entity.DateDepart;
+        reservation.DateRetour = entity.DateRetour;
+        reservation.Status = entity.Status;
+        reservation.MontantTotal = entity.MontantTotal;
+        
+
+        await _context.SaveChangesAsync();
+        return reservation;
     }
 }

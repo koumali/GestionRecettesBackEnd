@@ -1,6 +1,8 @@
 using AutomotiveApi.Models.Entities.Gestion;
 using AutomotiveApi.Models.Entities.Param;
+using AutomotiveApi.Services.Attributes;
 using AutomotiveApi.Services.Param;
+using AutomotiveApi.Utility;
 using Microsoft.AspNetCore.Mvc;
 
 
@@ -8,6 +10,7 @@ namespace AutomotiveApi.Controllers.v1;
 
 [ApiController]
 [Route("api/v1/[controller]")]
+[HasPermission(PredefinedPermissions.LogJournal)]
 public class LogJournalsController : ControllerBase
 {
     private readonly ILogJournal _logJournalService;

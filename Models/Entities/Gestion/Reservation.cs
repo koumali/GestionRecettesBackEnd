@@ -15,6 +15,7 @@ public partial class Reservation : ModelBase
     public int IdVehicule { get; set; }
     public string NumeroReservation { get; set; }
     public string Status { get; set; }
+    public double MontantTotal { get; set; }
     public virtual Vehicule Vehicule { get; set; }
     public virtual ICollection<Contrat> Contrats { get; set; }
     public virtual ICollection<Notification> Notifications { get; set; }

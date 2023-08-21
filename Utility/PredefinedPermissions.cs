@@ -18,5 +18,6 @@ public enum PredefinedPermissions
     LongTerm,
 
     Vehicles,
-    Offres
+    Offres,
+    LogJournal,
 }

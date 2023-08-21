@@ -13,4 +13,5 @@ public partial class Offre : ModelBase
 
     // [ForeignKey("IdVehicule")]
     public virtual Vehicule Vehicule { get; set; }
+    public virtual ICollection<OffreDetail> OffreDetails { get; set; }
 }

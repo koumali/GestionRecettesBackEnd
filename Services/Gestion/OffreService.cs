@@ -1,4 +1,6 @@
 using AutomotiveApi.DAL;
+using AutomotiveApi.Models.Dto;
+using AutomotiveApi.Models.Entities.Core;
 using AutomotiveApi.Models.Entities.Gestion;
 using AutomotiveApi.Services.Gestion.Interfaces;
 using Microsoft.EntityFrameworkCore;
@@ -14,12 +16,64 @@ public class OffreService : GenericDataService<Offre>, IOffre
         _context = context;
     }
 
-    public new async Task<Offre> CreateAsync(Offre entity)
+    public async Task<Offre?> CreateWithDetailsAsync(OffreDto entity)
     {
-        await base.CreateAsync(entity);
-        return await _context.Offres.Include(o => o.Vehicule)
-            .FirstOrDefaultAsync(o => o.Id == entity.Id);
+        var offre = new Offre
+        {
+            DateDebut = entity.DateDebut,
+            DateFin = entity.DateFin,
+            Prix = entity.Prix,
+            isPublic = entity.isPublic,
+            IdVehicule = entity.IdVehicule
+        };
+
+        offre.OffreDetails = new List<OffreDetail>();
+
+        foreach (var detail in entity.OffreDetails)
+        {
+            offre.OffreDetails.Add(new OffreDetail
+            {
+
+                Titre = detail.Titre,
+                Description = detail.Description
+            });
+        }
+
+        await base.CreateAsync(offre);
+
+        return await GetByIdAsync(offre.Id);
     }
+
+    public async Task<Offre> UpdateWithDetailsAsync(OffreDto entity)
+    {
+        Offre offre = await GetByIdAsync(entity.Id ?? 0);
+
+        offre.DateDebut = entity.DateDebut;
+        offre.DateFin = entity.DateFin;
+        offre.Prix = entity.Prix;
+        offre.isPublic = entity.isPublic;
+        offre.IdVehicule = entity.IdVehicule;
+
+        _context.OffreDetails.RemoveRange(offre.OffreDetails);      
+
+        offre.OffreDetails = new List<OffreDetail>();        
+
+        foreach (var detail in entity.OffreDetails)
+        {
+            offre.OffreDetails.Add(new OffreDetail
+            {
+                Id = detail.Id ?? 0,
+                Titre = detail.Titre,
+                Description = detail.Description
+            });
+        }
+
+
+        await base.UpdateAsync(offre);
+
+        return await GetByIdAsync(offre.Id);
+    }
+
 
     public async Task<IEnumerable<Offre>> GetOffresAgence(int idAgence)
     {
@@ -59,6 +113,7 @@ public class OffreService : GenericDataService<Offre>, IOffre
             .Include(o => o.Vehicule.Agence)
             .Include(o => o.Vehicule.Modele)
             .ThenInclude(m => m.Marque)
+            .Include(o => o.OffreDetails)
             .FirstOrDefaultAsync();
         ;
     }
@@ -74,7 +129,7 @@ public class OffreService : GenericDataService<Offre>, IOffre
 
     public async Task<IEnumerable<Offre>> GetPublicOffres(string name, DateTime datedebut, DateTime datefin)
     {
-       
+
         return await _context.Offres
             .Where(o => o.isPublic && o.DateDebut <= datedebut && datefin <= o.DateFin &&
                         o.Vehicule.Agence.City == name)
@@ -89,7 +144,7 @@ public class OffreService : GenericDataService<Offre>, IOffre
         return await _context.Offres.Where(u => u.Id == id && u.isPublic)
             .Include(o => o.Vehicule.Agence)
             .Include(o => o.Vehicule.Modele)
-            .ThenInclude(m => m.Marque)
+            .ThenInclude(m => m.Marque).Include(o => o.OffreDetails)
             .FirstOrDefaultAsync();
         ;
     }

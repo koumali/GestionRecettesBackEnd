@@ -37,7 +37,8 @@ public class PermissionService : IPermissionService
           PredefinedPermissions.Roles.ToString(),
           PredefinedPermissions.Agences.ToString() ,
           PredefinedPermissions.Modeles.ToString(),
-          PredefinedPermissions.Marques.ToString()
+          PredefinedPermissions.Marques.ToString(),
+            PredefinedPermissions.LogJournal.ToString()
           };
 
         return await _context.Permissions.Where(p => !notAllowed.Contains(p.Name)).ToListAsync();

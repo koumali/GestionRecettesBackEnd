@@ -56,8 +56,8 @@ public class OffresController : ControllerBase
     [HttpPost]
     public async Task<ActionResult<Offre>> AddOffre(OffreDto request)
     {
-        var offre = _mapper.Map<Offre>(request);
-        var addedOffre = await _offreservice.CreateAsync(offre);
+        
+        var addedOffre = await _offreservice.CreateWithDetailsAsync(request);
         return Ok(addedOffre);
     }
 
@@ -78,19 +78,7 @@ public class OffresController : ControllerBase
     [HttpPut("{id}")]
     public async Task<ActionResult<Offre>> UpdateOffre(int id, OffreDto request)
     {
-        var offre = await _offreservice.GetByIdAsync(id);
-        if (offre == null)
-        {
-            return NotFound();
-        }
-
-        offre.IdVehicule = request.IdVehicule;
-        offre.DateDebut = request.DateDebut;
-        offre.DateFin = request.DateFin;
-        offre.Prix = request.Prix;
-        offre.isPublic = request.isPublic;
-        offre.Id = id;
-        var updatedOffre = await _offreservice.UpdateAsync(offre);
+        var updatedOffre = await _offreservice.UpdateWithDetailsAsync(request);
         return Ok(updatedOffre);
     }
 }

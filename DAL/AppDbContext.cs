@@ -2,6 +2,7 @@
 using AutomotiveApi.Models.Entities.Gestion;
 using AutomotiveApi.Models.Entities.Param;
 using Newtonsoft.Json.Linq;
+using AutomotiveApi.Models.Entities.Core;
 
 namespace AutomotiveApi.DAL;
 
@@ -39,11 +40,12 @@ public partial class AppDbContext : DbContext
     public virtual DbSet<PasswordResetToken> PasswordResetTokens { get; set; }
 
     public virtual DbSet<EmailVerificationToken> EmailVerificationTokens { get; set; }
+    public virtual DbSet<OffreDetail> OffreDetails { get; set; }
 
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {
-      
+
     }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -242,7 +244,16 @@ public partial class AppDbContext : DbContext
                 .WithMany(p => p.Offre)
                 .HasForeignKey(d => d.IdVehicule)
                 .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK_Offre_id_vehicule");
+                .HasConstraintName("FK_Offre_id_vehicule");                        
+        });
+
+        modelBuilder.Entity<OffreDetail>(entity =>
+        {
+            entity.HasOne(d => d.Offre)
+                .WithMany(p => p.OffreDetails)
+                .HasForeignKey(d => d.IdOffre)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("FK_OffreDetail_id_offre");
         });
 
         modelBuilder.Entity<Agence>().HasData(DataSeeder.seedAgence().Generate(10));

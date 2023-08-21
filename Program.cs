@@ -17,6 +17,7 @@ using AutomotiveApi.Utility;
 using AutomotiveApi.Utility.Middlwares;
 using Microsoft.AspNetCore.Authorization;
 
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
@@ -130,6 +131,7 @@ builder.Services.AddTransient<IAuthorizationHandler, PermissionAuthorizationHand
 builder.Services.AddTransient<IPermissionService, PermissionService>();
 builder.Services.AddSingleton<IAuthorizationPolicyProvider, PermissionAuthorizationPolicyProvider>();
 
+
 var mappingConfig = new MapperConfiguration(mc => { mc.AddProfile(new MapperConfig()); });
 
 
@@ -138,9 +140,16 @@ builder.Services.AddAutoMapper(typeof(MapperConfig));
 builder.Services.AddDbContext<AppDbContext>(options =>
     options.UseMySQL(builder.Configuration.GetConnectionString("DefaultConnectionMySql")));
 
+
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
+
+
+
+app.UseMiddleware<ErrorHandlingMiddleware>();
+
 
 if (app.Environment.IsDevelopment())
 {

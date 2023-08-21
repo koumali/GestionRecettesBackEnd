@@ -55,9 +55,8 @@ public class ReservationsController : ControllerBase
         {
             DateDepart = request.DateDepart,
             DateRetour = request.DateRetour,
-            IdVehicule = request.IdVehicule,
             Status = request.Status,
-            NumeroReservation = numeroReservation
+            NumeroReservation = numeroReservation            
         };
         var addedReservation = await _reservationService.CreateAsync(newReservation);
         return Ok(addedReservation);
@@ -88,8 +87,11 @@ public class ReservationsController : ControllerBase
             DateRetour = request.DateRetour,
             IdVehicule = request.IdVehicule,
             Status = ReservationStatus.Enattente.ToString(),
-            NumeroReservation = numeroReservation
+            NumeroReservation = numeroReservation,            
+            MontantTotal = request.MontantTotal
         };
+
+        
 
         var createdRes = await _reservationService.CreateAsync(newReservation);
 
@@ -164,17 +166,11 @@ public class ReservationsController : ControllerBase
     [HttpPut("{id}")]
     public async Task<ActionResult<Reservation>> UpdateReservation(int id, ReservationDto request)
     {
-        var reservation = await _reservationService.GetByIdAsync(id);
-        if (reservation == null)
-        {
-            return NotFound();
-        }
+        if (id != request.Id) return BadRequest(new { errors = "les id ne sont pas identiques" });
+        var reservation = _mapper.Map<Reservation>(request);
 
-        reservation.IdVehicule = request.IdVehicule;
-        reservation.DateDepart = request.DateDepart;
-        reservation.DateRetour = request.DateRetour;
-        reservation.Status = request.Status;
         var updatedReservation = await _reservationService.UpdateAsync(reservation);
+
         return Ok(updatedReservation);
     }
 }
