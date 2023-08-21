@@ -73,7 +73,8 @@ public class AgenceService : GenericDataService<Agence>, IAgence
 
     public async Task<IEnumerable<dynamic?>> GetAllAgencesAsync()
     {
-        return await _context.Agences.Select(a => new { a.Id, a.Name }).ToListAsync();
+        return await _context.Agences.Where(a => a.IsVerified)
+            .Select(a => new { a.Id, a.Name, a.Logo }).ToListAsync();
     }
 
     // get all verified agences
@@ -100,8 +101,6 @@ public class AgenceService : GenericDataService<Agence>, IAgence
     }
     public async Task<Agence> UpdateAsync(AgenceDto request)
     {
-
-
         Agence? agence = await _context.Agences.FindAsync(request.Id);
 
         if (agence == null)
