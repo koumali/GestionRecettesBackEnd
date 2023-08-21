@@ -65,15 +65,21 @@ public class ReservationsController : ControllerBase
 
     [HttpGet("maReservation")]
     [AllowAnonymous]
-    public async Task<ActionResult<Reservation>> GererMaReservation(string numero, string email)
+    public async Task<ActionResult<MaReservationDto>> GererMaReservation(string numero, string email)
     {
         // verify client
         var client = await _clientService.GetClientByEmail(email);
-        if (client is null) return BadRequest(new { error = "Client not found" });
+        if (client is null) return BadRequest(new { error = "Client n'existe pas" });
         // verify reservation
-        var reservation = await _reservationService.GererMaReservation(numero, email);
-        if (reservation is null) return BadRequest(new { error = "Reservation not found" });
-        return reservation;
+        try
+        {
+            var reservation = await _reservationService.GererMaReservation(numero, email);
+            return reservation;
+
+        }catch (Exception ex)
+        {
+            return BadRequest(new { error = ex.Message });
+        }
     }
 
     [HttpPost("public")]
@@ -147,7 +153,7 @@ public class ReservationsController : ControllerBase
     }
 
     [HttpGet("{id}")]
-    [ValidatIdAgence("idAgence")]
+    [AllowAnonymous]
     public async Task<ActionResult<Reservation>> GetReservationById(int id)
     {
         var reservation = await _reservationService.GetByIdAsync(id);

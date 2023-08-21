@@ -1,3 +1,4 @@
+using AutomotiveApi.Models.Dto;
 using AutomotiveApi.Models.Entities.Gestion;
 
 namespace AutomotiveApi.Services.Gestion.Interfaces
@@ -6,7 +7,7 @@ namespace AutomotiveApi.Services.Gestion.Interfaces
     {
         Task<IEnumerable<Reservation>> GetReservationsAgence(int idAgence);
 
-        Task<Reservation?> GererMaReservation(string numero, string email);
+        Task<MaReservationDto> GererMaReservation(string numero, string email);
         // Reservation? findById(int id);
         // Reservation? add(Reservation Reservation);
         // void delete(int id);
