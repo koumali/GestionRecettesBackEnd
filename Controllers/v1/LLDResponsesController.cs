@@ -16,13 +16,15 @@ public class LLDResponsesController : ControllerBase
     private readonly IMapper _mapper;
     private readonly ILLDResponse _LLDResponseService;
     private readonly IMailService _mailService;
+    private readonly IFileHelper _fileHelper;
 
 
-    public LLDResponsesController(ILLDResponse LLDResponseService, IMapper mapper, IMailService mailService)
+    public LLDResponsesController(ILLDResponse LLDResponseService, IMapper mapper, IMailService mailService, IFileHelper fileHelper)
     {
         _mailService = mailService;
         _LLDResponseService = LLDResponseService;
         _mapper = mapper;
+        _fileHelper = fileHelper;
     }
 
     [HttpGet]
@@ -47,6 +49,30 @@ public class LLDResponsesController : ControllerBase
     public async Task<ActionResult<LLDResponse>> AddLLDResponse([FromForm] LLDResponseDto request)
     {
         var LLDResponse = _mapper.Map<LLDResponse>(request);
+
+        var pieceJointes = request.files;
+        if (pieceJointes is not null)
+        {
+            string folder = "PienceJointes/";
+            if (request.isAgence)
+            {
+                folder += "Agence";
+            }
+            else
+            {
+                folder += "Client";
+            }
+            foreach(var  piece in pieceJointes)
+            {
+                if (piece is not null)
+                {
+                    LLDResponse.PieceJointes.Add(new PieceJointes
+                    {
+                        FileName = await _fileHelper.UploadImage(piece, folder)
+                    });
+                }
+            }
+        }
 
         var addedLLDResponse = await _LLDResponseService.CreateAsync(LLDResponse);
 

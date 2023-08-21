@@ -8,5 +8,6 @@ public class LLDResponseDto
     public string description { get; set; }
     public int idAgence { get; set; }
     public int idLongTermRental { get; set; }
+    public bool isAgence { get; set; }
     public IFormFile?[] files { get; set; }
 }
