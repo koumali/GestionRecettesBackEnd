@@ -1,4 +1,5 @@
 using AutomotiveApi.DAL;
+using AutomotiveApi.Models.Dto;
 using AutomotiveApi.Models.Entities.Gestion;
 using AutomotiveApi.Services.Gestion.Interfaces;
 using Microsoft.EntityFrameworkCore;
@@ -71,12 +72,32 @@ public class ReservationService : GenericDataService<Reservation>, IReservation
     }
 
 
-    public async Task<Reservation?> GererMaReservation(string numero, string email)
+    public async Task<MaReservationDto> GererMaReservation(string numero, string email)
     {
-        var reservation = await _context.Reservations.Where(r => r.NumeroReservation == numero)
+        var reservation = await _context.Reservations
+            .Include(r => r.Contrats)
+            .ThenInclude(c => c.Client)
+            .Include(r => r.Vehicule)
+            .ThenInclude(v => v.Modele)
+            .ThenInclude(m => m.Marque)
+            .Where(r => r.NumeroReservation == numero)
             .FirstOrDefaultAsync();
-        // return reservation
-        return reservation;
+
+        if (reservation == null) throw new Exception("reservation n'existe pas");
+
+        var client = reservation.Contrats.Where(c => c.Client.Email == email).FirstOrDefault()?.Client;
+        var newMaReservation = new MaReservationDto
+        {
+           CreatedAt = reservation.CreatedAt,
+           Status = reservation.Status,
+           DateDepart = reservation.DateDepart,
+           DateRetour = reservation.DateRetour,
+           ModelName = reservation.Vehicule.Modele.Name,
+           MarqueName = reservation.Vehicule.Modele.Marque.Name,
+           ClientName = $"{client?.FirstName} {client?.LastName}",
+           NumeroReservation = reservation.NumeroReservation
+        };
+        return newMaReservation;
     }
 
     public new async Task<Reservation?> GetByIdAsync(int id)
