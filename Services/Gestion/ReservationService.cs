@@ -41,6 +41,8 @@ public class ReservationService : GenericDataService<Reservation>, IReservation
                 {
                     Id = r.Vehicule.Id,
                     Matricule = r.Vehicule.Matricule,
+                    Gearbox=r.Vehicule.Gearbox,
+                    Moteur=r.Vehicule.Moteur,
                     IdAgence = r.Vehicule.IdAgence,
                     Modele = new Modele
                     {
@@ -59,13 +61,17 @@ public class ReservationService : GenericDataService<Reservation>, IReservation
                 Contrats = r.Contrats.Select(c => new Contrat
                 {
                     Id = c.Id,
+                    IsConducteur=c.IsConducteur,
                     Client = new Client
                     {
                         Id = c.Client.Id,
                         FirstName = c.Client.FirstName,
                         LastName = c.Client.LastName,
                         Email = c.Client.Email,
-                        Tel = c.Client.Tel
+                        Adresse=c.Client.Adresse,
+                        Adresse2=c.Client.Adresse2,
+                        Tel = c.Client.Tel,
+                        Ville=c.Client.Ville
                     }
                 }).ToList()
             }).ToListAsync();
