@@ -41,7 +41,7 @@ public partial class AppDbContext : DbContext
 
     public virtual DbSet<EmailVerificationToken> EmailVerificationTokens { get; set; }
     public virtual DbSet<OffreDetail> OffreDetails { get; set; }
-
+    public virtual DbSet<PieceJointes> PieceJointes { get; set; }
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {
