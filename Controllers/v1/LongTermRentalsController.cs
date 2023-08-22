@@ -105,6 +105,7 @@ public class LongTermRentalsController : ControllerBase
         {
             longTermRental.status = ReservationStatus.Confirmé.ToString();
             longTermRental.idAgence = request.IdAgence;
+            longTermRental.MontantTotal = request.MontantTotal;
             var updatedLongTermRental = await _longTermRentalService.UpdateAsync(longTermRental);
             //notify the agence
             await _notification.CreateNotifForAgency(updatedLongTermRental.Id, type: "LongTermRental");

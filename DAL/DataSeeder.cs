@@ -46,25 +46,30 @@ public class DataSeeder
             {
                 IdRole = 1,
                 IdPermission = 1
-            },
+            }
+            ,
+            new RolePermission
+            {
+                IdRole = 1,
+                IdPermission = 2
+            }
+            ,
             new RolePermission
             {
                 
-                IdRole = 1,
-                IdPermission = 2
-            },
-            new RolePermission
-            {
                 IdRole = 1,
                 IdPermission = 3
             },
             new RolePermission
             {
+                
                 IdRole = 1,
                 IdPermission = 4
-            },
+            }
+            ,
             new RolePermission
             {
+                
                 IdRole = 1,
                 IdPermission = 5
             },
@@ -76,42 +81,11 @@ public class DataSeeder
             new RolePermission
             {
                 IdRole = 1,
-                IdPermission = 7
+                IdPermission = 13
             },
             new RolePermission
             {
                 IdRole = 1,
-                IdPermission = 13
-            }
-            ,
-            new RolePermission
-            {
-                IdRole = 2,
-                IdPermission = 2
-            }
-            ,
-            new RolePermission
-            {
-                
-                IdRole = 2,
-                IdPermission = 3
-            },
-            new RolePermission
-            {
-                
-                IdRole = 2,
-                IdPermission = 4
-            }
-            ,
-            new RolePermission
-            {
-                
-                IdRole = 2,
-                IdPermission = 6
-            },
-            new RolePermission
-            {
-                IdRole = 2,
                 IdPermission = 7
             },
             new RolePermission
@@ -136,7 +110,7 @@ public class DataSeeder
             }
             ,
             new RolePermission
-            { 
+            {
                 IdRole = 2,
                 IdPermission = 12
             }
@@ -196,6 +170,7 @@ public class DataSeeder
             .RuleFor(x => x.description, f => f.Name.LastName())
             .RuleFor(x => x.Moteur, f => f.Random.String2(10))
             .RuleFor(x => x.Gearbox, f => f.Random.String2(10))
+            .RuleFor(x => x.MontantTotal, f => f.Random.Int(1, 10))
             .RuleFor(x => x.entreprise, f => f.Company.CompanyName())
             .RuleFor(x => x.zip, f => f.Address.ZipCode())
             .RuleFor(x => x.duree, f => f.Random.Int(18, 33))
