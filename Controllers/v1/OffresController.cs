@@ -27,12 +27,12 @@ public class OffresController : ControllerBase
 
     [HttpGet("public")]
     [AllowAnonymous]
-    public async Task<ActionResult<IEnumerable<Offre>>> GetPublicOffres(string name, string startDate,
+    public async Task<ActionResult<IEnumerable<Offre>>> GetPublicOffres(string type, string name, string startDate,
         string endDate)
     {
         var date1 = (new DateTime(1970, 1, 1)).AddMilliseconds(double.Parse(startDate));
         var date2 = (new DateTime(1970, 1, 1)).AddMilliseconds(double.Parse(endDate));
-        var offres = await _offreservice.GetPublicOffres(name, datedebut: date2, datefin: date1);
+        var offres = await _offreservice.GetPublicOffres(type, name, datedebut: date2, datefin: date1);
 
         return Ok(offres);
     }
@@ -56,7 +56,7 @@ public class OffresController : ControllerBase
     [HttpPost]
     public async Task<ActionResult<Offre>> AddOffre(OffreDto request)
     {
-        
+
         var addedOffre = await _offreservice.CreateWithDetailsAsync(request);
         return Ok(addedOffre);
     }

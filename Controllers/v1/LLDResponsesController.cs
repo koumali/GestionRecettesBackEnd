@@ -84,7 +84,7 @@ public class LLDResponsesController : ControllerBase
             {
                 To = email,
                 Subject = request.title,
-                Body = $"Bonjour, <br> {request.description} <br> Prix: {request.prix} <br> Cordialement, <br> L'équipe Automotive",
+                Body = $"Bonjour, <br> {request.description} <br> Prix: {request.prix} <br> Cordialement",
                 files = request.files
             };
 

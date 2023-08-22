@@ -64,7 +64,7 @@ public class AgencesController : ControllerBase
     [HttpPost]
     public async Task<ActionResult<Agence>> AddAgence([FromForm] AgenceDto request)
     {
-       
+
         var addedAgence = await _agenceService.AddAsync(request);
 
         return CreatedAtAction(nameof(GetAgenceById), new { id = addedAgence.Id }, addedAgence);
@@ -74,7 +74,7 @@ public class AgencesController : ControllerBase
     [AllowAnonymous]
     public async Task<ActionResult<Agence>> AddClientAgence([FromForm] AgenceClientDto request)
     {
-        
+
         try
         {
             var addedAgence = await _agenceService.AddAbonAsync(request);
@@ -83,8 +83,8 @@ public class AgencesController : ControllerBase
                 Subject = "Agence ajoutée",
                 Nom = request.Name,
                 To = request.Email,
-                Adresse=request.Address,
-                Tel=request.Tel
+                Adresse = request.Address,
+                Tel = request.Tel
             };
 
             await _mailService.SendAbonAsync(mailData);
@@ -130,7 +130,7 @@ public class AgencesController : ControllerBase
     }
 
     [HttpPut("{id}")]
-    public async Task<ActionResult<Agence>> UpdateAgence(int id, [FromForm]  AgenceDto request)
+    public async Task<ActionResult<Agence>> UpdateAgence(int id, [FromForm] AgenceDto request)
     {
         var agence = await _agenceService.GetByIdAsync(id);
         if (agence == null)

@@ -54,9 +54,9 @@ public class OffreService : GenericDataService<Offre>, IOffre
         offre.isPublic = entity.isPublic;
         offre.IdVehicule = entity.IdVehicule;
 
-        _context.OffreDetails.RemoveRange(offre.OffreDetails);      
+        _context.OffreDetails.RemoveRange(offre.OffreDetails);
 
-        offre.OffreDetails = new List<OffreDetail>();        
+        offre.OffreDetails = new List<OffreDetail>();
 
         foreach (var detail in entity.OffreDetails)
         {
@@ -127,16 +127,51 @@ public class OffreService : GenericDataService<Offre>, IOffre
             .ToListAsync();
     }
 
-    public async Task<IEnumerable<Offre>> GetPublicOffres(string name, DateTime datedebut, DateTime datefin)
+    public async Task<IEnumerable<Offre>> GetPublicOffres(string type, string name, DateTime datedebut, DateTime datefin)
     {
 
         return await _context.Offres
             .Where(o => o.isPublic && o.DateDebut <= datedebut && datefin <= o.DateFin &&
-                        o.Vehicule.Agence.City == name)
+                        o.Vehicule.Agence.City == name && o.Vehicule.Type == type)
             .Include(o => o.Vehicule.Agence)
             .Include(o => o.Vehicule.Modele)
             .ThenInclude(m => m.Marque)
-            .ToListAsync();
+            .Select(o => new Offre
+            {
+                Id = o.Id,
+                DateDebut = o.DateDebut,
+                DateFin = o.DateFin,
+                Prix = o.Prix,
+                isPublic = o.isPublic,
+                Vehicule = new Vehicule
+                {
+                    Id = o.Vehicule.Id,
+                    Matricule = o.Vehicule.Matricule,
+                    IdAgence = o.Vehicule.IdAgence,
+                    Agence = new Agence
+                    {
+                        Id = o.Vehicule.Agence.Id,
+                        Name = o.Vehicule.Agence.Name,
+                        City = o.Vehicule.Agence.City,
+                        Address = o.Vehicule.Agence.Address,
+                        Tel = o.Vehicule.Agence.Tel,
+                        Email = o.Vehicule.Agence.Email
+                    },
+                    Type = o.Vehicule.Type,
+                    Modele = new Modele
+                    {
+                        Id = o.Vehicule.Modele.Id,
+                        Name = o.Vehicule.Modele.Name,
+                        Image = o.Vehicule.Modele.Image,
+                        Marque = new Marque
+                        {
+                            Id = o.Vehicule.Modele.Marque.Id,
+                            Name = o.Vehicule.Modele.Marque.Name
+                        }
+                    }
+                }
+            }).ToListAsync();
+
     }
 
     public async Task<Offre?> GetPublicByIdAsync(int id)

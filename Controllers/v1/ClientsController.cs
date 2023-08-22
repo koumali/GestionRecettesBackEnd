@@ -107,7 +107,7 @@ public class ClientsController : ControllerBase
         {
             var newClient = await _clientService.RegisterAsync(request);
             var token = await _emailVerificationService.GenerateVerificationToken(newClient.Email);
-            var url = $"{Request.Scheme}://{Request.Host}/verify-email?token={token}";
+            var url = $"{Request.Headers["origin"]}/verify-email?token={token}";
             var mailData = new MailData
             {
                 To = newClient.Email,

@@ -71,18 +71,18 @@ public class AuthController : ControllerBase
         try
         {
             string token = await _passwordResetService.GeneratePasswordResetToken(request.Email);
-            string url = $"{Request.Scheme}://{Request.Host}/reset-password?token={token}";
+            string url = $"{Request.Headers["origin"]}/reset-password?token={token}";
             MailData mailData = new MailData
             {
                 To = request.Email,
                 Subject = "Reinitialisation de mot de passe",
                 Body = "Veuillez cliquer sur le lien ci-dessous pour réinitialiser votre mot de passe",
-                url = url                
+                url = url
             };
 
             await _mailService.SendAsync(mailData);
 
-            return Ok(new { message = "Reset password link sent successfully" });
+            return Ok(new { message = "email de réinitialisation de mot de passe a été envoyé avec succès" });
         }
         catch (Exception ex)
         {
@@ -112,7 +112,7 @@ public class AuthController : ControllerBase
 
     }
 
-    [HttpPost("send-verification")] 
+    [HttpPost("send-verification")]
     [Authorize]
 
     public async Task<ActionResult> SendEmailVerification([FromForm] string email)
@@ -120,7 +120,7 @@ public class AuthController : ControllerBase
         try
         {
             string token = await _emailVerificationService.GenerateVerificationToken(email);
-            string url = $"{Request.Scheme}://{Request.Host}/verify-email?token={token}";
+            string url = $"{Request.Headers["origin"]}/verify-email?token={token}";
             MailData mailData = new MailData
             {
                 To = email,

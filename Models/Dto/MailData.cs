@@ -8,3 +8,10 @@ public class MailData
     public string? url { get; set; }
     public IFormFile?[] files { get; set; }
 }
+
+public class MailAbonData : MailData
+{
+    public string? Nom { get; set; }
+    public string? Tel { get; set; }
+    public string? Adresse { get; set; }
+}

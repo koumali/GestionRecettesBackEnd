@@ -41,6 +41,17 @@ public class ModeleService : GenericDataService<Modele>, IModele
     {
         return await _context.Modeles
             .Include(o => o.Marque)
+            .Select(m => new Modele
+            {
+                Id = m.Id,
+                Name = m.Name,
+                IdMarque = m.IdMarque,
+                Marque = new Marque
+                {
+                    Id = m.Marque.Id,
+                    Name = m.Marque.Name
+                }
+            })
             .ToListAsync();
     }
 

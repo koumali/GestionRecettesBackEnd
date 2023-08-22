@@ -78,19 +78,7 @@ public class VehiculesController : ControllerBase
 
         var vehicule = await _vehiculeService.GetByIdAsync(id);
 
-        vehicule.Name = request.Name;
-        vehicule.Matricule = request.Matricule;
-        vehicule.Prix = request.Prix;
-        vehicule.NbPort = request.NbPort;
-        vehicule.NbPassager = request.NbPassager;
-        vehicule.Km = request.Km;
-        vehicule.Climat = request.Climat;
-        vehicule.Airbag = request.Airbag;
-        vehicule.Gearbox = request.Gearbox;
-        vehicule.Moteur = request.Moteur;
-        vehicule.IdAgence = request.IdAgence;
-        vehicule.IdModele = request.IdModele;
-        vehicule.Type = request.Type;
+        vehicule = _mapper.Map<Vehicule>(request);
 
 
         var updatedVehicule = await _vehiculeService.UpdateAsync(vehicule);

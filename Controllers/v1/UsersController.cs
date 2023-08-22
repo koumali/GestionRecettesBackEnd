@@ -76,7 +76,7 @@ namespace AutomotiveApi.Controllers.v1
                 var newUser = await _userService.CreateAsync(user);
 
                 string token = await _emailVerificationService.GenerateVerificationToken(newUser.Email);
-                string url = $"{Request.Scheme}://{Request.Host}/verify-email?token={token}";
+                string url = $"{Request.Headers["origin"]}/verify-email?token={token}";
                 MailData mailData = new MailData
                 {
                     To = newUser.Email,
