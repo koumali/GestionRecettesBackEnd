@@ -3,6 +3,7 @@ using MailKit.Security;
 using MimeKit;
 using AutomotiveApi.Models.Dto;
 using MimeKit.Text;
+using Org.BouncyCastle.Asn1.Pkcs;
 
 namespace AutomotiveApi.Services.Mail;
 
@@ -18,6 +19,53 @@ public class MailService : IMailService
         _hostingEnvironment = hostingEnvironment;
     }
 
+    public async Task SendAbonAsync(MailAbonData mailData)
+    {
+        try
+        {
+            var email = new MimeMessage();
+            email.From.Add(MailboxAddress.Parse(_config.GetSection("From").Value));
+            email.To.Add(MailboxAddress.Parse(mailData.To));
+            email.Subject = mailData.Subject;
+            var multipart = new Multipart("mixed");
+
+            var bodyBuilder = new BodyBuilder();
+
+            using (StreamReader SourceReader = System.IO.File.OpenText(_hostingEnvironment.WebRootPath + "/Templates/EmailTemplate3.html"))
+            {
+                bodyBuilder.HtmlBody = SourceReader.ReadToEnd();
+
+                bodyBuilder.HtmlBody = bodyBuilder.HtmlBody.Replace("AGENCE NAME HERE", mailData.Nom);
+                bodyBuilder.HtmlBody = bodyBuilder.HtmlBody.Replace("Nom de l'Agence", mailData.Nom);
+                bodyBuilder.HtmlBody = bodyBuilder.HtmlBody.Replace("Adresse e-mail de l'Agence", mailData.To);
+                bodyBuilder.HtmlBody = bodyBuilder.HtmlBody.Replace("Numéro de téléphone de l'Agence", mailData.Tel);
+                bodyBuilder.HtmlBody = bodyBuilder.HtmlBody.Replace("Adresse de l'Agence", mailData.Adresse);
+            }
+
+
+
+            multipart.Add(new TextPart(TextFormat.Html)
+            {
+                Text = bodyBuilder.HtmlBody
+            });
+
+
+            email.Body = multipart;
+
+            using var smtp = new SmtpClient();
+
+            await smtp.ConnectAsync(_config.GetSection("Host").Value, int.Parse(_config.GetSection("Port").Value),
+                SecureSocketOptions.StartTls);
+
+            await smtp.AuthenticateAsync(_config.GetSection("Mail").Value, _config.GetSection("Password").Value);
+            await smtp.SendAsync(email);
+            await smtp.DisconnectAsync(true);
+        }
+        catch (Exception e)
+        {
+            throw new Exception("erreur lors de l'envoi du mail",e);
+        }
+    }
 
     public async Task SendAsync(MailData mailData)
     {
