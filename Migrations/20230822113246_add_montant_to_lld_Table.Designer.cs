@@ -3,6 +3,7 @@ using System;
 using AutomotiveApi.DAL;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -10,9 +11,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace AutomotiveApi.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20230822113246_add_montant_to_lld_Table")]
+    partial class add_montant_to_lld_Table
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -40,7 +43,7 @@ namespace AutomotiveApi.Migrations
 
                     b.HasIndex("IdOffre");
 
-                    b.ToTable("OffreDetails", (string)null);
+                    b.ToTable("OffreDetails");
                 });
 
             modelBuilder.Entity("AutomotiveApi.Models.Entities.Gestion.Agence", b =>
@@ -97,7 +100,7 @@ namespace AutomotiveApi.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Agences", (string)null);
+                    b.ToTable("Agences");
 
                     b.HasData(
                         new
@@ -254,7 +257,7 @@ namespace AutomotiveApi.Migrations
 
                     b.HasIndex("LongTermRentalId");
 
-                    b.ToTable("AgenceLongTermRentals", (string)null);
+                    b.ToTable("AgenceLongTermRentals");
                 });
 
             modelBuilder.Entity("AutomotiveApi.Models.Entities.Gestion.Client", b =>
@@ -315,7 +318,7 @@ namespace AutomotiveApi.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Clients", (string)null);
+                    b.ToTable("Clients");
 
                     b.HasData(
                         new
@@ -510,7 +513,7 @@ namespace AutomotiveApi.Migrations
 
                     b.HasIndex("IdReservation");
 
-                    b.ToTable("Contrats", (string)null);
+                    b.ToTable("Contrats");
 
                     b.HasData(
                         new
@@ -636,7 +639,7 @@ namespace AutomotiveApi.Migrations
 
                     b.HasIndex("idLongTermRental");
 
-                    b.ToTable("lld_responses", (string)null);
+                    b.ToTable("lld_responses");
                 });
 
             modelBuilder.Entity("AutomotiveApi.Models.Entities.Gestion.LongTermRental", b =>
@@ -720,7 +723,7 @@ namespace AutomotiveApi.Migrations
 
                     b.HasIndex("idAgence");
 
-                    b.ToTable("long_term_rentals", (string)null);
+                    b.ToTable("long_term_rentals");
 
                     b.HasData(
                         new
@@ -946,7 +949,7 @@ namespace AutomotiveApi.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Marques", (string)null);
+                    b.ToTable("Marques");
 
                     b.HasData(
                         new
@@ -1251,7 +1254,7 @@ namespace AutomotiveApi.Migrations
 
                     b.HasIndex("IdMarque");
 
-                    b.ToTable("Modeles", (string)null);
+                    b.ToTable("Modeles");
 
                     b.HasData(
                         new
@@ -3898,7 +3901,7 @@ namespace AutomotiveApi.Migrations
 
                     b.HasIndex("ReservationId");
 
-                    b.ToTable("Notifications", (string)null);
+                    b.ToTable("Notifications");
                 });
 
             modelBuilder.Entity("AutomotiveApi.Models.Entities.Gestion.Offre", b =>
@@ -3935,7 +3938,7 @@ namespace AutomotiveApi.Migrations
 
                     b.HasIndex("IdVehicule");
 
-                    b.ToTable("Offres", (string)null);
+                    b.ToTable("Offres");
 
                     b.HasData(
                         new
@@ -4066,7 +4069,7 @@ namespace AutomotiveApi.Migrations
 
                     b.HasIndex("IdLLDReponse");
 
-                    b.ToTable("PieceJointes", (string)null);
+                    b.ToTable("PieceJointes");
                 });
 
             modelBuilder.Entity("AutomotiveApi.Models.Entities.Gestion.Reservation", b =>
@@ -4108,7 +4111,7 @@ namespace AutomotiveApi.Migrations
 
                     b.HasIndex("IdVehicule");
 
-                    b.ToTable("Reservations", (string)null);
+                    b.ToTable("Reservations");
 
                     b.HasData(
                         new
@@ -4288,7 +4291,7 @@ namespace AutomotiveApi.Migrations
 
                     b.HasIndex("IdModele");
 
-                    b.ToTable("Vehicules", (string)null);
+                    b.ToTable("Vehicules");
 
                     b.HasData(
                         new
@@ -4492,7 +4495,7 @@ namespace AutomotiveApi.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("EmailVerificationTokens", (string)null);
+                    b.ToTable("EmailVerificationTokens");
                 });
 
             modelBuilder.Entity("AutomotiveApi.Models.Entities.Param.Log_journal", b =>
@@ -4524,7 +4527,7 @@ namespace AutomotiveApi.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("log_journal", (string)null);
+                    b.ToTable("log_journal");
                 });
 
             modelBuilder.Entity("AutomotiveApi.Models.Entities.Param.PasswordResetToken", b =>
@@ -4546,7 +4549,7 @@ namespace AutomotiveApi.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("PasswordResetTokens", (string)null);
+                    b.ToTable("PasswordResetTokens");
                 });
 
             modelBuilder.Entity("AutomotiveApi.Models.Entities.Param.Permission", b =>
@@ -4570,7 +4573,7 @@ namespace AutomotiveApi.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Permissions", (string)null);
+                    b.ToTable("Permissions");
 
                     b.HasData(
                         new
@@ -4679,7 +4682,7 @@ namespace AutomotiveApi.Migrations
 
                     b.HasIndex("IdAgence");
 
-                    b.ToTable("Roles", (string)null);
+                    b.ToTable("Roles");
 
                     b.HasData(
                         new
@@ -4720,7 +4723,7 @@ namespace AutomotiveApi.Migrations
 
                     b.HasIndex("IdPermission");
 
-                    b.ToTable("RolePermissions", (string)null);
+                    b.ToTable("RolePermissions");
 
                     b.HasData(
                         new
@@ -4809,7 +4812,7 @@ namespace AutomotiveApi.Migrations
 
                     b.HasIndex("IdRole");
 
-                    b.ToTable("Users", (string)null);
+                    b.ToTable("Users");
 
                     b.HasData(
                         new

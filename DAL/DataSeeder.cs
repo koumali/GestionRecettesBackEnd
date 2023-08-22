@@ -69,8 +69,56 @@ public class DataSeeder
             new RolePermission
             {
                 Id = 5,
-                IdRole = 2,
+                IdRole = 1,
+                IdPermission = 5
+            },
+            new RolePermission
+            {
+                Id = 6,
+                IdRole = 1,
+                IdPermission = 6
+            },
+            new RolePermission
+            {
+                Id = 7,
+                IdRole = 1,
                 IdPermission = 7
+            },
+            new RolePermission
+            {
+                Id = 8,
+                IdRole = 1,
+                IdPermission = 13
+            },
+            new RolePermission
+            {
+                Id = 9,
+                IdRole = 2,
+                IdPermission = 8
+            },
+            new RolePermission
+            {
+                Id = 10,
+                IdRole = 2,
+                IdPermission = 9
+            },
+            new RolePermission
+            {
+                Id = 11,
+                IdRole = 2,
+                IdPermission = 10
+            },
+            new RolePermission
+            {
+                Id = 12,
+                IdRole = 2,
+                IdPermission = 11
+            },
+            new RolePermission
+            {
+                Id = 13,
+                IdRole = 2,
+                IdPermission = 12
             }
         };
 
@@ -128,6 +176,7 @@ public class DataSeeder
             .RuleFor(x => x.description, f => f.Name.LastName())
             .RuleFor(x => x.Moteur, f => f.Random.String2(10))
             .RuleFor(x => x.Gearbox, f => f.Random.String2(10))
+            .RuleFor(x => x.MontantTotal, f => f.Random.Int(1, 10))
             .RuleFor(x => x.entreprise, f => f.Company.CompanyName())
             .RuleFor(x => x.zip, f => f.Address.ZipCode())
             .RuleFor(x => x.duree, f => f.Random.Int(18, 33))
