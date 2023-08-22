@@ -110,15 +110,22 @@ public class ReservationsController : ControllerBase
 
         try
         {
-            MailData mailData = new MailData
+            MailReservData mailData = new MailReservData
             {
                 To = client.Email,
                 Subject = "Votre reservation a été bien enregistrée",
-                Body =
-                    $"Votre reservation a été bien enregistrée, votre numéro de reservation est {createdRes.NumeroReservation}"
+                CodeReservation =createdRes.NumeroReservation,
+                ClientNom=client.LastName+""+client.FirstName,
+                DateDebut= createdRes.DateDepart,
+                DateFin= createdRes.DateRetour,
+                //Modele= createdRes.Vehicule.Modele.Name,
+                //AgenceTel=createdRes.Vehicule.Agence.Tel,
+                //AgenceEmail=createdRes.Vehicule.Agence.Email,
+                //AgenceNom=createdRes.Vehicule.Agence.Name,
+                MontantTotal=createdRes.MontantTotal.ToString(),
             };
 
-            await _emailService.SendAsync(mailData);
+            await _emailService.SendReservAsync(mailData);
         }
         catch (Exception e)
         {

@@ -5,6 +5,7 @@ namespace AutomotiveApi.Services.Gestion.Interfaces
 {
     public interface IReservation :  IGenericData<Reservation>
     {
+        
         Task<IEnumerable<Reservation>> GetReservationsAgence(int idAgence);
 
         Task<MaReservationDto> GererMaReservation(string numero, string email);
