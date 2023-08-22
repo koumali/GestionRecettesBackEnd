@@ -7,7 +7,10 @@ public class RoleDto
 {
     public int? Id { get; set; }
 
-    [RoleNameValidator] public string Name { get; set; }
+
+    [Required(ErrorMessage = "le nom est obligatoire")]
+    [RoleNameValidator]
+    public string Name { get; set; }
 
     public int? IdAgence { get; set; }
 

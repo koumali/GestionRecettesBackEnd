@@ -4,10 +4,13 @@ namespace AutomotiveApi.Models.Dto
 {
     public class PasswordResetDto
     {
-
-
+        [Required(ErrorMessage = "le jeton est obligatoire")]
         public string Token { get; set; }
+
+        [Required(ErrorMessage = "le mot de passe est obligatoire")]
         public string NewPassword { get; set; }
+
+        
 
         [Compare("NewPassword", ErrorMessage = "les mots de passe ne correspondent pas")]
         public string ConfirmPassword { get; set; }

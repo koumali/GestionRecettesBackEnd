@@ -29,6 +29,6 @@ public class AllowedExtensionsAttribute : ValidationAttribute
 
     public string GetErrorMessage()
     {
-        return $"This File extension is not allowed!";
+        return $"Ce type de fichier n'est pas autorisé!";
     }
 }

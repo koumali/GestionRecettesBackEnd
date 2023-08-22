@@ -135,17 +135,7 @@ public class AgencesController : ControllerBase
         var agence = await _agenceService.GetByIdAsync(id);
         if (agence == null)
             return NotFound(new { errors = "Agence non trouvée" });
-
-        /*agence.Name = request.Name;
-        agence.Tel = request.Tel;
-        agence.Email = request.Email;
-        agence.Address = request.Address;
-        agence.City = request.City;
-        agence.ZipCode = request.ZipCode;
-        agence.Latitude = request.Latitude;
-        agence.Longitude = request.Longitude;
-        agence.IsVerified = request.IsVerified;*/
-        //agence.Logo = request.Logo;
+      
 
         var updatedAgence = await _agenceService.UpdateAsync(request);
         return Ok(updatedAgence);

@@ -4,5 +4,7 @@ namespace AutomotiveApi.Models.Dto;
 
 public class MarqueDto
 {
-    [Required] [MaxLength(50)] public string Name { get; set; }
+    [Required(ErrorMessage = "le nom est obligatoire")]
+    [MaxLength(50, ErrorMessage = "le nom ne doit pas dépasser 50 caractères")]
+    public string Name { get; set; }
 }

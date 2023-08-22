@@ -4,13 +4,13 @@ namespace AutomotiveApi.Models.Dto
 {
     public class ChangePasswordDto
     {
-        [Required]
+        [Required (ErrorMessage = "le mot de passe actuel est obligatoire")]
         public string CurrentPassword { get; set; }
         
-        [Required]
+        [Required (ErrorMessage = "le nouveau mot de passe est obligatoire")]
         public string NewPassword { get; set; }
 
-        [Compare("NewPassword", ErrorMessage = "The new password and confirmation password do not match.")]
+        [Compare("NewPassword", ErrorMessage = "les mots de passe ne correspondent pas")]
         public string ConfirmPassword { get; set; }
     }
 }

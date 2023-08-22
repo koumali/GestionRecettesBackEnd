@@ -19,7 +19,7 @@ namespace AutomotiveApi.Services.Param
         public Task<User?> findByEmail(string email)
         {
             var user = _context.Users.Where(u => u.Email == email)
-            .Include(u => u.Role).ThenInclude(r => r.Permissions)
+            .Include(u => u.Role)
             .Include(u => u.Agence)
             .FirstOrDefaultAsync();
             return user;
