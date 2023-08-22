@@ -44,79 +44,73 @@ public class DataSeeder
         {
             new RolePermission
             {
-                Id = 1,
                 IdRole = 1,
                 IdPermission = 1
-            },
+            }
+            ,
             new RolePermission
             {
-                Id = 2,
                 IdRole = 1,
                 IdPermission = 2
-            },
+            }
+            ,
             new RolePermission
             {
-                Id = 3,
+                
                 IdRole = 1,
                 IdPermission = 3
             },
             new RolePermission
             {
-                Id = 4,
+                
                 IdRole = 1,
                 IdPermission = 4
-            },
+            }
+            ,
             new RolePermission
             {
-                Id = 5,
+                
                 IdRole = 1,
                 IdPermission = 5
             },
             new RolePermission
             {
-                Id = 6,
                 IdRole = 1,
                 IdPermission = 6
             },
             new RolePermission
             {
-                Id = 7,
-                IdRole = 1,
-                IdPermission = 7
-            },
-            new RolePermission
-            {
-                Id = 8,
                 IdRole = 1,
                 IdPermission = 13
             },
             new RolePermission
             {
-                Id = 9,
+                IdRole = 1,
+                IdPermission = 7
+            },
+            new RolePermission
+            {
                 IdRole = 2,
                 IdPermission = 8
             },
             new RolePermission
             {
-                Id = 10,
                 IdRole = 2,
                 IdPermission = 9
             },
             new RolePermission
             {
-                Id = 11,
                 IdRole = 2,
                 IdPermission = 10
             },
             new RolePermission
             {
-                Id = 12,
                 IdRole = 2,
                 IdPermission = 11
-            },
+            }
+            ,
             new RolePermission
             {
-                Id = 13,
                 IdRole = 2,
                 IdPermission = 12
             }

@@ -78,14 +78,16 @@ public class AgencesController : ControllerBase
         try
         {
             var addedAgence = await _agenceService.AddAbonAsync(request);
-            MailData mailData = new MailData
+            MailAbonData mailData = new MailAbonData
             {
                 Subject = "Agence ajoutée",
-                Body = "Votre agence a été ajoutée avec succès",
-                To = request.Email
+                Nom = request.Name,
+                To = request.Email,
+                Adresse=request.Address,
+                Tel=request.Tel
             };
 
-            await _mailService.SendAsync(mailData);
+            await _mailService.SendAbonAsync(mailData);
 
 
             return CreatedAtAction(nameof(GetAgenceById), new { id = addedAgence.Id }, addedAgence);
