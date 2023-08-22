@@ -74,8 +74,12 @@ public class LongTermRentalService : GenericDataService<LongTermRental>, ILongTe
     public async Task<LongTermRental?> GererMaReservation(string numero, string email)
     {
         var longTermRental = await _context.long_term_rentals
-            .Where(r => r.NumeroReservation == numero && r.email == email).Include(l => l.LLDResponses)
-            .ThenInclude(l => l.Agence).FirstOrDefaultAsync();
+            .Where(r => r.NumeroReservation == numero && r.email == email)
+            .Include(l => l.LLDResponses)
+                .ThenInclude(l => l.PieceJointes)
+            .Include(l => l.LLDResponses)
+                .ThenInclude(l => l.Agence)
+            .FirstOrDefaultAsync();
         return longTermRental;
     }
 

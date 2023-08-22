@@ -45,7 +45,7 @@ public class LLDResponsesController : ControllerBase
     }
 
     [HttpPost]
-    [HasPermission(PredefinedPermissions.LongTerm)]
+    // [HasPermission(PredefinedPermissions.LongTerm)]
     public async Task<ActionResult<LLDResponse>> AddLLDResponse([FromForm] LLDResponseDto request)
     {
         var LLDResponse = _mapper.Map<LLDResponse>(request);
