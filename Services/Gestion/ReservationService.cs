@@ -22,7 +22,7 @@ public class ReservationService : GenericDataService<Reservation>, IReservation
             .ToListAsync();
         return reservations;
     }
-
+    
     public async Task<IEnumerable<Reservation>> GetReservationsAgence(int idAgence)
     {
         return await _context.Reservations

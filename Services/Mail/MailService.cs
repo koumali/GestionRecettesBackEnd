@@ -132,4 +132,56 @@ public class MailService : IMailService
             throw new Exception("erreur lors de l'envoi du mail");
         }
     }
+
+    public async Task SendReservAsync(MailReservData mailData)
+    {
+        try
+        {
+            var email = new MimeMessage();
+            email.From.Add(MailboxAddress.Parse(_config.GetSection("From").Value));
+            email.To.Add(MailboxAddress.Parse(mailData.To));
+            email.Subject = mailData.Subject;
+            var multipart = new Multipart("mixed");
+
+            var bodyBuilder = new BodyBuilder();
+
+            using (StreamReader SourceReader = System.IO.File.OpenText(_hostingEnvironment.WebRootPath + "/Templates/EmailTemplate2.html"))
+            {
+                bodyBuilder.HtmlBody = SourceReader.ReadToEnd();
+
+                bodyBuilder.HtmlBody = bodyBuilder.HtmlBody.Replace("CLIENT NAME HERE", mailData.ClientNom);
+                bodyBuilder.HtmlBody = bodyBuilder.HtmlBody.Replace("Nom et description du modèle", mailData.Modele);
+                bodyBuilder.HtmlBody = bodyBuilder.HtmlBody.Replace("DATE DEBUT1 HERE", mailData.DateDebut.ToString());
+                bodyBuilder.HtmlBody = bodyBuilder.HtmlBody.Replace("DATE DEBUT2 HERE", mailData.DateDebut.ToString());
+                bodyBuilder.HtmlBody = bodyBuilder.HtmlBody.Replace("DATE FIN HERE", mailData.DateFin.ToString());
+                bodyBuilder.HtmlBody = bodyBuilder.HtmlBody.Replace("CODE HERE", mailData.CodeReservation);
+                bodyBuilder.HtmlBody = bodyBuilder.HtmlBody.Replace("Numéro de téléphone de l'Agence", mailData.AgenceTel);
+                bodyBuilder.HtmlBody = bodyBuilder.HtmlBody.Replace("Adresse e-mail de l'Agence", mailData.AgenceEmail);
+                bodyBuilder.HtmlBody = bodyBuilder.HtmlBody.Replace("Montant totale", mailData.MontantTotal);
+            }
+
+
+
+            multipart.Add(new TextPart(TextFormat.Html)
+            {
+                Text = bodyBuilder.HtmlBody
+            });
+
+
+            email.Body = multipart;
+
+            using var smtp = new SmtpClient();
+
+            await smtp.ConnectAsync(_config.GetSection("Host").Value, int.Parse(_config.GetSection("Port").Value),
+                SecureSocketOptions.StartTls);
+
+            await smtp.AuthenticateAsync(_config.GetSection("Mail").Value, _config.GetSection("Password").Value);
+            await smtp.SendAsync(email);
+            await smtp.DisconnectAsync(true);
+        }
+        catch (Exception e)
+        {
+            throw new Exception("erreur lors de l'envoi du mail", e);
+        }
+    }
 }
