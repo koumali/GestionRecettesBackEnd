@@ -53,7 +53,10 @@ public class LongTermRentalService : GenericDataService<LongTermRental>, ILongTe
 
         await _context.SaveChangesAsync();
 
-        return entity;
+        return _context.long_term_rentals
+        .Where(l => l.Id == entity.Id)
+        .Include(l => l.Modele)
+        .ThenInclude(m => m.Marque).FirstOrDefault();
     }
 
     public async Task<IEnumerable<LongTermRental>> GetLongTermRentalsByAgence(int idAgence)

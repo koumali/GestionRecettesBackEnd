@@ -75,12 +75,13 @@ namespace AutomotiveApi.Services.Param
                     Role = new Role
                     {
                         Id = u.Role.Id,
-                        Name = u.Role.Name,                      
+                        Name = u.Role.Name,
                     },
+
                     Agence = new Agence
                     {
-                        Id = u.Agence.Id,
-                        Name = u.Agence.Name
+                        Id = u.Agence != null ? u.Agence.Id : 0,
+                        Name = u.Agence != null ? u.Agence.Name : ""
                     }
                 }
             ).ToListAsync();
@@ -107,7 +108,7 @@ namespace AutomotiveApi.Services.Param
                     Role = new Role
                     {
                         Id = u.Role.Id,
-                        Name = u.Role.Name,                        
+                        Name = u.Role.Name,
                     },
                     Agence = new Agence
                     {

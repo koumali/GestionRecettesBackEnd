@@ -148,7 +148,7 @@ var app = builder.Build();
 
 
 
-app.UseMiddleware<ErrorHandlingMiddleware>();
+// app.UseMiddleware<ErrorHandlingMiddleware>();
 
 
 if (app.Environment.IsDevelopment())
@@ -166,7 +166,7 @@ app.UseHttpsRedirection();
 
 
 
-// app.UseWhen(context => context.Request.Path.StartsWithSegments("/api"), appBuilder => { appBuilder.UseMiddleware<ApiKeyChecker>(); });
+app.UseWhen(context => context.Request.Path.StartsWithSegments("/api"), appBuilder => { appBuilder.UseMiddleware<ApiKeyChecker>(); });
 
 
 

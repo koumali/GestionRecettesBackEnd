@@ -15,3 +15,30 @@ public class MailAbonData : MailData
     public string? Tel { get; set; }
     public string? Adresse { get; set; }
 }
+public class MailLLDData : MailData
+{
+    public string? ClientNom { get; set; }
+    public string? Modele { get; set; }
+    public string? Duree { get; set; }
+    public string? Montant { get; set; }            
+    public string? NumeroReservation { get; set; }
+
+}
+
+public class MailLLDResponseData:MailData{
+    public string? prix { get; set; }
+}
+
+public class MailReservData : MailData
+{
+    public string? ClientNom { get; set; }
+    public string? Modele { get; set; }
+    public DateTime? DateDebut { get; set; }
+    public DateTime? DateFin { get; set; }
+    public string? CodeReservation { get; set; }
+    public string? AgenceNom { get; set; }
+    public string? AgenceTel { get; set; }
+    public string? AgenceEmail { get; set; }
+    public string? MontantTotal { get; set; }
+
+}
