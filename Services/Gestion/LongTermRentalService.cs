@@ -28,8 +28,12 @@ public class LongTermRentalService : GenericDataService<LongTermRental>, ILongTe
 
     public new async Task<LongTermRental> GetByIdAsync(int id)
     {
-        return await _context.long_term_rentals.Where(l => l.Id == id).Include(l => l.LLDResponses)
-            .FirstOrDefaultAsync();
+        return await _context.long_term_rentals.Where(l => l.Id == id)
+            .Include(l => l.LLDResponses)
+                .ThenInclude(l => l.PieceJointes)
+            .Include(l => l.LLDResponses)
+                .ThenInclude(l => l.Agence)
+            .FirstAsync();
     }
 
     public async Task<LongTermRental> CreateAsync(LongTermRental entity, List<int> selectedAgences)

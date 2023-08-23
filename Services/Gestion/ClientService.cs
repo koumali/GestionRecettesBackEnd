@@ -159,10 +159,10 @@ public class ClientService : GenericDataService<Client>, IClient
     {
         var reservations = await _context.Contrats.Where(c => c.IdClient == id && c.IsConducteur == false)
             .Include(c => c.Reservation)
-            .ThenInclude(r => r.Vehicule)
-            .ThenInclude(v => v.Agence)
+                .ThenInclude(r => r.Vehicule)
+                    .ThenInclude(v => v.Agence)
             .Include(c => c.Reservation.Vehicule.Modele)
-            .ThenInclude(m => m.Marque)
+                .ThenInclude(m => m.Marque)
             .Select(c => c.Reservation)
             .ToListAsync();
         return reservations;
@@ -204,7 +204,9 @@ public class ClientService : GenericDataService<Client>, IClient
 
         var reservations = await _context.long_term_rentals.Where(c => c.email == email)
             .Include(l => l.LLDResponses)
-            .ThenInclude(l => l.Agence)
+                .ThenInclude(lld => lld.PieceJointes)
+             .Include(l => l.LLDResponses)
+                .ThenInclude(l => l.Agence)
             .ToListAsync();
         return reservations;
     }
