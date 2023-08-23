@@ -80,7 +80,7 @@ public class AgencesController : ControllerBase
             var addedAgence = await _agenceService.AddAbonAsync(request);
             MailAbonData mailData = new MailAbonData
             {
-                Subject = "Agence ajoutée",
+                Subject = "Confirmation d'Inscription sur Automotive.ma",
                 Nom = request.Name,
                 To = request.Email,
                 Adresse = request.Address,

@@ -158,6 +158,8 @@ public class OffreService : GenericDataService<Offre>, IOffre
                         Email = o.Vehicule.Agence.Email
                     },
                     Type = o.Vehicule.Type,
+                    Gearbox=o.Vehicule.Gearbox,
+                    Moteur=o.Vehicule.Moteur,
                     Modele = new Modele
                     {
                         Id = o.Vehicule.Modele.Id,

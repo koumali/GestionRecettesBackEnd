@@ -142,12 +142,12 @@ public class ReservationsController : ControllerBase
             MailReservData mailData = new MailReservData
             {
                 To = client.Email,
-                Subject = "Votre reservation a été bien enregistrée",
+                Subject = "Confirmation de Réservation – "+fullRes.Vehicule.Modele.Name + " " + fullRes.Vehicule.Modele.Marque.Name+" – "+ createdRes.DateDepart,
                 CodeReservation = createdRes.NumeroReservation,
-                ClientNom = client.LastName + "" + client.FirstName,
+                ClientNom = client.LastName + " " + client.FirstName,
                 DateDebut = createdRes.DateDepart,
                 DateFin = createdRes.DateRetour,
-                Modele = fullRes.Vehicule.Modele.Name,
+                Modele = fullRes.Vehicule.Modele.Name+ " "+ fullRes.Vehicule.Modele.Marque.Name,
                 AgenceTel = fullRes.Vehicule.Agence.Tel,
                 AgenceEmail = fullRes.Vehicule.Agence.Email,
                 AgenceNom = fullRes.Vehicule.Agence.Name,
