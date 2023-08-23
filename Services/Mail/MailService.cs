@@ -149,7 +149,6 @@ public class MailService : IMailService
                 bodyBuilder.HtmlBody = bodyBuilder.HtmlBody.Replace("CLIENT NAME HERE", mailData.ClientNom);
                 bodyBuilder.HtmlBody = bodyBuilder.HtmlBody.Replace("Nom et description du modèle", mailData.Modele);
                 bodyBuilder.HtmlBody = bodyBuilder.HtmlBody.Replace("DUREE HERE", mailData.Duree);
-                bodyBuilder.HtmlBody = bodyBuilder.HtmlBody.Replace("MONTANT HERE", mailData.Montant);
                 bodyBuilder.HtmlBody = bodyBuilder.HtmlBody.Replace("CODE HERE", mailData.NumeroReservation);
             }
 
@@ -178,6 +177,26 @@ public class MailService : IMailService
                 Text = bodyBuilder.HtmlBody
             });
 
+
+            if (mailData.files != null)
+            {
+                foreach (var file in mailData.files)
+                {
+                    var content = new MemoryStream();
+                    file.CopyTo(content);
+                    content.Position = 0;
+
+                    var contentType = ContentType.Parse(file.ContentType);
+                    var part = new MimePart(contentType.MimeType)
+                    {
+                        FileName = Path.GetFileName(file.FileName),
+                        ContentTransferEncoding = ContentEncoding.Base64,
+                        Content = new MimeContent(content),
+                    };
+
+                    multipart.Add(part);
+                }
+            }
 
             email.Body = multipart;
 
