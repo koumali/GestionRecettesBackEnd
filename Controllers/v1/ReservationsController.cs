@@ -56,7 +56,7 @@ public class ReservationsController : ControllerBase
             DateDepart = request.DateDepart,
             DateRetour = request.DateRetour,
             Status = request.Status,
-            NumeroReservation = numeroReservation            
+            NumeroReservation = numeroReservation
         };
         var addedReservation = await _reservationService.CreateAsync(newReservation);
         return Ok(addedReservation);
@@ -75,7 +75,8 @@ public class ReservationsController : ControllerBase
             var reservation = await _reservationService.GererMaReservation(numero, email);
             return reservation;
 
-        }catch (Exception ex)
+        }
+        catch (Exception ex)
         {
             return BadRequest(new { error = ex.Message });
         }
@@ -93,11 +94,11 @@ public class ReservationsController : ControllerBase
             DateRetour = request.DateRetour,
             IdVehicule = request.IdVehicule,
             Status = ReservationStatus.Enattente.ToString(),
-            NumeroReservation = numeroReservation,            
+            NumeroReservation = numeroReservation,
             MontantTotal = request.MontantTotal
         };
 
-        
+
 
         var createdRes = await _reservationService.CreateAsync(newReservation);
 
@@ -108,28 +109,6 @@ public class ReservationsController : ControllerBase
             ? await _clientService.AddAsync(client)
             : await _clientService.UpdateAsync(client);
 
-        try
-        {
-            MailReservData mailData = new MailReservData
-            {
-                To = client.Email,
-                Subject = "Votre reservation a été bien enregistrée",
-                CodeReservation =createdRes.NumeroReservation,
-                ClientNom=client.LastName+""+client.FirstName,
-                DateDebut= createdRes.DateDepart,
-                DateFin= createdRes.DateRetour,
-                //Modele= createdRes.Vehicule.Modele.Name,
-                //AgenceTel=createdRes.Vehicule.Agence.Tel,
-                //AgenceEmail=createdRes.Vehicule.Agence.Email,
-                //AgenceNom=createdRes.Vehicule.Agence.Name,
-                MontantTotal=createdRes.MontantTotal.ToString(),
-            };
-
-            await _emailService.SendReservAsync(mailData);
-        }
-        catch (Exception e)
-        {
-        }
 
         var newContrat1 = new Contrat
         {
@@ -155,10 +134,37 @@ public class ReservationsController : ControllerBase
 
         await _contratService.CreateAsync(newContrat1);
 
-        //notify the agence
-        await _notification.CreateNotifForAgency(createdRes.Id, "Reservation");
+        var fullRes = await _reservationService.GetByIdAsync(createdRes.Id);
 
-        return CreatedAtAction(nameof(GetReservationById), new { id = createdRes.Id }, createdRes);
+
+        try
+        {
+            MailReservData mailData = new MailReservData
+            {
+                To = client.Email,
+                Subject = "Votre reservation a été bien enregistrée",
+                CodeReservation = createdRes.NumeroReservation,
+                ClientNom = client.LastName + "" + client.FirstName,
+                DateDebut = createdRes.DateDepart,
+                DateFin = createdRes.DateRetour,
+                Modele = fullRes.Vehicule.Modele.Name,
+                AgenceTel = fullRes.Vehicule.Agence.Tel,
+                AgenceEmail = fullRes.Vehicule.Agence.Email,
+                AgenceNom = fullRes.Vehicule.Agence.Name,
+                MontantTotal = createdRes.MontantTotal.ToString(),
+            };
+
+            await _emailService.SendReservAsync(mailData);
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine(ex.Message);
+        }
+
+        //notify the agence
+
+        await _notification.CreateNotifForAgency(createdRes.Id, "Reservation");
+        return Ok(createdRes);
     }
 
     [HttpGet("{id}")]

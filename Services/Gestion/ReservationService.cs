@@ -135,6 +135,14 @@ public class ReservationService : GenericDataService<Reservation>, IReservation
                               Id = r.Vehicule.Modele.Marque.Id,
                               Name = r.Vehicule.Modele.Marque.Name
                           }
+                      },
+                      Agence = new Agence
+                      {
+                          Id = r.Vehicule.Agence.Id,
+                          Name = r.Vehicule.Agence.Name,
+                          Address   = r.Vehicule.Agence.Address,
+                          Tel = r.Vehicule.Agence.Tel,
+                          Email = r.Vehicule.Agence.Email,                          
                       }
                   },
 

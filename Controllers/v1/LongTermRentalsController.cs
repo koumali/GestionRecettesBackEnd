@@ -6,7 +6,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using AutomotiveApi.Services.Gestion.Interfaces;
 using AutomotiveApi.Utility;
-
+using AutomotiveApi.Services.Mail;
 
 namespace AutomotiveApi.Controllers.v1;
 
@@ -18,14 +18,16 @@ public class LongTermRentalsController : ControllerBase
     private readonly IMapper _mapper;
     private readonly ILongTermRental _longTermRentalService;
     private readonly INotification _notification;
+    private readonly IMailService _mailService;
 
 
     public LongTermRentalsController(ILongTermRental longTermRentalService, IMapper mapper,
-        INotification notification)
+        INotification notification, IMailService mailService)
     {
         _longTermRentalService = longTermRentalService;
         _mapper = mapper;
         _notification = notification;
+        _mailService = mailService;
     }
 
     [HttpGet]
@@ -78,6 +80,23 @@ public class LongTermRentalsController : ControllerBase
         longTermRental.NumeroReservation = numeroReservation;
         longTermRental.CreatedAt = DateTime.Now;
         var addedLongTermRental = await _longTermRentalService.CreateAsync(longTermRental, request.selectedAgences);
+
+        MailLLDData mailData = new MailLLDData
+        {
+            To = addedLongTermRental.email,
+            Subject = "Confirmation de votre demande de location longue durée",
+            ClientNom = addedLongTermRental.nom + " " + addedLongTermRental.prenom,
+            Modele = addedLongTermRental.Modele.Marque.Name + " " + addedLongTermRental.Modele.Name,
+            Duree = addedLongTermRental.duree.ToString(),
+            Montant = addedLongTermRental.MontantTotal.ToString(),
+            NumeroReservation = addedLongTermRental.NumeroReservation
+
+        };
+
+        await _mailService.SendLLDAsync(mailData);
+
+        await _notification.CreateNotifForAgency(addedLongTermRental.Id, type: "LongTermRental");
+
 
         return Ok(addedLongTermRental);
     }

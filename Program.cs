@@ -166,7 +166,7 @@ app.UseHttpsRedirection();
 
 
 
-// app.UseWhen(context => context.Request.Path.StartsWithSegments("/api"), appBuilder => { appBuilder.UseMiddleware<ApiKeyChecker>(); });
+app.UseWhen(context => context.Request.Path.StartsWithSegments("/api"), appBuilder => { appBuilder.UseMiddleware<ApiKeyChecker>(); });
 
 
 

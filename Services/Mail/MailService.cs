@@ -23,11 +23,6 @@ public class MailService : IMailService
     {
         try
         {
-            var email = new MimeMessage();
-            email.From.Add(MailboxAddress.Parse(_config.GetSection("From").Value));
-            email.To.Add(MailboxAddress.Parse(mailData.To));
-            email.Subject = mailData.Subject;
-            var multipart = new Multipart("mixed");
 
             var bodyBuilder = new BodyBuilder();
 
@@ -43,27 +38,11 @@ public class MailService : IMailService
             }
 
 
-
-            multipart.Add(new TextPart(TextFormat.Html)
-            {
-                Text = bodyBuilder.HtmlBody
-            });
-
-
-            email.Body = multipart;
-
-            using var smtp = new SmtpClient();
-
-            await smtp.ConnectAsync(_config.GetSection("Host").Value, int.Parse(_config.GetSection("Port").Value),
-                SecureSocketOptions.StartTls);
-
-            await smtp.AuthenticateAsync(_config.GetSection("Mail").Value, _config.GetSection("Password").Value);
-            await smtp.SendAsync(email);
-            await smtp.DisconnectAsync(true);
+            await BaseSendEmailAsync(bodyBuilder, mailData);
         }
         catch (Exception e)
         {
-            throw new Exception("erreur lors de l'envoi du mail",e);
+            throw new Exception("erreur lors de l'envoi du mail", e);
         }
     }
 
@@ -71,61 +50,52 @@ public class MailService : IMailService
     {
         try
         {
-            var email = new MimeMessage();
-            email.From.Add(MailboxAddress.Parse(_config.GetSection("From").Value));
-            email.To.Add(MailboxAddress.Parse(mailData.To));
-            email.Subject = mailData.Subject;
-            var multipart = new Multipart("mixed");
-
             var bodyBuilder = new BodyBuilder();
 
-            using (StreamReader SourceReader = System.IO.File.OpenText(_hostingEnvironment.WebRootPath + "/Templates/EmailTemplate.html"))
+            using (StreamReader SourceReader = System.IO.File.OpenText(_hostingEnvironment.WebRootPath + "/Templates/LLDDemade.html"))
             {
                 bodyBuilder.HtmlBody = SourceReader.ReadToEnd();
 
-                bodyBuilder.HtmlBody = bodyBuilder.HtmlBody.Replace("CONTENT HERE", mailData.Body);
-                bodyBuilder.HtmlBody = bodyBuilder.HtmlBody.Replace("URL HERE", mailData.url);
-            }
-
-
-
-            multipart.Add(new TextPart(TextFormat.Html)
-            {
-                Text = bodyBuilder.HtmlBody
-
-            });
-
-
-            if (mailData.files != null)
-            {
-                foreach (var file in mailData.files)
+                bodyBuilder.HtmlBody = bodyBuilder.HtmlBody.Replace("CONTENT_HERE", mailData.Body);
+                if (mailData.url != null)
                 {
-                    var content = new MemoryStream();
-                    file.CopyTo(content);
-                    content.Position = 0;
+                    bodyBuilder.HtmlBody = bodyBuilder.HtmlBody.Replace("URL_HERE", mailData.url);
 
-                    var contentType = ContentType.Parse(file.ContentType);
-                    var part = new MimePart(contentType.MimeType)
+                    if (mailData.Body.Contains("mot de passe"))
                     {
-                        FileName = Path.GetFileName(file.FileName),
-                        ContentTransferEncoding = ContentEncoding.Base64,
-                        Content = new MimeContent(content),
-                    };
-
-                    multipart.Add(part);
+                        bodyBuilder.HtmlBody = bodyBuilder.HtmlBody.Replace("BUTTON_HERE", "Changer le mot de passe");
+                    }
+                    else
+                    {
+                        bodyBuilder.HtmlBody = bodyBuilder.HtmlBody.Replace("BUTTON_HERE", "Vérifier l'email");
+                    }
                 }
             }
 
-            email.Body = multipart;
+            await BaseSendEmailAsync(bodyBuilder, mailData);
+        }
+        catch (Exception e)
+        {
+            throw new Exception("erreur lors de l'envoi du mail");
+        }
+    }
 
-            using var smtp = new SmtpClient();
 
-            await smtp.ConnectAsync(_config.GetSection("Host").Value, int.Parse(_config.GetSection("Port").Value),
-                SecureSocketOptions.StartTls);
+    public async Task SendLLDResponseAsync(MailLLDResponseData mailData)
+    {
+        try
+        {
+            var bodyBuilder = new BodyBuilder();
 
-            await smtp.AuthenticateAsync(_config.GetSection("Mail").Value, _config.GetSection("Password").Value);
-            await smtp.SendAsync(email);
-            await smtp.DisconnectAsync(true);
+            using (StreamReader SourceReader = System.IO.File.OpenText(_hostingEnvironment.WebRootPath + "/Templates/LLDResponse.html"))
+            {
+                bodyBuilder.HtmlBody = SourceReader.ReadToEnd();
+
+                bodyBuilder.HtmlBody = bodyBuilder.HtmlBody.Replace("CONTENT_HERE", mailData.Body);
+                bodyBuilder.HtmlBody = bodyBuilder.HtmlBody.Replace("PRICE_HERE", mailData.prix);
+            }
+
+            await BaseSendEmailAsync(bodyBuilder, mailData);
         }
         catch (Exception e)
         {
@@ -137,11 +107,6 @@ public class MailService : IMailService
     {
         try
         {
-            var email = new MimeMessage();
-            email.From.Add(MailboxAddress.Parse(_config.GetSection("From").Value));
-            email.To.Add(MailboxAddress.Parse(mailData.To));
-            email.Subject = mailData.Subject;
-            var multipart = new Multipart("mixed");
 
             var bodyBuilder = new BodyBuilder();
 
@@ -160,7 +125,53 @@ public class MailService : IMailService
                 bodyBuilder.HtmlBody = bodyBuilder.HtmlBody.Replace("Montant totale", mailData.MontantTotal);
             }
 
+            await BaseSendEmailAsync(bodyBuilder, mailData);
 
+        }
+        catch (Exception e)
+        {
+            throw new Exception("erreur lors de l'envoi du mail", e);
+        }
+    }
+
+
+    public async Task SendLLDAsync(MailLLDData mailData)
+    {
+        try
+        {
+
+            var bodyBuilder = new BodyBuilder();
+
+            using (StreamReader SourceReader = System.IO.File.OpenText(_hostingEnvironment.WebRootPath + "/Templates/EmailTemplate1.html"))
+            {
+                bodyBuilder.HtmlBody = SourceReader.ReadToEnd();
+
+                bodyBuilder.HtmlBody = bodyBuilder.HtmlBody.Replace("CLIENT NAME HERE", mailData.ClientNom);
+                bodyBuilder.HtmlBody = bodyBuilder.HtmlBody.Replace("Nom et description du modèle", mailData.Modele);
+                bodyBuilder.HtmlBody = bodyBuilder.HtmlBody.Replace("DUREE HERE", mailData.Duree);
+                bodyBuilder.HtmlBody = bodyBuilder.HtmlBody.Replace("MONTANT HERE", mailData.Montant);
+                bodyBuilder.HtmlBody = bodyBuilder.HtmlBody.Replace("CODE HERE", mailData.NumeroReservation);
+            }
+
+            await BaseSendEmailAsync(bodyBuilder, mailData);
+
+        }
+        catch (Exception e)
+        {
+            throw new Exception("erreur lors de l'envoi du mail", e);
+        }
+    }
+
+
+    private async Task BaseSendEmailAsync(BodyBuilder bodyBuilder, MailData mailData)
+    {
+        try
+        {
+            var email = new MimeMessage();
+            email.From.Add(MailboxAddress.Parse(_config.GetSection("From").Value));
+            email.To.Add(MailboxAddress.Parse(mailData.To));
+            email.Subject = mailData.Subject;
+            var multipart = new Multipart("mixed");
 
             multipart.Add(new TextPart(TextFormat.Html)
             {

@@ -80,11 +80,12 @@ public class LLDResponsesController : ControllerBase
         {
             string? email = await _LLDResponseService.GetEmailByIdAsync(addedLLDResponse.idLongTermRental);
 
-            MailData mailData = new MailData
+            MailLLDResponseData mailData = new MailLLDResponseData
             {
                 To = email,
                 Subject = request.title,
-                Body = $"Bonjour, <br> {request.description} <br> Prix: {request.prix} <br> Cordialement",
+                Body = $"Bonjour, <br> {request.description} <br> Le Prix: {request.prix} <br> Cordialement",
+                prix = request.prix.ToString(),
                 files = request.files
             };
 
