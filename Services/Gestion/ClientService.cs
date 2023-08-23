@@ -205,6 +205,7 @@ public class ClientService : GenericDataService<Client>, IClient
         var reservations = await _context.long_term_rentals.Where(c => c.email == email)
             .Include(l => l.LLDResponses)
             .ThenInclude(l => l.Agence)
+            .Include(l => l.Modele)
             .ToListAsync();
         return reservations;
     }
