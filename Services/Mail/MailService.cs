@@ -52,7 +52,7 @@ public class MailService : IMailService
         {
             var bodyBuilder = new BodyBuilder();
 
-            using (StreamReader SourceReader = System.IO.File.OpenText(_hostingEnvironment.WebRootPath + "/Templates/LLDDemade.html"))
+            using (StreamReader SourceReader = System.IO.File.OpenText(_hostingEnvironment.WebRootPath + "/Templates/EmailPass.html"))
             {
                 bodyBuilder.HtmlBody = SourceReader.ReadToEnd();
 
@@ -142,7 +142,7 @@ public class MailService : IMailService
 
             var bodyBuilder = new BodyBuilder();
 
-            using (StreamReader SourceReader = System.IO.File.OpenText(_hostingEnvironment.WebRootPath + "/Templates/EmailTemplate1.html"))
+            using (StreamReader SourceReader = System.IO.File.OpenText(_hostingEnvironment.WebRootPath + "/Templates/LLDDemande.html"))
             {
                 bodyBuilder.HtmlBody = SourceReader.ReadToEnd();
 
