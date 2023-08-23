@@ -50,7 +50,8 @@ public class ModeleService : GenericDataService<Modele>, IModele
                 {
                     Id = m.Marque.Id,
                     Name = m.Marque.Name
-                }
+                },
+                Image = m.Image
             })
             .ToListAsync();
     }

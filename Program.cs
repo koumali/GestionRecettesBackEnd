@@ -148,7 +148,7 @@ var app = builder.Build();
 
 
 
-app.UseMiddleware<ErrorHandlingMiddleware>();
+// app.UseMiddleware<ErrorHandlingMiddleware>();
 
 
 if (app.Environment.IsDevelopment())
