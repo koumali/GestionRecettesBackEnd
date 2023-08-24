@@ -127,18 +127,28 @@ public class LongTermRentalsController : ControllerBase
         {
             return NotFound();
         }
-
-        if (longTermRental.status == ReservationStatus.Enattente.ToString())
+        if (request.IdAgence != null)
         {
-            longTermRental.status = ReservationStatus.Confirmé.ToString();
-            longTermRental.idAgence = request.IdAgence;
-            longTermRental.MontantTotal = request.MontantTotal;
-            var updatedLongTermRental = await _longTermRentalService.UpdateAsync(longTermRental);
-            //notify the agence
-            await _notification.CreateNotifForAgency(updatedLongTermRental.Id, type: "LongTermRental");
-            return Ok(updatedLongTermRental);
+            if (longTermRental.status == ReservationStatus.Enattente.ToString())
+            {
+                longTermRental.status = ReservationStatus.Confirmé.ToString();
+                longTermRental.idAgence = request.IdAgence;
+                longTermRental.MontantTotal = request.MontantTotal;
+            }
+            else
+            {
+                return BadRequest(new { errors = "lld est deja confirmé" });
+            }
         }
+        else
+        {
+            longTermRental.status = request.Status;
+            longTermRental.duree = request.Duree;
+        }
+        var updatedLongTermRental = await _longTermRentalService.UpdateAsync(longTermRental);
+        //notify the agence
+        if (request.IdAgence != null) await _notification.CreateNotifForAgency(updatedLongTermRental.Id, type: "LongTermRental");
+        return Ok(updatedLongTermRental);
 
-        return BadRequest(new { errors = "la reservation est deja confirmé" });
     }
 }
