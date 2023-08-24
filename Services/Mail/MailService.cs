@@ -3,7 +3,7 @@ using MailKit.Security;
 using MimeKit;
 using AutomotiveApi.Models.Dto;
 using MimeKit.Text;
-using Org.BouncyCastle.Asn1.Pkcs;
+
 
 namespace AutomotiveApi.Services.Mail;
 
@@ -30,11 +30,11 @@ public class MailService : IMailService
             {
                 bodyBuilder.HtmlBody = SourceReader.ReadToEnd();
 
-                bodyBuilder.HtmlBody = bodyBuilder.HtmlBody.Replace("AGENCE NAME HERE", mailData.Nom);
-                bodyBuilder.HtmlBody = bodyBuilder.HtmlBody.Replace("Nom de l'Agence", mailData.Nom);
-                bodyBuilder.HtmlBody = bodyBuilder.HtmlBody.Replace("Adresse e-mail de l'Agence", mailData.To);
-                bodyBuilder.HtmlBody = bodyBuilder.HtmlBody.Replace("Numéro de téléphone de l'Agence", mailData.Tel);
-                bodyBuilder.HtmlBody = bodyBuilder.HtmlBody.Replace("Adresse de l'Agence", mailData.Adresse);
+                bodyBuilder.HtmlBody = bodyBuilder.HtmlBody.Replace("AGENCE_NAME_HERE", mailData.Nom);
+                bodyBuilder.HtmlBody = bodyBuilder.HtmlBody.Replace("AGC_NAME_HERE", mailData.Nom);
+                bodyBuilder.HtmlBody = bodyBuilder.HtmlBody.Replace("EMAIL_HERE", mailData.To);
+                bodyBuilder.HtmlBody = bodyBuilder.HtmlBody.Replace("NUMERO_HERE", mailData.Tel);
+                bodyBuilder.HtmlBody = bodyBuilder.HtmlBody.Replace("ADDRESS_HERE", mailData.Adresse);
             }
 
 
@@ -114,15 +114,15 @@ public class MailService : IMailService
             {
                 bodyBuilder.HtmlBody = SourceReader.ReadToEnd();
 
-                bodyBuilder.HtmlBody = bodyBuilder.HtmlBody.Replace("CLIENT NAME HERE", mailData.ClientNom);
-                bodyBuilder.HtmlBody = bodyBuilder.HtmlBody.Replace("Nom et description du modèle", mailData.Modele);
-                bodyBuilder.HtmlBody = bodyBuilder.HtmlBody.Replace("DATE DEBUT1 HERE", mailData.DateDebut.ToString());
-                bodyBuilder.HtmlBody = bodyBuilder.HtmlBody.Replace("DATE DEBUT2 HERE", mailData.DateDebut.ToString());
-                bodyBuilder.HtmlBody = bodyBuilder.HtmlBody.Replace("DATE FIN HERE", mailData.DateFin.ToString());
-                bodyBuilder.HtmlBody = bodyBuilder.HtmlBody.Replace("CODE HERE", mailData.CodeReservation);
-                bodyBuilder.HtmlBody = bodyBuilder.HtmlBody.Replace("Numéro de téléphone de l'Agence", mailData.AgenceTel);
-                bodyBuilder.HtmlBody = bodyBuilder.HtmlBody.Replace("Adresse e-mail de l'Agence", mailData.AgenceEmail);
-                bodyBuilder.HtmlBody = bodyBuilder.HtmlBody.Replace("Montant totale", mailData.MontantTotal);
+                bodyBuilder.HtmlBody = bodyBuilder.HtmlBody.Replace("CLIENT_NAME_HERE", mailData.ClientNom);
+                bodyBuilder.HtmlBody = bodyBuilder.HtmlBody.Replace("MODELE_HERE", mailData.Modele);
+                bodyBuilder.HtmlBody = bodyBuilder.HtmlBody.Replace("DATE_DEBUT1_HERE", mailData.DateDebut.ToString());
+                bodyBuilder.HtmlBody = bodyBuilder.HtmlBody.Replace("DATE_DEBUT2_HERE", mailData.DateDebut.ToString());
+                bodyBuilder.HtmlBody = bodyBuilder.HtmlBody.Replace("DATE_FIN_HERE", mailData.DateFin.ToString());
+                bodyBuilder.HtmlBody = bodyBuilder.HtmlBody.Replace("CODE_HERE", mailData.CodeReservation);
+                bodyBuilder.HtmlBody = bodyBuilder.HtmlBody.Replace("NUMERO_HERE", mailData.AgenceTel);
+                bodyBuilder.HtmlBody = bodyBuilder.HtmlBody.Replace("EMAIL_AGENCE_HERE", mailData.AgenceEmail);
+                bodyBuilder.HtmlBody = bodyBuilder.HtmlBody.Replace("Montant_HERE", mailData.MontantTotal);
             }
 
             await BaseSendEmailAsync(bodyBuilder, mailData);
@@ -146,10 +146,10 @@ public class MailService : IMailService
             {
                 bodyBuilder.HtmlBody = SourceReader.ReadToEnd();
 
-                bodyBuilder.HtmlBody = bodyBuilder.HtmlBody.Replace("CLIENT NAME HERE", mailData.ClientNom);
-                bodyBuilder.HtmlBody = bodyBuilder.HtmlBody.Replace("Nom et description du modèle", mailData.Modele);
-                bodyBuilder.HtmlBody = bodyBuilder.HtmlBody.Replace("DUREE HERE", mailData.Duree);
-                bodyBuilder.HtmlBody = bodyBuilder.HtmlBody.Replace("CODE HERE", mailData.NumeroReservation);
+                bodyBuilder.HtmlBody = bodyBuilder.HtmlBody.Replace("CLIENT_NAME_HERE", mailData.ClientNom);
+                bodyBuilder.HtmlBody = bodyBuilder.HtmlBody.Replace("MODELE_HERE", mailData.Modele);
+                bodyBuilder.HtmlBody = bodyBuilder.HtmlBody.Replace("DUREE_HERE", mailData.Duree);
+                bodyBuilder.HtmlBody = bodyBuilder.HtmlBody.Replace("CODE_HERE", mailData.NumeroReservation);
             }
 
             await BaseSendEmailAsync(bodyBuilder, mailData);
