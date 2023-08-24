@@ -86,6 +86,7 @@ public class OffreService : GenericDataService<Offre>, IOffre
                 DateDebut = o.DateDebut,
                 DateFin = o.DateFin,
                 Prix = o.Prix,
+                CreatedAt = o.CreatedAt,
                 isPublic = o.isPublic,
                 Vehicule = new Vehicule
                 {

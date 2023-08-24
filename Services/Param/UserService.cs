@@ -31,7 +31,30 @@ namespace AutomotiveApi.Services.Param
                 .Include(u => u.Role)
                 .Include(u => u.Agence)
                 .Where(u => u.IdAgence == idAgence)
-                .ToListAsync();
+                .Select
+                (
+                    u => new User
+                    {
+                        Id = u.Id,
+                        FirstName = u.FirstName,
+                        LastName = u.LastName,
+                        Email = u.Email,
+                        IsActive = u.IsActive,
+                        IdRole = u.IdRole,
+                        IdAgence = u.IdAgence,
+                        IsVerified = u.IsVerified,
+                        Role = new Role
+                        {
+                            Id = u.Role.Id,
+                            Name = u.Role.Name,
+                        },
+                        Agence = new Agence
+                        {
+                            Id = u.Agence.Id,
+                            Name = u.Agence.Name
+                        }
+                    }
+                ).ToListAsync();
         }
 
         public new async Task<User?> CreateAsync(User user)
