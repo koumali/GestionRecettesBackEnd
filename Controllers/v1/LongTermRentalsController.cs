@@ -64,10 +64,18 @@ public class LongTermRentalsController : ControllerBase
     }
 
     [HttpGet("{id}")]
+    [AllowAnonymous]
     public async Task<ActionResult<LongTermRental>> GetLongTermRentalById(int id)
     {
-        var longTermRental = await _longTermRentalService.GetByIdAsync(id);
-        return Ok(longTermRental);
+        try
+        {
+            var longTermRental = await _longTermRentalService.GetByIdAsync(id);
+            return Ok(longTermRental);
+        }
+        catch (Exception)
+        {
+            return BadRequest(new { error = "Reservation not found" });
+        }
     }
 
     [HttpPost]
