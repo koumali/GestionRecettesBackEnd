@@ -96,7 +96,7 @@ public class LongTermRentalsController : ControllerBase
             ClientNom = addedLongTermRental.nom + " " + addedLongTermRental.prenom,
             Modele = addedLongTermRental.Modele.Marque.Name + " " + addedLongTermRental.Modele.Name,
             Duree = addedLongTermRental.duree.ToString(),
-            Montant = addedLongTermRental.MontantTotal.ToString(),
+            Montant = (addedLongTermRental.Prix*addedLongTermRental.duree).ToString(),
             NumeroReservation = addedLongTermRental.NumeroReservation
 
         };
@@ -133,7 +133,7 @@ public class LongTermRentalsController : ControllerBase
             {
                 longTermRental.status = ReservationStatus.Confirmé.ToString();
                 longTermRental.idAgence = request.IdAgence;
-                longTermRental.MontantTotal = request.MontantTotal;
+                longTermRental.Prix = request.Prix;
             }
             else
             {
@@ -144,10 +144,13 @@ public class LongTermRentalsController : ControllerBase
         {
             longTermRental.status = request.Status;
             longTermRental.duree = request.Duree;
+            longTermRental.Prix=request.Prix;
         }
         var updatedLongTermRental = await _longTermRentalService.UpdateAsync(longTermRental);
         //notify the agence
-        if (request.IdAgence != null) await _notification.CreateNotifForAgency(updatedLongTermRental.Id, type: "LongTermRental");
+        if (request.IdAgence != null) { 
+            await _notification.CreateNotifForAgency(updatedLongTermRental.Id, type: "LongTermRental"); 
+        }
         return Ok(updatedLongTermRental);
 
     }

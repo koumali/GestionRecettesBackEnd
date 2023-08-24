@@ -16,6 +16,6 @@ public class UpdateLongTermRentalModelDto
     public string? Status { get; set; }
 
     [Required(ErrorMessage = "le montant total est obligatoire")]
-    [Range(0, double.MaxValue, ErrorMessage = "le montant total doit être supérieur à 0")]
-    public double MontantTotal { get; set; }
+    [Range(0, double.MaxValue, ErrorMessage = "le prix par mois doit être supérieur à 0")]
+    public double Prix { get; set; }
 }
