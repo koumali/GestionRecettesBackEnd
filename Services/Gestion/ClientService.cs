@@ -207,6 +207,7 @@ public class ClientService : GenericDataService<Client>, IClient
                 .ThenInclude(lld => lld.PieceJointes)
              .Include(l => l.LLDResponses)
                 .ThenInclude(l => l.Agence)
+            .Include(lld => lld.Modele)
             .ToListAsync();
         return reservations;
     }
