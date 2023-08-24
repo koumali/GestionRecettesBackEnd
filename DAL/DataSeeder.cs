@@ -46,7 +46,83 @@ public class DataSeeder
             {
                 IdRole = 1,
                 IdPermission = 1
-            }
+            },
+            new RolePermission
+            {
+                IdRole = 1,
+                IdPermission = 2
+            },
+            new RolePermission
+            {
+                IdRole = 1,
+                IdPermission = 3
+            },
+            new RolePermission
+            {
+                IdRole = 1,
+                IdPermission = 4
+            },
+            new RolePermission
+            {
+                IdRole = 1,
+                IdPermission = 5
+            },
+            new RolePermission
+            {
+                IdRole = 1,
+                IdPermission = 6
+            },
+            new RolePermission
+            {
+                IdRole = 1,
+                IdPermission = 7
+            },
+            new RolePermission
+            {
+                IdRole = 1,
+                IdPermission = 13
+            },
+            new RolePermission
+            {
+                IdRole = 2,
+                IdPermission = 2
+            },
+            new RolePermission
+            {
+                IdRole = 2,
+                IdPermission = 3
+            },
+            new RolePermission
+            {
+                IdRole = 2,
+                IdPermission = 4
+            },
+            new RolePermission
+            {
+                IdRole = 2,
+                IdPermission = 8
+            },
+            new RolePermission
+            {
+                IdRole = 2,
+                IdPermission = 9
+            },
+            new RolePermission
+            {
+                IdRole = 2,
+                IdPermission = 10
+            },
+            new RolePermission
+            {
+                IdRole = 2,
+                IdPermission = 11
+            },
+            new RolePermission
+            {
+                IdRole = 2,
+                IdPermission = 12
+            },
+
         };
 
         return rolePermissions;
