@@ -19,7 +19,7 @@ public partial class LongTermRental : ModelBase
     public int IdModele { get; set; }
     public string Gearbox { get; set; }
     public string Moteur { get; set; }
-    public double MontantTotal { get; set; }
+    public double Prix { get; set; }
     public virtual Modele Modele { get; set; }
     public virtual Agence Agence { get; set; }
     public virtual ICollection<LLDResponse> LLDResponses { get; set; }

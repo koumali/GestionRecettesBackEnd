@@ -132,6 +132,7 @@ public class DataSeeder
     public static Faker<Agence>? seedAgence()
     {
         var id = 1;
+        string[] villes = { "Casablanca", "Tanger", "Fès", "Marrakech", "Safi", "Taza", "Tinghir", "Beni-mellal", "Chefchaouen", "Essaouira" };
         var agences = new Faker<Agence>()
             .RuleFor(x => x.Id, f => id++).RuleFor(x => x.Name, f => f.Name.JobTitle())
             .RuleFor(x => x.Tel, f => f.Phone.PhoneNumber())
@@ -179,7 +180,7 @@ public class DataSeeder
             .RuleFor(x => x.description, f => f.Name.LastName())
             .RuleFor(x => x.Moteur, f => f.Random.String2(10))
             .RuleFor(x => x.Gearbox, f => f.Random.String2(10))
-            .RuleFor(x => x.MontantTotal, f => f.Random.Int(1, 10))
+            .RuleFor(x => x.Prix, f => f.Random.Int(1, 10))
             .RuleFor(x => x.entreprise, f => f.Company.CompanyName())
             .RuleFor(x => x.zip, f => f.Address.ZipCode())
             .RuleFor(x => x.duree, f => f.Random.Int(18, 33))
@@ -198,6 +199,8 @@ public class DataSeeder
         // modeles ids from json file
 
         var id = 1;
+        string[] Moteur = { "Manuelle", "Automatique"};
+        string[] Gearbox = { "Essence", "Hybride", "Diesel", "Électrique" };
         var vehicules = new Faker<Vehicule>()
             .RuleFor(x => x.Id, f => id++)
             .RuleFor(x => x.IdModele, f => f.Random.Int(1, 326))
@@ -205,8 +208,8 @@ public class DataSeeder
             .RuleFor(x => x.Prix, f => f.Random.Int(1, 10))
             .RuleFor(x => x.Matricule, f => f.Random.String2(10))
             .RuleFor(x => x.Km, f => f.Random.Int(1, 10000))
-            .RuleFor(x => x.Moteur, f => f.Random.String2(10))
-            .RuleFor(x => x.Gearbox, f => f.Random.String2(10))
+            .RuleFor(x => x.Moteur, f => f.PickRandom(Moteur))
+            .RuleFor(x => x.Gearbox, f => f.PickRandom(Gearbox))
             .RuleFor(x => x.NbPassager, f => f.Random.Int(1, 10))
             .RuleFor(x => x.NbPort, f => f.Random.Int(1, 10))
             .RuleFor(x => x.Name, f => f.Random.String2(10))
