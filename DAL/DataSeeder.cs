@@ -138,7 +138,7 @@ public class DataSeeder
             .RuleFor(x => x.Tel, f => f.Phone.PhoneNumber())
             .RuleFor(x => x.Email, f => f.Internet.Email())
             .RuleFor(x => x.Address, f => f.Address.StreetAddress())
-            .RuleFor(x => x.City, f => f.Address.City())
+            .RuleFor(x => x.City, f => f.PickRandom(villes))
             .RuleFor(x => x.ZipCode, f => f.Address.ZipCode())
             .RuleFor(x => x.Latitude, f => f.Address.Latitude())
             .RuleFor(x => x.Longitude, f => f.Address.Longitude())
@@ -169,7 +169,8 @@ public class DataSeeder
     public static Faker<LongTermRental> seedLongTermRental()
     {
         var id = 1;
-
+        string[] Moteur = { "Manuelle", "Automatique" };
+        string[] Gearbox = { "Essence", "Hybride", "Diesel", "Électrique" };
         var lld = new Faker<LongTermRental>()
             .RuleFor(x => x.Id, f => id++)
             .RuleFor(x => x.nom, f => f.Name.FirstName())
@@ -178,9 +179,9 @@ public class DataSeeder
             .RuleFor(x => x.prenom, f => f.Name.LastName())
             .RuleFor(x => x.phone, f => f.Phone.PhoneNumber())
             .RuleFor(x => x.description, f => f.Name.LastName())
-            .RuleFor(x => x.Moteur, f => f.Random.String2(10))
-            .RuleFor(x => x.Gearbox, f => f.Random.String2(10))
-            .RuleFor(x => x.Prix, f => f.Random.Int(1, 10))
+            .RuleFor(x => x.Moteur, f => f.PickRandom(Moteur))
+            .RuleFor(x => x.Gearbox, f => f.PickRandom(Gearbox))
+            .RuleFor(x => x.Prix, f => f.Random.Int(200, 500))
             .RuleFor(x => x.entreprise, f => f.Company.CompanyName())
             .RuleFor(x => x.zip, f => f.Address.ZipCode())
             .RuleFor(x => x.duree, f => f.Random.Int(18, 33))
@@ -205,7 +206,7 @@ public class DataSeeder
             .RuleFor(x => x.Id, f => id++)
             .RuleFor(x => x.IdModele, f => f.Random.Int(1, 326))
             .RuleFor(x => x.IdAgence, f => f.Random.Int(1, 10))
-            .RuleFor(x => x.Prix, f => f.Random.Int(1, 10))
+            .RuleFor(x => x.Prix, f => f.Random.Int(200, 500))
             .RuleFor(x => x.Matricule, f => f.Random.String2(10))
             .RuleFor(x => x.Km, f => f.Random.Int(1, 10000))
             .RuleFor(x => x.Moteur, f => f.PickRandom(Moteur))
@@ -229,7 +230,7 @@ public class DataSeeder
             .RuleFor(x => x.Id, f => id++)
             .RuleFor(x => x.IdVehicule, f => f.Random.Int(1, 10))
             .RuleFor(x => x.isPublic, f => f.Random.Bool())
-            .RuleFor(x => x.Prix, f => f.Random.Int(1, 10))
+            .RuleFor(x => x.Prix, f => f.Random.Int(200, 500))
             .RuleFor(x => x.DateDebut, f => f.Date.Soon())
             .RuleFor(x => x.DateFin, f => f.Date.Future())
             .RuleFor(x => x.CreatedAt, f => f.Date.Recent());
