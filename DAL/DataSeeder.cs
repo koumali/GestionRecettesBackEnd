@@ -132,7 +132,7 @@ public class DataSeeder
     public static Faker<Agence>? seedAgence()
     {
         var id = 1;
-        string[] villes = { "Casablanca", "Tanger", "Fès", "Marrakech", "Safi", "Taza", "Tinghir", "Beni-mellal", "Chefchaouen", "Essaouira" };
+        string[] villes = { "Casablanca","Mohammédia","Laayoune","Rabat", "Meknès","El Jadida","Berkane","Nador","Taza","Khouribga", "Agadir","Oujda","Errachidia", "Salé", "Tanger", "Fès", "Marrakech", "Safi", "Taza", "Tinghir", "Beni-mellal", "Chefchaouen", "Essaouira" };
         var agences = new Faker<Agence>()
             .RuleFor(x => x.Id, f => id++).RuleFor(x => x.Name, f => f.Name.JobTitle())
             .RuleFor(x => x.Tel, f => f.Phone.PhoneNumber())
@@ -140,6 +140,7 @@ public class DataSeeder
             .RuleFor(x => x.Address, f => f.Address.StreetAddress())
             .RuleFor(x => x.City, f => f.PickRandom(villes))
             .RuleFor(x => x.ZipCode, f => f.Address.ZipCode())
+            .RuleFor(x => x.IsVerified, f => f.Random.Bool())
             .RuleFor(x => x.Latitude, f => f.Address.Latitude())
             .RuleFor(x => x.Longitude, f => f.Address.Longitude())
             .RuleFor(x => x.CreatedAt, f => f.Date.Past());
@@ -202,6 +203,7 @@ public class DataSeeder
         var id = 1;
         string[] Moteur = { "Manuelle", "Automatique"};
         string[] Gearbox = { "Essence", "Hybride", "Diesel", "Électrique" };
+        string[] types = { "Véhicule", "Utilitaire" };
         var vehicules = new Faker<Vehicule>()
             .RuleFor(x => x.Id, f => id++)
             .RuleFor(x => x.IdModele, f => f.Random.Int(1, 326))
@@ -214,7 +216,7 @@ public class DataSeeder
             .RuleFor(x => x.NbPassager, f => f.Random.Int(1, 10))
             .RuleFor(x => x.NbPort, f => f.Random.Int(1, 10))
             .RuleFor(x => x.Name, f => f.Random.String2(10))
-            .RuleFor(x => x.Type, f => f.Random.String2(10))
+            .RuleFor(x => x.Type, f => f.PickRandom(types))
             .RuleFor(x => x.Climat, f => f.Random.Bool())
             .RuleFor(x => x.Airbag, f => f.Random.Bool())
             .RuleFor(x => x.CreatedAt, f => f.Date.Past());
