@@ -118,6 +118,11 @@ public class DataSeeder
                 IdRole = 2,
                 IdPermission = 11
             },
+            new RolePermission
+            {
+                IdRole = 2,
+                IdPermission = 12
+            },
         };
 
         return rolePermissions;
