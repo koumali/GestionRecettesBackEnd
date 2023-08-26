@@ -79,11 +79,19 @@ public class LLDResponsesController : ControllerBase
         try
         {
             string? email = await _LLDResponseService.GetEmailByIdAsync(addedLLDResponse.idLongTermRental);
-
+            string title = "";
+            if (request.isAgence)
+            {
+                title = "L'agence "+ addedLLDResponse.Agence.Name+" a répondu à votre Demande";
+            }
+            else
+            {
+                title = "Le client"+ addedLLDResponse.LongTermRental.nom + addedLLDResponse.LongTermRental.prenom + "a répondu à votre commentaire";
+            }
             MailLLDResponseData mailData = new MailLLDResponseData
             {
                 To = email,
-                Subject = request.title,
+                Subject = title,
                 Body = request.description,
                 prix = request.prix.ToString(),
                 files = request.files

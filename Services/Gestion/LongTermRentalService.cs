@@ -65,7 +65,9 @@ public class LongTermRentalService : GenericDataService<LongTermRental>, ILongTe
             .Where(l => l.idAgence == idAgence)
             .Include(l => l.Modele)
             .ThenInclude(m => m.Marque)
-            .Include(l => l.LLDResponses).ToListAsync();
+            .Include(l => l.LLDResponses)
+            .ThenInclude(r=>r.PieceJointes)
+            .ToListAsync();
     }
 
     public async Task<IEnumerable<LongTermRental>> GetRequestsByAgence(int idAgence)
