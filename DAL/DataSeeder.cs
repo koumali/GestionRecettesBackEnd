@@ -170,8 +170,8 @@ public class DataSeeder
     public static Faker<LongTermRental> seedLongTermRental()
     {
         var id = 1;
-        string[] Moteur = { "Manuelle", "Automatique" };
-        string[] Gearbox = { "Essence", "Hybride", "Diesel", "Électrique" };
+        string[] Gearbox = { "Manuelle", "Automatique" };
+        string[] Moteur = { "Essence", "Hybride", "Diesel", "Électrique" };
         var lld = new Faker<LongTermRental>()
             .RuleFor(x => x.Id, f => id++)
             .RuleFor(x => x.nom, f => f.Name.FirstName())
@@ -201,8 +201,8 @@ public class DataSeeder
         // modeles ids from json file
 
         var id = 1;
-        string[] Moteur = { "Manuelle", "Automatique"};
-        string[] Gearbox = { "Essence", "Hybride", "Diesel", "Électrique" };
+        string[] Gearbox = { "Manuelle", "Automatique"};
+        string[] Moteur = { "Essence", "Hybride", "Diesel", "Électrique" };
         string[] types = { "Véhicule", "Utilitaire" };
         var vehicules = new Faker<Vehicule>()
             .RuleFor(x => x.Id, f => id++)

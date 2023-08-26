@@ -103,6 +103,7 @@ public class ReservationsController : ControllerBase
         var createdRes = await _reservationService.CreateAsync(newReservation);
 
         var client = request.Conducteurs.First();
+        
 
         client.Id = client.Id == 0 ? 0 : int.Parse(User.FindFirst("clientId")?.Value ?? "0");
         Client newClient = client.Id == 0
