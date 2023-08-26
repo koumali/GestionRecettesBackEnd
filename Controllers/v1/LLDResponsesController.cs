@@ -28,7 +28,7 @@ public class LLDResponsesController : ControllerBase
     }
 
     [HttpGet]
-    [HasPermission(PredefinedPermissions.LongTerm)]
+    [HasPermission(PredefinedPermissions.LLD)]
     public async Task<ActionResult<IEnumerable<LLDResponse>>> GetLLDResponses()
     {
         var LLDResponses = await _LLDResponseService.GetAllAsync();
@@ -37,7 +37,7 @@ public class LLDResponsesController : ControllerBase
 
 
     [HttpGet("{id}")]
-    [HasPermission(PredefinedPermissions.LongTerm)]
+    [HasPermission(PredefinedPermissions.LLD)]
     public async Task<ActionResult<LLDResponse>> GetLLDResponseById(int id)
     {
         var LLDResponse = await _LLDResponseService.GetByIdAsync(id);
@@ -101,7 +101,7 @@ public class LLDResponsesController : ControllerBase
     }
 
     [HttpDelete("{id}")]
-    [HasPermission(PredefinedPermissions.LongTerm)]
+    [HasPermission(PredefinedPermissions.LLD)]
     public async Task<ActionResult> DeleteLLDResponse(int id)
     {
         await _LLDResponseService.DeleteAsync(id);
@@ -109,7 +109,7 @@ public class LLDResponsesController : ControllerBase
     }
 
     [HttpPut("{id}")]
-    [HasPermission(PredefinedPermissions.LongTerm)]
+    [HasPermission(PredefinedPermissions.LLD)]
     public async Task<ActionResult<LLDResponse>> UpdateLLDResponse(int id, [FromForm] LLDResponseDto request)
     {
         if (id != request.idLongTermRental)

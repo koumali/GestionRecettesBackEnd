@@ -10,7 +10,7 @@ namespace AutomotiveApi.Controllers.v1;
 
 [ApiController]
 [Route("api/v1/[controller]")]
-[HasPermission(PredefinedPermissions.LogJournal)]
+[HasPermission(PredefinedPermissions.Journalisation)]
 public class LogJournalsController : ControllerBase
 {
     private readonly ILogJournal _logJournalService;

@@ -13,7 +13,7 @@ namespace AutomotiveApi.Controllers.v1;
 
 [ApiController]
 [Route("api/v1/[controller]")]
-[HasPermission(PredefinedPermissions.Reservations)]
+[HasPermission(PredefinedPermissions.Réservations)]
 public class ReservationsController : ControllerBase
 {
     private readonly IReservation _reservationService;

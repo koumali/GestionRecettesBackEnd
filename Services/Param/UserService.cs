@@ -135,8 +135,8 @@ namespace AutomotiveApi.Services.Param
                     },
                     Agence = new Agence
                     {
-                        Id = u.Agence.Id,
-                        Name = u.Agence.Name
+                        Id = u.Agence != null ? u.Agence.Id : 0,
+                        Name = u.Agence != null ? u.Agence.Name : ""
                     }
                 }
             ).FirstOrDefaultAsync();

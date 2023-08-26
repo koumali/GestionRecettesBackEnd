@@ -33,12 +33,12 @@ public class PermissionService : IPermissionService
     public async Task<IEnumerable<Permission>> GetPermissionsAgence()
     {
         var notAllowed = new List<string> { PredefinedPermissions.Permissions.ToString(),
-         PredefinedPermissions.Users.ToString(),
+         PredefinedPermissions.Utilisateurs.ToString(),
           PredefinedPermissions.Roles.ToString(),
           PredefinedPermissions.Agences.ToString() ,
-          PredefinedPermissions.Modeles.ToString(),
+          PredefinedPermissions.Modèles.ToString(),
           PredefinedPermissions.Marques.ToString(),
-            PredefinedPermissions.LogJournal.ToString()
+            PredefinedPermissions.Journalisation.ToString()
           };
 
         return await _context.Permissions.Where(p => !notAllowed.Contains(p.Name)).ToListAsync();

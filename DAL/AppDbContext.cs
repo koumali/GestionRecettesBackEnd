@@ -8,15 +8,16 @@ namespace AutomotiveApi.DAL;
 
 public partial class AppDbContext : DbContext
 {
-    public IConfiguration Configuration { get; }
+    private readonly IConfiguration Configuration ;
 
-    public AppDbContext()
-    {
-    }
 
-    public AppDbContext(DbContextOptions<AppDbContext> options) : base(options)
+
+
+    public AppDbContext(DbContextOptions<AppDbContext> options, IConfiguration configuration) : base(options)
     {
+        Configuration = configuration;
     }
+    
 
     public virtual DbSet<Role> Roles { get; set; }
     public virtual DbSet<User> Users { get; set; }
@@ -95,6 +96,7 @@ public partial class AppDbContext : DbContext
                 .OnDelete(DeleteBehavior.ClientSetNull).HasConstraintName("FK_Users_id_role");
         });
 
+
         modelBuilder.Entity<Role>(
             entity =>
             {
@@ -109,7 +111,6 @@ public partial class AppDbContext : DbContext
                     .UsingEntity<RolePermission>();
             }
         );
-
 
         modelBuilder.Entity<RolePermission>(entity =>
         {
@@ -127,6 +128,8 @@ public partial class AppDbContext : DbContext
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK_RolePermission_id_permission");
         });
+
+
         modelBuilder.Entity<AgenceLongTermRental>(entity =>
         {
             entity.HasKey(e => new { e.AgenceId, e.LongTermRentalId });
@@ -244,7 +247,7 @@ public partial class AppDbContext : DbContext
                 .WithMany(p => p.Offre)
                 .HasForeignKey(d => d.IdVehicule)
                 .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK_Offre_id_vehicule");                        
+                .HasConstraintName("FK_Offre_id_vehicule");
         });
 
         modelBuilder.Entity<OffreDetail>(entity =>
@@ -270,7 +273,6 @@ public partial class AppDbContext : DbContext
 
         modelBuilder.Entity<Contrat>().HasData(DataSeeder.seedContrat().Generate(10));
 
-
         modelBuilder.Entity<Role>().HasData(DataSeeder.SeedRoles());
 
         modelBuilder.Entity<Permission>().HasData(DataSeeder.SeedPermissions());
@@ -279,6 +281,17 @@ public partial class AppDbContext : DbContext
 
         modelBuilder.Entity<User>().HasData(DataSeeder.seedUser().Generate(10));
 
+        // seed SuperAdmin from configuration
+        modelBuilder.Entity<User>().HasData(new User
+        {
+            Id = 1,
+            IdRole = 1,
+            IsActive = true,
+            FirstName = Configuration["SuperAdmin:FirstName"] ?? "Super",
+            LastName = Configuration["SuperAdmin:LastName"] ?? "Admin",
+            Email = Configuration["SuperAdmin:Email"] ?? "super@admin.com",
+            Password = BCrypt.Net.BCrypt.HashPassword(Configuration["SuperAdmin:Password"]),
+        });
 
         // filter deleted entities
 
@@ -303,6 +316,6 @@ public partial class AppDbContext : DbContext
         OnModelCreatingPartial(modelBuilder);
     }
 
-    // insert sample data
+
     partial void OnModelCreatingPartial(ModelBuilder modelBuilder);
 }

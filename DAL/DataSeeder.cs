@@ -7,6 +7,12 @@ namespace AutomotiveApi.DAL;
 
 public class DataSeeder
 {
+    private readonly IConfiguration _configuration;
+    public DataSeeder(IConfiguration configuration)
+    {
+        _configuration = configuration;
+    }
+
     public static IEnumerable<Permission> SeedPermissions()
     {
         int id = 1;
@@ -79,11 +85,6 @@ public class DataSeeder
             },
             new RolePermission
             {
-                IdRole = 1,
-                IdPermission = 13
-            },
-            new RolePermission
-            {
                 IdRole = 2,
                 IdPermission = 2
             },
@@ -95,7 +96,7 @@ public class DataSeeder
             new RolePermission
             {
                 IdRole = 2,
-                IdPermission = 4
+                IdPermission = 5
             },
             new RolePermission
             {
@@ -117,22 +118,17 @@ public class DataSeeder
                 IdRole = 2,
                 IdPermission = 11
             },
-            new RolePermission
-            {
-                IdRole = 2,
-                IdPermission = 12
-            },
-
         };
 
         return rolePermissions;
     }
 
 
+    // to be removed
     public static Faker<Agence>? seedAgence()
     {
         var id = 1;
-        string[] villes = { "Casablanca","Mohammédia","Laayoune","Rabat", "Meknès","El Jadida","Berkane","Nador","Taza","Khouribga", "Agadir","Oujda","Errachidia", "Salé", "Tanger", "Fès", "Marrakech", "Safi", "Taza", "Tinghir", "Beni-mellal", "Chefchaouen", "Essaouira" };
+        string[] villes = { "Casablanca", "Mohammédia", "Laayoune", "Rabat", "Meknès", "El Jadida", "Berkane", "Nador", "Taza", "Khouribga", "Agadir", "Oujda", "Errachidia", "Salé", "Tanger", "Fès", "Marrakech", "Safi", "Taza", "Tinghir", "Beni-mellal", "Chefchaouen", "Essaouira" };
         var agences = new Faker<Agence>()
             .RuleFor(x => x.Id, f => id++).RuleFor(x => x.Name, f => f.Name.JobTitle())
             .RuleFor(x => x.Tel, f => f.Phone.PhoneNumber())
@@ -148,6 +144,7 @@ public class DataSeeder
         return agences;
     }
 
+    // to be removed
     public static Faker<Client> seedClient()
     {
         var id = 1;
@@ -167,6 +164,7 @@ public class DataSeeder
         return clients;
     }
 
+    // to be removed
     public static Faker<LongTermRental> seedLongTermRental()
     {
         var id = 1;
@@ -194,14 +192,12 @@ public class DataSeeder
         return lld;
     }
 
-    // seed vehicules
-
+    // to be removed
     public static Faker<Vehicule> seedVehicule()
     {
-        // modeles ids from json file
 
         var id = 1;
-        string[] Moteur = { "Manuelle", "Automatique"};
+        string[] Moteur = { "Manuelle", "Automatique" };
         string[] Gearbox = { "Essence", "Hybride", "Diesel", "Électrique" };
         string[] types = { "Véhicule", "Utilitaire" };
         var vehicules = new Faker<Vehicule>()
@@ -224,7 +220,7 @@ public class DataSeeder
         return vehicules;
     }
 
-    // seed offres
+    // to be removed
     public static Faker<Offre> seedOffre()
     {
         var id = 1;
@@ -240,7 +236,7 @@ public class DataSeeder
         return offres;
     }
 
-
+    // to be removed
     public static Faker<Reservation> seedReservation()
     {
         var id = 1;
@@ -257,7 +253,7 @@ public class DataSeeder
         return reservations;
     }
 
-    // seed contrats
+    // to be removed
     public static Faker<Contrat> seedContrat()
     {
         var id = 1;
@@ -270,10 +266,11 @@ public class DataSeeder
         return contrats;
     }
 
-
+    // to be removed
     public static Faker<User> seedUser()
     {
-        var id = 1;
+
+        var id = 2;
         var Users = new Faker<User>()
             .RuleFor(x => x.Id, f => id++).RuleFor(x => x.FirstName, f => f.Name.FirstName())
             .RuleFor(x => x.LastName, f => f.Name.LastName())
@@ -286,4 +283,6 @@ public class DataSeeder
 
         return Users;
     }
+
+
 }

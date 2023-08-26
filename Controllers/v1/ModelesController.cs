@@ -11,7 +11,7 @@ namespace AutomotiveApi.Controllers.v1;
 
 [Route("api/v1/[controller]")]
 [ApiController]
-[HasPermission(PredefinedPermissions.Modeles)]
+[HasPermission(PredefinedPermissions.Modèles)]
 public class ModelesController : ControllerBase
 {
     private readonly IMapper _mapper;

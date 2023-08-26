@@ -13,7 +13,7 @@ namespace AutomotiveApi.Controllers.v1
 
     [ApiController]
     [Route("api/v1/[controller]")]
-    [HasPermission(PredefinedPermissions.Users)]
+    [HasPermission(PredefinedPermissions.Utilisateurs)]
     public class UsersController : ControllerBase
     {
         private readonly IUser _userService;

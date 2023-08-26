@@ -10,7 +10,7 @@ namespace AutomotiveApi.Controllers.v1;
 
 [ApiController]
 [Route("api/v1/[controller]")]
-[HasPermission(PredefinedPermissions.Reservations)]
+[HasPermission(PredefinedPermissions.Réservations)]
 public class ContratsController : ControllerBase
 {
     private readonly IMapper _mapper;

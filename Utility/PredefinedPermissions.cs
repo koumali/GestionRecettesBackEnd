@@ -2,22 +2,17 @@
 
 public enum PredefinedPermissions
 {
-    Dashboard,
-    Users,
+    Journalisation,
+    Utilisateurs,
     Roles,
-    Permissions,
     Agences,
-
+    Permissions,
     Marques,
-    Modeles,
-
-    Reservations,
-
+    Modèles,
+    Véhicules,
+    Réservations,
+    LLD,
     Clients,
+    Offres
 
-    LongTerm,
-
-    Vehicles,
-    Offres,
-    LogJournal,
 }
