@@ -16,16 +16,16 @@ public class LLDResponsesService : GenericDataService<LLDResponse>, ILLDResponse
         _context = context;
     }
 
-    public new async Task<LLDResponse> GetByIdAsync(int id)
+    public new async Task<LLDResponse?> GetByIdAsync(int id)
     {
-        return await _context.lld_responses.FirstOrDefaultAsync(m => m.Id == id);
+        return await _context.lld_responses.Where(l=>l.Id == id).Include(l=>l.Agence).ThenInclude(l=>l.LongTermRentals).FirstOrDefaultAsync();
     }
 
     public new async Task<LLDResponse?> CreateAsync(LLDResponse entity)
     {
-        var addedEntity = await base.CreateAsync(entity);
+        await base.CreateAsync(entity);
 
-        return addedEntity;
+        return await GetByIdAsync(entity.Id);
     }
 
     public new async Task<IEnumerable<LLDResponse>> GetAllAsync()

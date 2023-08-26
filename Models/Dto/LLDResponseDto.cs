@@ -7,8 +7,6 @@ public class LLDResponseDto
 
     [Required(ErrorMessage = "le prix est obligatoire")]
     public int prix { get; set; }
-    
-    public string? title { get; set; }
 
     [Required(ErrorMessage = "la description est obligatoire")]
     public string description { get; set; }    
