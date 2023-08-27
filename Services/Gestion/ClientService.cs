@@ -63,6 +63,10 @@ public class ClientService : GenericDataService<Client>, IClient
     public async Task<Client> AddAsync(ClientDto client)
     {
         Client newClient = _mapper.Map<Client>(client);
+        
+        newClient.PermisRecto = null;
+        newClient.PermisVerso = null;
+
         newClient.CreatedAt = DateTime.Now;
 
         _context.Clients.Add(newClient);

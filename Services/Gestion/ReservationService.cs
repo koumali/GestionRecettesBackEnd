@@ -71,7 +71,9 @@ public class ReservationService : GenericDataService<Reservation>, IReservation
                         Adresse=c.Client.Adresse,
                         Adresse2=c.Client.Adresse2,
                         Tel = c.Client.Tel,
-                        Ville=c.Client.Ville
+                        Ville=c.Client.Ville,
+                        PermisRecto=c.Client.PermisRecto,
+                        PermisVerso=c.Client.PermisVerso,
                     }
                 }).ToList()
             }).ToListAsync();
