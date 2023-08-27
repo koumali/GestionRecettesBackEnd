@@ -88,7 +88,7 @@ public class LongTermRentalService : GenericDataService<LongTermRental>, ILongTe
                 .ThenInclude(l => l.PieceJointes)
             .Include(l => l.LLDResponses)
                 .ThenInclude(l => l.Agence)
-            .FirstOrDefaultAsync();
+            .FirstAsync();
         return longTermRental;
     }
 
